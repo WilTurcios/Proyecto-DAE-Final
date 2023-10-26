@@ -1,0 +1,12 @@
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.csproj.AssemblyReference.cache
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.csproj.SuggestedBindingRedirects.cache
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.main.resources
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.Properties.Resources.resources
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.views.CreacionEmpleado.resources
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.csproj.GenerateResource.cache
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.csproj.CoreCompileInputs.cache
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\bin\Debug\Transportes_Figueroa.exe.config
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\bin\Debug\Transportes_Figueroa.exe
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\bin\Debug\Transportes_Figueroa.pdb
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.exe
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.pdb
