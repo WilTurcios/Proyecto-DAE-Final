@@ -48,7 +48,6 @@
             this.txtCapacidadPersonas = new System.Windows.Forms.NumericUpDown();
             this.ListaTipoVehiculos = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.txtKilometraje = new System.Windows.Forms.TextBox();
             this.txtMatricula = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -78,6 +77,10 @@
             this.label11 = new System.Windows.Forms.Label();
             this.DataGridModelos1 = new System.Windows.Forms.DataGridView();
             this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.txtKilometraje = new System.Windows.Forms.NumericUpDown();
+            this.txtCosto = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.DataGridModelos.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridVehiculos)).BeginInit();
@@ -96,6 +99,8 @@
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridModelos1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtKilometraje)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCosto)).BeginInit();
             this.SuspendLayout();
             // 
             // DataGridModelos
@@ -132,6 +137,7 @@
             this.DataGridVehiculos.Name = "DataGridVehiculos";
             this.DataGridVehiculos.Size = new System.Drawing.Size(786, 150);
             this.DataGridVehiculos.TabIndex = 23;
+            this.DataGridVehiculos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridVehiculos_CellContentClick);
             // 
             // IDAccionAgregarVehiculo
             // 
@@ -221,17 +227,20 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.txtCosto);
+            this.groupBox1.Controls.Add(this.txtKilometraje);
             this.groupBox1.Controls.Add(this.ListaMarcas_vehiculos);
             this.groupBox1.Controls.Add(this.ListaModelos);
             this.groupBox1.Controls.Add(this.txtAnio);
             this.groupBox1.Controls.Add(this.txtCapacidadPeso);
+            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.txtCapacidadPersonas);
             this.groupBox1.Controls.Add(this.ListaTipoVehiculos);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.txtKilometraje);
             this.groupBox1.Controls.Add(this.txtMatricula);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
@@ -248,7 +257,7 @@
             // ListaMarcas_vehiculos
             // 
             this.ListaMarcas_vehiculos.FormattingEnabled = true;
-            this.ListaMarcas_vehiculos.Location = new System.Drawing.Point(219, 70);
+            this.ListaMarcas_vehiculos.Location = new System.Drawing.Point(219, 31);
             this.ListaMarcas_vehiculos.Name = "ListaMarcas_vehiculos";
             this.ListaMarcas_vehiculos.Size = new System.Drawing.Size(186, 21);
             this.ListaMarcas_vehiculos.TabIndex = 19;
@@ -257,7 +266,7 @@
             // ListaModelos
             // 
             this.ListaModelos.FormattingEnabled = true;
-            this.ListaModelos.Location = new System.Drawing.Point(219, 32);
+            this.ListaModelos.Location = new System.Drawing.Point(219, 69);
             this.ListaModelos.Name = "ListaModelos";
             this.ListaModelos.Size = new System.Drawing.Size(186, 21);
             this.ListaModelos.TabIndex = 18;
@@ -265,13 +274,34 @@
             // txtAnio
             // 
             this.txtAnio.Location = new System.Drawing.Point(9, 110);
+            this.txtAnio.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.txtAnio.Minimum = new decimal(new int[] {
+            1900,
+            0,
+            0,
+            0});
             this.txtAnio.Name = "txtAnio";
             this.txtAnio.Size = new System.Drawing.Size(186, 20);
             this.txtAnio.TabIndex = 17;
+            this.txtAnio.Value = new decimal(new int[] {
+            1900,
+            0,
+            0,
+            0});
             // 
             // txtCapacidadPeso
             // 
+            this.txtCapacidadPeso.DecimalPlaces = 2;
             this.txtCapacidadPeso.Location = new System.Drawing.Point(219, 149);
+            this.txtCapacidadPeso.Maximum = new decimal(new int[] {
+            6000000,
+            0,
+            0,
+            0});
             this.txtCapacidadPeso.Name = "txtCapacidadPeso";
             this.txtCapacidadPeso.Size = new System.Drawing.Size(186, 20);
             this.txtCapacidadPeso.TabIndex = 16;
@@ -279,6 +309,11 @@
             // txtCapacidadPersonas
             // 
             this.txtCapacidadPersonas.Location = new System.Drawing.Point(9, 149);
+            this.txtCapacidadPersonas.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
             this.txtCapacidadPersonas.Name = "txtCapacidadPersonas";
             this.txtCapacidadPersonas.Size = new System.Drawing.Size(186, 20);
             this.txtCapacidadPersonas.TabIndex = 15;
@@ -300,13 +335,6 @@
             this.label9.TabIndex = 13;
             this.label9.Text = "Año:";
             // 
-            // txtKilometraje
-            // 
-            this.txtKilometraje.Location = new System.Drawing.Point(9, 71);
-            this.txtKilometraje.Name = "txtKilometraje";
-            this.txtKilometraje.Size = new System.Drawing.Size(186, 20);
-            this.txtKilometraje.TabIndex = 12;
-            // 
             // txtMatricula
             // 
             this.txtMatricula.Location = new System.Drawing.Point(9, 32);
@@ -317,7 +345,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(216, 16);
+            this.label8.Location = new System.Drawing.Point(216, 53);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(45, 13);
             this.label8.TabIndex = 8;
@@ -326,7 +354,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(216, 55);
+            this.label7.Location = new System.Drawing.Point(216, 15);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(40, 13);
             this.label7.TabIndex = 7;
@@ -575,6 +603,49 @@
             this.dataGridViewCheckBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewCheckBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
+            // txtKilometraje
+            // 
+            this.txtKilometraje.DecimalPlaces = 2;
+            this.txtKilometraje.Location = new System.Drawing.Point(9, 70);
+            this.txtKilometraje.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.txtKilometraje.Name = "txtKilometraje";
+            this.txtKilometraje.Size = new System.Drawing.Size(186, 20);
+            this.txtKilometraje.TabIndex = 20;
+            // 
+            // txtCosto
+            // 
+            this.txtCosto.DecimalPlaces = 2;
+            this.txtCosto.Location = new System.Drawing.Point(219, 172);
+            this.txtCosto.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.txtCosto.Name = "txtCosto";
+            this.txtCosto.Size = new System.Drawing.Size(186, 20);
+            this.txtCosto.TabIndex = 21;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(93, 177);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(0, 13);
+            this.label13.TabIndex = 22;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(90, 174);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(105, 13);
+            this.label14.TabIndex = 23;
+            this.label14.Text = "Costo por km u hora:";
+            // 
             // CrearVehiculo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -605,6 +676,8 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridModelos1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtKilometraje)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCosto)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -630,7 +703,6 @@
         private System.Windows.Forms.NumericUpDown txtCapacidadPersonas;
         private System.Windows.Forms.ComboBox ListaTipoVehiculos;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox txtKilometraje;
         private System.Windows.Forms.TextBox txtMatricula;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
@@ -661,5 +733,9 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.DataGridView DataGridModelos1;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
+        private System.Windows.Forms.NumericUpDown txtKilometraje;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.NumericUpDown txtCosto;
     }
 }

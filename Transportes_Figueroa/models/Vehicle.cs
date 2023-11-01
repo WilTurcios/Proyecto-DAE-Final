@@ -11,10 +11,11 @@ namespace Transportes_Figueroa.models
         public int Id { get; set; }
         public double Kilometraje { get; set; }
         public int Anio { get; set; }
+        public byte[] Imagen { get; set; }
         public string Matricula { get; set; }
         public double CapacidadPeso { get; set; }
         public int CapacidadPersonas { get; set; }
-        public double Costo { get; set; }
+        public decimal Costo { get; set; }
         public int TipoVehiculoId { get; set; }
         public int ModeloId {  get; set; }
     }

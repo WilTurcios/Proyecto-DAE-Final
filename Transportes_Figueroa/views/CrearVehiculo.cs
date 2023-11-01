@@ -37,7 +37,7 @@ namespace Transportes_Figueroa.views
 
         }
 
-        private void ShowVehicles()
+        private void ShowVehicles(List<Vehicle> vehicles)
         {
             _VehiclesToShow.Columns.Add("ID");
             _VehiclesToShow.Columns.Add("Matricula");
@@ -49,7 +49,7 @@ namespace Transportes_Figueroa.views
             _VehiclesToShow.Columns.Add("Limite de peso");
             _VehiclesToShow.Columns.Add("Costo");
 
-            foreach(Vehicle vehicle in _vehicles)
+            foreach(Vehicle vehicle in vehicles)
             {
                 DataRow fila = _VehiclesToShow.NewRow();
 
@@ -71,12 +71,12 @@ namespace Transportes_Figueroa.views
             DataGridVehiculos.Refresh();
         }
 
-        private void ShowVehicleBrands()
+        private void ShowVehicleBrands(List<CarBrand> brands)
         {
             _VehicleBrandsToShow.Columns.Add("ID");
             _VehicleBrandsToShow.Columns.Add("Marca");
 
-            foreach(CarBrand brand in _brands)
+            foreach(CarBrand brand in brands)
             {
                 DataRow fila = _VehicleBrandsToShow.NewRow();
 
@@ -90,13 +90,13 @@ namespace Transportes_Figueroa.views
             DataGridMarcas.Refresh();
         }
 
-        private void ShowVehicleModels()
+        private void ShowVehicleModels(List<CarModel> models)
         {
             _VehicleModelsToShow.Columns.Add("ID");
             _VehicleModelsToShow.Columns.Add("Marca");
             _VehicleModelsToShow.Columns.Add("Modelo");
 
-            foreach (CarModel model in _models)
+            foreach (CarModel model in models)
             {
                 DataRow fila = _VehicleModelsToShow.NewRow();
 
@@ -119,9 +119,9 @@ namespace Transportes_Figueroa.views
             _vehicles = VehicleDBManager.GetAllVehicles();
             _vehicleTypes = VehicleDBManager.GetAllVehicleTypes();
 
-            ShowVehicles();
-            ShowVehicleBrands();
-            ShowVehicleModels();
+            ShowVehicles(_vehicles);
+            ShowVehicleBrands(_brands);
+            ShowVehicleModels(_models);
 
             foreach (CarBrand brand in _brands){
                 ListaMarcas_modelos.Items.Add(brand.Marca);
@@ -147,6 +147,48 @@ namespace Transportes_Figueroa.views
 
         private void AgregarVehiculo_Click(object sender, EventArgs e)
         {
+            // Agregar un nuevo vehiculo
+
+            string matricula = txtMatricula.Text;
+            int anio = (int)txtAnio.Value;
+            decimal costo = txtCosto.Value;
+            double kilometraje = (double)txtKilometraje.Value;
+            int capacidadPersonas = (int)txtCapacidadPersonas.Value;
+            double capacidadPeso = (double)txtCapacidadPersonas.Value;
+            byte[] imagen;
+
+            if (pictureBox1.Image == null)
+            {
+                MessageBox.Show("Debe seleccionar una imagen antes de continuar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            imagen = _imagen;
+            if (ListaMarcas_vehiculos.SelectedIndex == -1)
+            {
+                MessageBox.Show("Debes asegurarte de seleccionar una marca de vehiculo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var marcaID = _brands.FirstOrDefault(brand => brand.Marca == ListaMarcas_vehiculos.SelectedItem.ToString()).Id;
+
+            if (ListaModelos.SelectedIndex == -1)
+            {
+                MessageBox.Show("Debes asegurarte de seleccionar una marca de vehiculo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var modeloID = _models.FirstOrDefault(model => model.Modelo == ListaModelos.SelectedItem.ToString()).Id;
+
+            if (ListaTipoVehiculos.SelectedIndex == -1)
+            {
+                MessageBox.Show("Debes asegurarte de seleccionar una marca de vehiculo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var tipoVehiculoID = _vehicleTypes.FirstOrDefault(type => type.Nombre == ListaTipoVehiculos.SelectedItem.ToString()).Id;
+
+
+            int affectedRows = VehicleDBManager.AddVehicle(matricula, kilometraje, anio, capacidadPersonas, capacidadPeso, costo, imagen, tipoVehiculoID, modeloID);
 
         }
 
@@ -161,6 +203,36 @@ namespace Transportes_Figueroa.views
             {
                 var modelosDeMarca = _models.Where(model => model.MarcaId == currentBrandID).Select(model => model.Modelo);
                 ListaModelos.Items.AddRange(modelosDeMarca.ToArray());
+            }
+        }
+
+        private void DataGridVehiculos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if(e.ColumnIndex == DataGridVehiculos.Columns["IDAccionAgregarVehiculo"].Index && e.RowIndex >= 0)
+            {
+                DataGridViewCheckBoxCell cell = DataGridVehiculos.Rows[e.RowIndex].Cells["IDAccionAgregarVehiculo"] as DataGridViewCheckBoxCell;
+
+                if(cell != null)
+                {
+                    bool isChecked = (bool)cell.EditedFormattedValue;
+
+                    if (isChecked)
+                    {
+                        txtMarca.Enabled = false;
+                        ListaMarcas_vehiculos.Enabled = false;
+                        ListaModelos.Enabled = false;
+                        txtAnio.Enabled = false;
+
+                    } 
+                    else
+                    {
+                        txtMarca.Enabled = true;
+                        ListaMarcas_vehiculos.Enabled = true;
+                        ListaModelos.Enabled = true;
+                        txtAnio.Enabled = true;
+                    }
+                }
             }
         }
     }

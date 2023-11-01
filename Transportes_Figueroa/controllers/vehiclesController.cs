@@ -39,31 +39,37 @@ namespace Transportes_Figueroa.controllers
         public List<Vehicle> GetAllCars()
         {
             List<Vehicle> vehicles = new List<Vehicle>();
-            DataTable vehiclesFromDB = new DataTable();
 
             try
             {
                 OpenConnection();
-                string query = $"select * from vehiculos;";
+                string query = "SELECT * FROM vehiculos";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))
-                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    adapter.Fill(vehiclesFromDB);
-
-                    foreach (DataRow vehicleFromDB in vehiclesFromDB.Rows)
+                    while (reader.Read())
                     {
                         Vehicle vehicle = new Vehicle();
 
-                        vehicle.Id = (int)vehicleFromDB["id_vehiculo"];
-                        vehicle.Matricula = (string)vehicleFromDB["matricula"];
-                        vehicle.CapacidadPeso = (double)vehicleFromDB["capacidad_peso"];
-                        vehicle.CapacidadPersonas = (int)vehicleFromDB["capacidad_personas"];
-                        vehicle.Kilometraje = (double)vehicleFromDB["kilometraje"];
-                        vehicle.Costo = (double)vehicleFromDB["costo"];
-                        vehicle.Anio = (int)vehicleFromDB["anio"];
-                        vehicle.TipoVehiculoId = (int)vehicleFromDB["id_tipo_vehiculo"];
-                        vehicle.ModeloId = (int)vehicleFromDB["id_modelo"];
+                        vehicle.Id = (int)reader["id_vehiculo"];
+                        vehicle.Matricula = reader["matricula"].ToString();
+                        vehicle.CapacidadPeso = (double)reader["capacidad_peso"];
+                        vehicle.CapacidadPersonas = (int)reader["capacidad_personas"];
+                        vehicle.Kilometraje = (double)reader["kilometraje"];
+                        vehicle.Costo = (decimal)reader["costo"];
+                        vehicle.Anio = (int)reader["anio"];
+                        vehicle.TipoVehiculoId = (int)reader["id_tipo_vehiculo"];
+                        vehicle.ModeloId = (int)reader["id_modelo"];
+
+                        if (reader["imagen"] != DBNull.Value)
+                        {
+                            vehicle.Imagen = (byte[])reader["imagen"];
+                        }
+                        else
+                        {
+                            vehicle.Imagen = null; // Si la imagen es NULL en la base de datos
+                        }
 
                         vehicles.Add(vehicle);
                     }
@@ -71,7 +77,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ha ocurrido un error al obtener vehiculos {ex.Message}");
+                MessageBox.Show($"Ha ocurrido un error al obtener vehículos: {ex.Message}");
             }
             finally
             {
@@ -198,20 +204,39 @@ namespace Transportes_Figueroa.controllers
         }
         public int AddCar(Vehicle vehiculo)
         {
-            string query = "INSERT INTO vehiculos (matricula, kilometraje, anio, capacidad_personas, capacidad_peso, costo, id_tipo_vehiculo, id_modelo ) VALUES (@Matricula, @Kilometraje, @Anio, @CapacidadPersonas, @CapacidadPeso, @Costo, @TipoID, @ModeloID); SELECT SCOPE_IDENTITY();";
-            using (SqlCommand command = new SqlCommand(query, this.connection))
+            string query = "INSERT INTO vehiculos (matricula, kilometraje, anio, capacidad_personas, capacidad_peso, costo, id_tipo_vehiculo, id_modelo, imagen) " +
+                           "VALUES (@Matricula, @Kilometraje, @Anio, @CapacidadPersonas, @CapacidadPeso, @Costo, @TipoID, @ModeloID, @Imagen); SELECT SCOPE_IDENTITY();";
+
+            try
             {
+                using (SqlCommand command = new SqlCommand(query, this.connection))
+                {
+                    OpenConnection();
 
-                command.Parameters.AddWithValue("@Matricula", vehiculo.Matricula);
-                command.Parameters.AddWithValue("@Kilometraje", vehiculo.Kilometraje);
-                command.Parameters.AddWithValue("@Anio", vehiculo.Anio);
-                command.Parameters.AddWithValue("@CapacidadPersonas", vehiculo.CapacidadPersonas);
-                command.Parameters.AddWithValue("@CapacidadPeso", vehiculo.CapacidadPeso);
-                command.Parameters.AddWithValue("@Costo", vehiculo.Costo);
-                command.Parameters.AddWithValue("@TipoID", vehiculo.TipoVehiculoId);
-                command.Parameters.AddWithValue("@ModeloID", vehiculo.ModeloId);
+                    command.Parameters.AddWithValue("@Matricula", vehiculo.Matricula);
+                    command.Parameters.AddWithValue("@Kilometraje", vehiculo.Kilometraje);
+                    command.Parameters.AddWithValue("@Anio", vehiculo.Anio);
+                    command.Parameters.AddWithValue("@CapacidadPersonas", vehiculo.CapacidadPersonas);
+                    command.Parameters.AddWithValue("@CapacidadPeso", vehiculo.CapacidadPeso);
+                    command.Parameters.AddWithValue("@Costo", vehiculo.Costo);
+                    command.Parameters.AddWithValue("@TipoID", vehiculo.TipoVehiculoId);
 
-                return (int)command.ExecuteScalar();
+                    // Para el campo de imagen (VARBINARY), asegúrate de usar el tipo SqlDbType.VarBinary
+                    command.Parameters.Add("@Imagen", SqlDbType.VarBinary).Value = vehiculo.Imagen;
+
+                    command.Parameters.AddWithValue("@ModeloID", vehiculo.ModeloId);
+
+                    return Convert.ToInt32(command.ExecuteScalar());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al insertar vehículo: " + ex.Message);
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
             }
         }
 
@@ -267,7 +292,7 @@ namespace Transportes_Figueroa.controllers
                             vehicle.CapacidadPeso = (double)vehiculoDB["capacidad_peso"];
                             vehicle.CapacidadPersonas = (int)vehiculoDB["capacidad_personas"];
                             vehicle.Kilometraje = (double)vehiculoDB["kilometraje"];
-                            vehicle.Costo = (double)vehiculoDB["costo"];
+                            vehicle.Costo = (decimal)vehiculoDB["costo"];
                             vehicle.Anio = (int)vehiculoDB["anio"];
                             vehicle.TipoVehiculoId = (int)vehiculoDB["id_tipo_vehiculo"];
                             vehicle.ModeloId = (int)vehiculoDB["id_modelo"];
@@ -418,7 +443,7 @@ namespace Transportes_Figueroa.controllers
             {
                 OpenConnection();
 
-                string query = "update vehiculos set matricula = @Matricula, kilometraje = @Kilometraje, anio = @Anio, capacidad_personas = @CapacidadPersonas, capacidad_peso = @CapacidadPeso, costo = @Costo, id_tipo_vehiculo = @TipoID, id_modelo = @ModeloID where id_vehiculo = @VehiculoID;";
+                string query = "update vehiculos set imagen = @Imagen matricula = @Matricula, kilometraje = @Kilometraje, anio = @Anio, capacidad_personas = @CapacidadPersonas, capacidad_peso = @CapacidadPeso, costo = @Costo, id_tipo_vehiculo = @TipoID, id_modelo = @ModeloID where id_vehiculo = @VehiculoID;";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     cmd.Parameters.AddWithValue("@VehiculoID", vehiculo.Id);
@@ -430,6 +455,7 @@ namespace Transportes_Figueroa.controllers
                     cmd.Parameters.AddWithValue("@Costo", vehiculo.Matricula);
                     cmd.Parameters.AddWithValue("@TipoID", vehiculo.TipoVehiculoId);
                     cmd.Parameters.AddWithValue("@ModeloID", vehiculo.ModeloId);
+                    cmd.Parameters.AddWithValue("@Imagen", vehiculo.Imagen);
 
                     cmd.ExecuteNonQuery();
                 }

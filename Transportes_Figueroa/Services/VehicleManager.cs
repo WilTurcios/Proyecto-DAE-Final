@@ -46,7 +46,8 @@ namespace Transportes_Figueroa.Services
             int anio,
             int capacidadPersonas, 
             double capacidadPeso,
-            double costo,
+            decimal costo,
+            byte[] imagen,
             int tipoVehiculoID,
             int modeloID
         )
@@ -58,6 +59,7 @@ namespace Transportes_Figueroa.Services
                 CapacidadPersonas = capacidadPersonas,
                 CapacidadPeso = capacidadPeso,
                 Costo = costo,
+                Imagen = imagen,
                 TipoVehiculoId = tipoVehiculoID,
                 ModeloId = modeloID
             };
