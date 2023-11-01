@@ -14,11 +14,11 @@ namespace Transportes_Figueroa.Services
             UsersDataManager = new usersController(connectionString);
         }
 
-        public Guid  AddUser(Guid userID, string correo, string contrasenia)
+        public void  AddUser(Guid userID, string correo, string contrasenia)
         {
             User nuevoUsuario = new User() { Id = userID, Correo = correo, Contrasenia = contrasenia };
 
-            return UsersDataManager.Add(nuevoUsuario);
+            UsersDataManager.Add(nuevoUsuario);
         }
 
         public int DeleteUser(Guid userID)

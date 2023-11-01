@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Transportes_Figueroa.Models
 {
-    internal class Rol
+    internal class VehicleType
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
-        public decimal SueldoHora { get; set; }
     }
 }

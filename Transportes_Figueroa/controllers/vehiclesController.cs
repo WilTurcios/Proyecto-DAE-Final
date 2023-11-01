@@ -71,7 +71,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show($"Ha ocurrido un error al obtener vehiculos {ex.Message}");
             }
             finally
             {
@@ -81,51 +81,12 @@ namespace Transportes_Figueroa.controllers
             return vehicles;
         }
 
-        public List<CarBrand> GetAllCarBrands()
+        public List<CarModel> GetAllModels()
         {
-            List<CarBrand> vehicleBrands = new List<CarBrand>();
-            DataTable vehicleBrandsFromDB = new DataTable();
-
             try
             {
-                OpenConnection();
-                string query = $"select * from marcas;";
-
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
-                {
-                    adapter.Fill(vehicleBrandsFromDB);
-
-                    foreach (DataRow brandFromDB in vehicleBrandsFromDB.Rows)
-                    {
-                        CarBrand vehicleBrand = new CarBrand();
-
-                        vehicleBrand.Id = (int)brandFromDB["id_marca"];
-                        vehicleBrand.Marca = (string)brandFromDB["nombre_marca"];
-
-                        vehicleBrands.Add(vehicleBrand);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                CloseConnection();
-            }
-
-            return vehicleBrands;
-        }
-
-        public List<CarModel> GetAllCarModels()
-        {
-            List<CarModel> vehicleBrands = new List<CarModel>();
-            DataTable carModelsFromDB = new DataTable();
-
-            try
-            {
+                List<CarModel> modelos = new List<CarModel>();
+                DataTable carModelsFromDB = new DataTable();
                 OpenConnection();
                 string query = $"select * from modelos;";
 
@@ -136,28 +97,105 @@ namespace Transportes_Figueroa.controllers
 
                     foreach (DataRow carModelFromDB in carModelsFromDB.Rows)
                     {
-                        CarModel vehicleModel = new CarModel();
+                        CarModel modelo = new CarModel();
 
-                        vehicleModel.Id = (int)carModelFromDB["id_modelo"];
-                        vehicleModel.Modelo = (string)carModelFromDB["nombre_modelo"];
-                        vehicleModel.MarcaId = (int)carModelFromDB["id_marca"];
+                        modelo.Id = (int)carModelFromDB["id_Modelo"];
+                        modelo.Modelo = (string)carModelFromDB["nombre_modelo"];
+                        modelo.MarcaId = (int)carModelFromDB["id_marca"];
 
-                        vehicleBrands.Add(vehicleModel);
+                        modelos.Add(modelo);
                     }
                 }
+
+                return modelos;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show("Ha ocurrido un error al recuperar los modelos: " + ex.Message);
+                return new List<CarModel>();
             }
             finally
             {
                 CloseConnection();
             }
-
-            return vehicleBrands;
         }
 
+        public List<CarBrand> GetAllBrands()
+        {
+            try
+            {
+                List<CarBrand> brands = new List<CarBrand>();
+                DataTable carModelsFromDB = new DataTable();
+                OpenConnection();
+                string query = $"select * from marcas;";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    adapter.Fill(carModelsFromDB);
+
+                    foreach (DataRow carModelFromDB in carModelsFromDB.Rows)
+                    {
+                        CarBrand brand = new CarBrand();
+
+                        brand.Id = (int)carModelFromDB["id_marca"];
+                        brand.Marca = (string)carModelFromDB["nombre_marca"];
+
+                        brands.Add(brand);
+                    }
+                }
+
+                return brands;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al recuperar las marcas: " + ex.Message);
+                return new List<CarBrand>();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+
+        public List<VehicleType> GetAllVehicleTypes()
+        {
+            try
+            {
+                List<VehicleType> vehicleTypes = new List<VehicleType>();
+                DataTable vehicleTypesFromDB = new DataTable();
+                OpenConnection();
+                string query = $"select * from tipo_vehiculo;";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    adapter.Fill(vehicleTypesFromDB);
+
+                    foreach (DataRow vehicleTypeFromDB in vehicleTypesFromDB.Rows)
+                    {
+                        VehicleType vehicleType = new VehicleType();
+
+                        vehicleType.Id = (int)vehicleTypeFromDB["id_tipo_vehiculo"];
+                        vehicleType.Nombre = (string)vehicleTypeFromDB["nombre_tipo"];
+
+                        vehicleTypes.Add(vehicleType);
+                    }
+                }
+
+                return vehicleTypes;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al recuperar los tipos de vehiculo: " + ex.Message);
+                return new List<VehicleType>();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
         public int AddCar(Vehicle vehiculo)
         {
             string query = "INSERT INTO vehiculos (matricula, kilometraje, anio, capacidad_personas, capacidad_peso, costo, id_tipo_vehiculo, id_modelo ) VALUES (@Matricula, @Kilometraje, @Anio, @CapacidadPersonas, @CapacidadPeso, @Costo, @TipoID, @ModeloID); SELECT SCOPE_IDENTITY();";
@@ -169,7 +207,7 @@ namespace Transportes_Figueroa.controllers
                 command.Parameters.AddWithValue("@Anio", vehiculo.Anio);
                 command.Parameters.AddWithValue("@CapacidadPersonas", vehiculo.CapacidadPersonas);
                 command.Parameters.AddWithValue("@CapacidadPeso", vehiculo.CapacidadPeso);
-                command.Parameters.AddWithValue("@Costo", vehiculo.Matricula);
+                command.Parameters.AddWithValue("@Costo", vehiculo.Costo);
                 command.Parameters.AddWithValue("@TipoID", vehiculo.TipoVehiculoId);
                 command.Parameters.AddWithValue("@ModeloID", vehiculo.ModeloId);
 
@@ -292,10 +330,11 @@ namespace Transportes_Figueroa.controllers
             return model;
         }
 
-        public void DeleteById(int vehiculoID)
+        public int DeleteById(int vehiculoID)
         {
             try
             {
+                int affectedRows;
                 OpenConnection();
 
                 string query = "delete from vehiculos where id_vehiculo = @VehiculoID;";
@@ -303,13 +342,14 @@ namespace Transportes_Figueroa.controllers
                 {
                     cmd.Parameters.AddWithValue("@VehiculoID", vehiculoID);
 
-                    cmd.ExecuteNonQuery();
+                    return affectedRows = cmd.ExecuteNonQuery();
                 }
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error al eliminar vehiculo: "+ ex.Message);
+                return 0;
             }
             finally
             {
@@ -317,10 +357,11 @@ namespace Transportes_Figueroa.controllers
             }
         }
 
-        public void DeleteBrandById(int marcaID)
+        public int DeleteBrandById(int marcaID)
         {
             try
             {
+                int affectedRows;
                 OpenConnection();
 
                 string query = "delete from marcas where id_marca = @MarcaID;";
@@ -328,13 +369,14 @@ namespace Transportes_Figueroa.controllers
                 {
                     cmd.Parameters.AddWithValue("@MarcaID", marcaID);
 
-                    cmd.ExecuteNonQuery();
+                    return  affectedRows = cmd.ExecuteNonQuery();
                 }
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return 0;
             }
             finally
             {
@@ -342,10 +384,11 @@ namespace Transportes_Figueroa.controllers
             }
         }
 
-        public void DeleteModelById(int modeloID)
+        public int DeleteModelById(int modeloID)
         {
             try
             {
+                int affectedRows;
                 OpenConnection();
 
                 string query = "delete from modelos where id_modelo = @ModeloID;";
@@ -353,13 +396,14 @@ namespace Transportes_Figueroa.controllers
                 {
                     cmd.Parameters.AddWithValue("@ModeloID", modeloID);
 
-                    cmd.ExecuteNonQuery();
+                    return affectedRows = cmd.ExecuteNonQuery();
                 }
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return 0;
             }
             finally
             {

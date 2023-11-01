@@ -25,6 +25,51 @@ namespace Transportes_Figueroa.Services
             return this.EmployeesDataManager.GetAll();
         }
 
+        public List<Rol> GetRols()
+        {
+            return EmployeesDataManager.GetRoles();
+        }
+
+        public int AddEmployee(
+            Guid empleadoID,
+            string nombres,
+            string apellidoPaterno, 
+            string apellidoMaterno,
+            string telefono,
+            string codigoAFP,
+            string codigoSeguro,
+            byte[] imagen,
+            string departamento,
+            string municipio,
+            string ubicacion,
+            string calle,
+            string codigoCasa,
+            Guid usuarioID,
+            int rolID
+        )
+        {
+            Employee employee = new Employee()
+            {
+                Id = empleadoID,
+                Nombres = nombres,
+                ApellidoMaterno = apellidoMaterno,
+                ApellidoPaterno = apellidoPaterno,
+                NumeroTelefonico = telefono,
+                CodigoAFP = codigoAFP,
+                CodigoSeguro = codigoSeguro,
+                Imagen = imagen,
+                Departamento = departamento,
+                Municipio = municipio,
+                Ubicacion = ubicacion,
+                Calle = calle,
+                CodigoCasa = codigoCasa,
+                IdUsuario = usuarioID,
+                RolId = rolID
+            };
+
+            return EmployeesDataManager.Add(employee);
+        }
+
         public Employee GetEmployeeById(Guid empleadoID)
         {
             Employee empleado = new Employee();
@@ -51,7 +96,7 @@ namespace Transportes_Figueroa.Services
         public int UpdateEmployee(
             Guid empleadoID,
             string codigoSeguro,
-            string imagen,
+            byte[] imagen,
             string telefono,
             string departamento,
             string municipio,
@@ -65,7 +110,7 @@ namespace Transportes_Figueroa.Services
                 Id = empleadoID,
                 NumeroTelefonico = telefono,
                 CodigoSeguro = codigoSeguro,
-                ImagenURL = imagen,
+                Imagen = imagen,
                 Departamento = departamento,
                 Municipio = municipio,
                 Ubicacion = ubicacion,

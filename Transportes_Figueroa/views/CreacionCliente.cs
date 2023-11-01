@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,9 +13,8 @@ using Transportes_Figueroa.Services;
 
 namespace Transportes_Figueroa.views
 {
-    public partial class CreacionEmpleado : Form
-    { 
-        private Dictionary<int, string> _roles = new Dictionary<int,string>();
+    public partial class CreacionCliente : Form
+    {
         private Dictionary<string, List<string>> municipiosPorDepartamento = new Dictionary<string, List<string>>
         {
             { "Ahuachapán", new List<string>
@@ -330,149 +328,94 @@ namespace Transportes_Figueroa.views
             }
             // Agregar más departamentos y municipios aquí
         };
-        private UserManager UserDBManager = new UserManager();
-        private EmployeeManager EmployeeDBManager = new EmployeeManager();
-        private DataTable InfoEmpleados = new DataTable();
-        private List<Employee> _employees = new List<Employee>();
-        
-
-        public CreacionEmpleado()
+        private ClientManager ClientDBManager = new ClientManager();
+        private DataTable InfoClientes = new DataTable();
+        private List<Client> _clients = new List<Client>();
+        public CreacionCliente()
         {
             InitializeComponent();
         }
 
-        private DataTable CargarEmpleados(List<Employee> empleadosDB)
+        private DataTable CargarEmpleados(List<Client> clientesDB)
         {
-            DataTable empleados = new DataTable();
+            DataTable clientes = new DataTable();
 
-            empleados.Columns.Add("id_empleado");
-            empleados.Columns.Add("nombres");
-            empleados.Columns.Add("apellido_paterno");
-            empleados.Columns.Add("apellido_materno");
-            empleados.Columns.Add("cod_afp");
-            empleados.Columns.Add("cod_seguro");
-            empleados.Columns.Add("departamento");
-            empleados.Columns.Add("municipio");
-            empleados.Columns.Add("ubicacion");
-            empleados.Columns.Add("calle");
-            empleados.Columns.Add("cod_casa");
-            empleados.Columns.Add("telefono");
-            empleados.Columns.Add("rol");
-            empleados.Columns.Add("id_usuario");
+            clientes.Columns.Add("id_cliente");
+            clientes.Columns.Add("nombres");
+            clientes.Columns.Add("apellido_paterno");
+            clientes.Columns.Add("apellido_materno");
+            clientes.Columns.Add("departamento");
+            clientes.Columns.Add("municipio");
+            clientes.Columns.Add("ubicacion");
+            clientes.Columns.Add("calle");
+            clientes.Columns.Add("cod_casa");
+            clientes.Columns.Add("telefono");
 
-            foreach (Employee empleado in empleadosDB)
+            foreach (Client cliente in clientesDB)
             {
-                DataRow fila = empleados.NewRow();
+                DataRow fila = clientes.NewRow();
 
-                fila["id_empleado"] = empleado.Id;
-                fila["nombres"] = empleado.Nombres;
-                fila["apellido_paterno"] = empleado.ApellidoPaterno;
-                fila["apellido_materno"] = empleado.ApellidoMaterno;
-                fila["cod_afp"] = empleado.CodigoAFP;
-                fila["cod_seguro"] = empleado.CodigoSeguro;
-                fila["departamento"] = empleado.Departamento;
-                fila["municipio"] = empleado.Municipio;
-                fila["ubicacion"] = empleado.Ubicacion;
-                fila["calle"] = empleado.Calle;
-                fila["cod_casa"] = empleado.CodigoCasa;
-                fila["telefono"] = empleado.NumeroTelefonico;
+                fila["id_cliente"] = cliente.Id;
+                fila["nombres"] = cliente.Nombres;
+                fila["apellido_paterno"] = cliente.ApellidoPaterno;
+                fila["apellido_materno"] = cliente.ApellidoMaterno;
+                fila["departamento"] = cliente.Departamento;
+                fila["municipio"] = cliente.Municipio;
+                fila["ubicacion"] = cliente.Ubicacion;
+                fila["calle"] = cliente.Calle;
+                fila["cod_casa"] = cliente.CodigoCasa;
+                fila["telefono"] = cliente.NumeroTelefonico;
 
-                // Obtener el rol correspondiente desde _roles (suponiendo que _roles es un diccionario)
-                if (_roles.TryGetValue(empleado.RolId, out string rolNombre))
-                {
-                    fila["rol"] = rolNombre;
-                }
-                else
-                {
-                    fila["rol"] = string.Empty; // Otra acción si el rol no se encuentra
-                }
-
-                fila["id_usuario"] = empleado.IdUsuario;
-                empleados.Rows.Add(fila);
+                clientes.Rows.Add(fila);
             }
 
-            return empleados;
+            return clientes;
         }
 
-        private void CreacionEmpleado_Load(object sender, EventArgs e)
+        private void CreacionCliente_Load(object sender, EventArgs e)
         {
-            _employees = EmployeeDBManager.GetAllEmployees();
+            _clients = ClientDBManager.GetAllClients();
 
-            // Si _roles no se ha inicializado previamente como un diccionario, inicialízalo
-            if (_roles == null)
-            {
-                _roles = new Dictionary<int, string>(); // Suponiendo que el valor clave de rol sea de tipo int
-            }
-
-            foreach (Rol rol in EmployeeDBManager.GetRols())
-            {
-                if (!_roles.ContainsKey(rol.Id))
-                {
-                    _roles[rol.Id] = rol.Nombre;
-                    ListaRoles.Items.Add(rol.Nombre);
-                }
-            }
-
-            dataGridView1.DataSource = CargarEmpleados(_employees);
+            dataGridView1.DataSource = CargarEmpleados(_clients);
             dataGridView1.Refresh();
 
             foreach (string departamento in municipiosPorDepartamento.Keys)
             {
                 ListaDepartamentos.Items.Add(departamento);
             }
-
-        }
-
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Guid userID = Guid.NewGuid();
             Guid empleadoID = Guid.NewGuid();
-            string contrasenia = txtContrasenia.Text;
             string correo = txtCorreo.Text;
             string nombres = txtNombres.Text;
             string apellidoPaterno = txtApellidoPaterno.Text;
             string apellidoMaterno = txtApellidoMaterno.Text;
             string telefono = txtTelefono.Text;
-            int rolID = _roles.FirstOrDefault(kv => kv.Value == ListaRoles.SelectedItem.ToString()).Key;
             string departamento = ListaDepartamentos.SelectedItem.ToString();
             string municipio = ListaMunicipios.SelectedItem.ToString();
             string ubicacion = txtUbicacion.Text;
             string calle = txtCalle.Text;
             string codigoCasa = txtCodCasa.Text;
-            string codigoAFP = txtCodAFP.Text;
-            string codigoSeguro = txtCodSeguro.Text;
-            byte[] imagen = new byte[5];
 
-
-            UserDBManager.AddUser(userID, correo, contrasenia);
-
-            EmployeeDBManager.AddEmployee(
+            ClientDBManager.AddClient(
                 empleadoID,
                 nombres,
                 apellidoPaterno,
                 apellidoMaterno,
-                telefono, 
-                codigoAFP,
-                codigoSeguro,
-                imagen,
+                telefono,
+                correo,
                 departamento,
                 municipio,
-                ubicacion, 
+                ubicacion,
                 calle,
-                codigoCasa,
-                userID, 
-                rolID 
+                codigoCasa
            );
 
-            InfoEmpleados.Columns.Clear();
-            _employees = EmployeeDBManager.GetAllEmployees();
-            dataGridView1.DataSource = CargarEmpleados(_employees);
+            InfoClientes.Columns.Clear();
+            _clients = ClientDBManager.GetAllClients();
+            dataGridView1.DataSource = CargarEmpleados(_clients);
         }
 
         private void ListaDepartamentos_SelectedIndexChanged(object sender, EventArgs e)
@@ -485,11 +428,6 @@ namespace Transportes_Figueroa.views
             {
                 ListaMunicipios.Items.Add(municipio);
             }
-        }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
         }
     }
 }

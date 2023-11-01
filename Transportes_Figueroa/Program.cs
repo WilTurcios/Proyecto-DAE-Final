@@ -17,7 +17,7 @@ namespace Transportes_Figueroa
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CreacionEmpleado());
+            Application.Run(new main());
         }
     }
 }

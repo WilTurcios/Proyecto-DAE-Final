@@ -73,19 +73,20 @@ namespace Transportes_Figueroa.controllers
             return users;
         }
 
-        public Guid Add(User user)
+        public void Add(User user)
         {
-            using (SqlCommand command = new SqlCommand("INSERT INTO usuarios (id_usuario, correo_usuario, contrasenia) VALUES (@UsuarioID, @CorreoUsuario, @ContraseniaUsuario); SELECT SCOPE_IDENTITY();", this.connection))
+            using (SqlCommand command = new SqlCommand("INSERT INTO usuarios (id_usuario, correo_usuario, contrasenia) VALUES (@UsuarioID, @CorreoUsuario, @ContraseniaUsuario);", this.connection))
             {
+                OpenConnection();
 
                 command.Parameters.AddWithValue("@CorreoUsuario", user.Correo);
                 command.Parameters.AddWithValue("@UsuarioID", user.Id);
                 command.Parameters.AddWithValue("@ContraseniaUsuario", user.Contrasenia);
 
-                return (Guid)command.ExecuteScalar();
+                command.ExecuteNonQuery();
             }
-            
         }
+
 
         public User GetById(Guid userID)
         {

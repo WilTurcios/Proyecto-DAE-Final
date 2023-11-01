@@ -44,7 +44,7 @@ namespace Transportes_Figueroa.controllers
             try
             {
                 OpenConnection();
-                string query = $"SELECT * FROM clientes C INNER JOIN direcciones ON C.id_direccion = D.id_direccion;";
+                string query = "SELECT * FROM clientes C INNER JOIN direcciones D ON C.id_direccion = D.id_direccion;";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
@@ -54,7 +54,7 @@ namespace Transportes_Figueroa.controllers
                     foreach (DataRow clientFromDB in clientsFromDB.Rows)
                     {
                         Client client = new Client();
-                        client.Id = (Guid)clientFromDB["id"]; // A esta técnica de parseo se le llama CASTING
+                        client.Id = (Guid)clientFromDB["id_cliente"]; // A esta técnica de parseo se le llama CASTING
                         client.Nombres = (string)clientFromDB["nombres"];
                         client.ApellidoPaterno = (string)clientFromDB["apellido_paterno"];
                         client.ApellidoMaterno = (string)clientFromDB["apellido_materno"];
@@ -74,7 +74,7 @@ namespace Transportes_Figueroa.controllers
             catch (Exception ex)
             {
                 // Se supone que debe ir a un servicio externo de la empresa o de algun servicio
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error al obtener clientes: " + ex.Message);
             }
             finally
             {
@@ -90,14 +90,14 @@ namespace Transportes_Figueroa.controllers
             try
             {
                 OpenConnection();
-                using(SqlCommand command = new SqlCommand("InsertarClienteConDireccion", connection))
+                using(SqlCommand command = new SqlCommand("InsertarCliente", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.AddWithValue("@ClienteID", client.Id);
-                    command.Parameters.AddWithValue("@NombresCliente", client.Nombres);
-                    command.Parameters.AddWithValue("@ApelldioMaterno", client.ApellidoMaterno);
-                    command.Parameters.AddWithValue("@ApelldioPaterno", client.ApellidoPaterno);
+                    command.Parameters.AddWithValue("@NombreCliente", client.Nombres);
+                    command.Parameters.AddWithValue("@ApellidoMaterno", client.ApellidoMaterno);
+                    command.Parameters.AddWithValue("@ApellidoPaterno", client.ApellidoPaterno);
                     command.Parameters.AddWithValue("@TelefonoCliente", client.NumeroTelefonico);
                     command.Parameters.AddWithValue("@CorreoCliente", client.Email);
                     command.Parameters.AddWithValue("@CalleDireccion", client.Calle);
@@ -112,7 +112,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show("Error al insertar cliente: " + ex.Message);
             }
             finally
             {
@@ -158,7 +158,11 @@ namespace Transportes_Figueroa.controllers
                     }
                 }
             }
-            catch
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al obtener empleado: {ex.Message}");
+            }
+            finally
             {
                 CloseConnection();
             }
@@ -203,7 +207,11 @@ namespace Transportes_Figueroa.controllers
                     }
                 }
             }
-            catch
+            catch(Exception ex)
+            {
+                MessageBox.Show($"Error al obtener empleado: {ex.Message}");
+            }
+            finally
             {
                 CloseConnection();
             }
@@ -227,7 +235,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Excepción: {ex.Message}");
+                MessageBox.Show($"Excepción al eliminar empleado: {ex.Message}");
             }
             finally
             {
@@ -242,7 +250,7 @@ namespace Transportes_Figueroa.controllers
             try
             {
                 OpenConnection();
-                using (SqlCommand command = new SqlCommand("ActualizarClienteConDireccion", connection))
+                using (SqlCommand command = new SqlCommand("ActualizarCliente", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -262,7 +270,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ha ocurrido una excepción: {ex.Message}");
+                MessageBox.Show($"Ha ocurrido una excepción al actualizar empleado: {ex.Message}");
             }
             finally
             {
