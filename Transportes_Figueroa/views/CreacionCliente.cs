@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Transportes_Figueroa.models;
-using Transportes_Figueroa.Models;
 using Transportes_Figueroa.Services;
 
 namespace Transportes_Figueroa.views
@@ -336,9 +330,12 @@ namespace Transportes_Figueroa.views
             InitializeComponent();
         }
 
-        private DataTable CargarEmpleados(List<Client> clientesDB)
+        private void ShowEmployees(List<Client> clientesDB)
         {
             DataTable clientes = new DataTable();
+
+            clientes.Columns.Clear();
+            clientes.Rows.Clear();
 
             clientes.Columns.Add("id_cliente");
             clientes.Columns.Add("nombres");
@@ -350,6 +347,7 @@ namespace Transportes_Figueroa.views
             clientes.Columns.Add("calle");
             clientes.Columns.Add("cod_casa");
             clientes.Columns.Add("telefono");
+            clientes.Columns.Add("dui");
 
             foreach (Client cliente in clientesDB)
             {
@@ -365,19 +363,20 @@ namespace Transportes_Figueroa.views
                 fila["calle"] = cliente.Calle;
                 fila["cod_casa"] = cliente.CodigoCasa;
                 fila["telefono"] = cliente.NumeroTelefonico;
+                fila["dui"] = cliente.DUI;
 
                 clientes.Rows.Add(fila);
             }
 
-            return clientes;
+            dataGridView1.DataSource = clientes;
+
+            dataGridView1.Refresh();
         }
 
         private void CreacionCliente_Load(object sender, EventArgs e)
         {
             _clients = ClientDBManager.GetAllClients();
-
-            dataGridView1.DataSource = CargarEmpleados(_clients);
-            dataGridView1.Refresh();
+            ShowEmployees(_clients);
 
             foreach (string departamento in municipiosPorDepartamento.Keys)
             {
@@ -398,6 +397,7 @@ namespace Transportes_Figueroa.views
             string ubicacion = txtUbicacion.Text;
             string calle = txtCalle.Text;
             string codigoCasa = txtCodCasa.Text;
+            string duiCliente = txtDUI.Text;
 
             ClientDBManager.AddClient(
                 empleadoID,
@@ -410,12 +410,15 @@ namespace Transportes_Figueroa.views
                 municipio,
                 ubicacion,
                 calle,
-                codigoCasa
+                codigoCasa,
+                duiCliente
            );
 
-            InfoClientes.Columns.Clear();
+
             _clients = ClientDBManager.GetAllClients();
-            dataGridView1.DataSource = CargarEmpleados(_clients);
+            ShowEmployees(_clients);
+
+            return;
         }
 
         private void ListaDepartamentos_SelectedIndexChanged(object sender, EventArgs e)
@@ -428,6 +431,11 @@ namespace Transportes_Figueroa.views
             {
                 ListaMunicipios.Items.Add(municipio);
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -61,6 +61,7 @@ namespace Transportes_Figueroa.controllers
                         vehicle.Anio = (int)reader["anio"];
                         vehicle.TipoVehiculoId = (int)reader["id_tipo_vehiculo"];
                         vehicle.ModeloId = (int)reader["id_modelo"];
+                        vehicle.Disponibilidad = (string)reader["disponibilidad"];
 
                         if (reader["imagen"] != DBNull.Value)
                         {
@@ -205,7 +206,7 @@ namespace Transportes_Figueroa.controllers
         public int AddCar(Vehicle vehiculo)
         {
             string query = "INSERT INTO vehiculos (matricula, kilometraje, anio, capacidad_personas, capacidad_peso, costo, id_tipo_vehiculo, id_modelo, imagen) " +
-                           "VALUES (@Matricula, @Kilometraje, @Anio, @CapacidadPersonas, @CapacidadPeso, @Costo, @TipoID, @ModeloID, @Imagen); SELECT SCOPE_IDENTITY();";
+                           "VALUES (@Matricula, @Kilometraje, @Anio, @CapacidadPersonas, @CapacidadPeso, @Costo, @TipoID, @ModeloID, @Imagen);";
 
             try
             {
@@ -226,7 +227,7 @@ namespace Transportes_Figueroa.controllers
 
                     command.Parameters.AddWithValue("@ModeloID", vehiculo.ModeloId);
 
-                    return Convert.ToInt32(command.ExecuteScalar());
+                    return command.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
@@ -242,26 +243,53 @@ namespace Transportes_Figueroa.controllers
 
         public int AddCarModel(CarModel modelo)
         {
-            string query = "INSERT INTO modelos (nombre_modelo, id_marca) VALUES (@Modelo, @MarcaID); SELECT SCOPE_IDENTITY();";
-            using (SqlCommand command = new SqlCommand(query, this.connection))
+            string query = "INSERT INTO modelos (nombre_modelo, id_marca) VALUES (@Modelo, @MarcaID);";
+            try
             {
+                OpenConnection();
+                using (SqlCommand command = new SqlCommand(query, this.connection))
+                {
 
-                command.Parameters.AddWithValue("@Modelo", modelo.Modelo);
-                command.Parameters.AddWithValue("@MarcaID", modelo.MarcaId);
+                    command.Parameters.AddWithValue("@Modelo", modelo.Modelo);
+                    command.Parameters.AddWithValue("@MarcaID", modelo.MarcaId);
 
-                return (int)command.ExecuteScalar();
+                    return command.ExecuteNonQuery();
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error al insertar modelo: " + ex.Message);
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
             }
         }
 
         public int AddCarBrand(CarBrand marca)
         {
-            string query = "INSERT INTO marcas (nombre_marca) VALUES (@Marca); SELECT SCOPE_IDENTITY();";
-            using (SqlCommand command = new SqlCommand(query, this.connection))
+            string query = "INSERT INTO marcas (nombre_marca) VALUES (@Marca);";
+            
+            try
             {
+                OpenConnection();
+                using (SqlCommand command = new SqlCommand(query, this.connection))
+                {
 
-                command.Parameters.AddWithValue("@Marca", marca.Marca);
+                    command.Parameters.AddWithValue("@Marca", marca.Marca);
 
-                return (int)command.ExecuteScalar();
+                    return command.ExecuteNonQuery();
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error al insertar marca: " + ex.Message);
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
             }
         }
 
@@ -296,8 +324,9 @@ namespace Transportes_Figueroa.controllers
                             vehicle.Anio = (int)vehiculoDB["anio"];
                             vehicle.TipoVehiculoId = (int)vehiculoDB["id_tipo_vehiculo"];
                             vehicle.ModeloId = (int)vehiculoDB["id_modelo"];
+                            vehicle.Disponibilidad = (string)vehiculoDB["disponibilidad"];
 
-                            
+
                         }
                     }
                 }
@@ -437,33 +466,30 @@ namespace Transportes_Figueroa.controllers
         }
 
 
-        public void UpdeteCar(Vehicle vehiculo)
+        public int UpdeteCar(Vehicle vehiculo)
         {
             try
             {
                 OpenConnection();
 
-                string query = "update vehiculos set imagen = @Imagen matricula = @Matricula, kilometraje = @Kilometraje, anio = @Anio, capacidad_personas = @CapacidadPersonas, capacidad_peso = @CapacidadPeso, costo = @Costo, id_tipo_vehiculo = @TipoID, id_modelo = @ModeloID where id_vehiculo = @VehiculoID;";
+                string query = "update vehiculos set imagen = @Imagen, kilometraje = @Kilometraje, capacidad_peso = @CapacidadPeso, costo = @Costo, id_tipo_vehiculo = @TipoID where id_vehiculo = @VehiculoID;";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     cmd.Parameters.AddWithValue("@VehiculoID", vehiculo.Id);
-                    cmd.Parameters.AddWithValue("@Matricula", vehiculo.Matricula);
                     cmd.Parameters.AddWithValue("@Kilometraje", vehiculo.Kilometraje);
-                    cmd.Parameters.AddWithValue("@Anio", vehiculo.Anio);
-                    cmd.Parameters.AddWithValue("@CapacidadPersonas", vehiculo.CapacidadPersonas);
                     cmd.Parameters.AddWithValue("@CapacidadPeso", vehiculo.CapacidadPeso);
-                    cmd.Parameters.AddWithValue("@Costo", vehiculo.Matricula);
+                    cmd.Parameters.AddWithValue("@Costo", vehiculo.Costo);
                     cmd.Parameters.AddWithValue("@TipoID", vehiculo.TipoVehiculoId);
-                    cmd.Parameters.AddWithValue("@ModeloID", vehiculo.ModeloId);
                     cmd.Parameters.AddWithValue("@Imagen", vehiculo.Imagen);
 
-                    cmd.ExecuteNonQuery();
+                    return cmd.ExecuteNonQuery();
                 }
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return 0;
             }
             finally
             {
@@ -471,6 +497,31 @@ namespace Transportes_Figueroa.controllers
             }
         }
 
-        
+        public int ChangeAvailability(Vehicle vehiculo)
+        {
+            try
+            {
+                OpenConnection();
+
+                string query = "update vehiculos set disponibilidad = @Disponibilidad where id_vehiculo = @VehiculoID;";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@VehiculoID", vehiculo.Id);
+                    cmd.Parameters.AddWithValue("@Disponibilidad", vehiculo.Disponibilidad);
+
+                    return cmd.ExecuteNonQuery();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }

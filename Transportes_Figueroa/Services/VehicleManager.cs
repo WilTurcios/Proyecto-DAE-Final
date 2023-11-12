@@ -95,5 +95,32 @@ namespace Transportes_Figueroa.Services
         {
             return VehiclesDataManager.DeleteModelById(modeloID);
         }
+
+        public int UpdateVehicle(int vehiculoID, double kilometraje, double capacidadPeso, decimal costo, int tipoVehiculoID, byte[] imagen)
+        {
+            Vehicle vehiculo = new Vehicle()
+            {
+                Id = vehiculoID,
+                Kilometraje = kilometraje,
+                CapacidadPeso = capacidadPeso,
+                Costo = costo,
+                TipoVehiculoId = tipoVehiculoID,
+                Imagen = imagen
+            };
+
+            return VehiclesDataManager.UpdeteCar(vehiculo);
+        }
+
+        public int ChangeVehicleAvailability(int vehiculoID, string disponibilidad)
+        {
+            Vehicle vehiculo = new Vehicle()
+            {
+                Id = vehiculoID,
+                Disponibilidad = disponibilidad
+            };
+
+            return VehiclesDataManager.ChangeAvailability(vehiculo);
+        }
+
     }
 }

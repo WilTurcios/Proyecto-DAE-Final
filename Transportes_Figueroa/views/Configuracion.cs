@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Transportes_Figueroa.views
 {
-    public partial class GeneracionServicios : Form
+    public partial class Configuracion : Form
     {
-        public GeneracionServicios()
+        public Configuracion()
         {
             InitializeComponent();
         }

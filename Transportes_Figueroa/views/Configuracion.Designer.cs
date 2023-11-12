@@ -1,6 +1,6 @@
 ﻿namespace Transportes_Figueroa.views
 {
-    partial class GeneracionServicios
+    partial class Configuracion
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "GeneracionServicios";
+            this.Text = "Configuracion";
         }
 
         #endregion

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Transportes_Figueroa.controllers;
 using Transportes_Figueroa.models;
+using Transportes_Figueroa.Models;
 
 namespace Transportes_Figueroa.Services
 {
@@ -14,9 +16,19 @@ namespace Transportes_Figueroa.Services
             UsersDataManager = new usersController(connectionString);
         }
 
-        public void  AddUser(Guid userID, string correo, string contrasenia)
+        public List<User> GetAllUsers()
         {
-            User nuevoUsuario = new User() { Id = userID, Correo = correo, Contrasenia = contrasenia };
+            return UsersDataManager.GetAll();
+        }
+
+        public List<UserType> GetAllUserTypes()
+        {
+            return UsersDataManager.GetAllUserTypes();
+        }
+
+        public void  AddUser(Guid userID, string correo, string contrasenia, int tipoUsuario)
+        {
+            User nuevoUsuario = new User() { Id = userID, Correo = correo, Contrasenia = contrasenia, TipoUsuarioId = tipoUsuario };
 
             UsersDataManager.Add(nuevoUsuario);
         }
@@ -31,9 +43,19 @@ namespace Transportes_Figueroa.Services
             return UsersDataManager.GetById(userID);
         }
 
+        public User GerUserByEmail(string correo)
+        {
+            return UsersDataManager.GetByEmail(correo);
+        }
+
         public int ChangeUserPassword(Guid userID, string password)
         {
             return UsersDataManager.ChangePassword(userID, password);
+        }
+
+        public int ChangeUserRol(Guid userID, int tipoUsuario)
+        {
+            return UsersDataManager.ChangeRol(userID, tipoUsuario);
         }
     }
 }

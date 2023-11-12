@@ -36,10 +36,11 @@
             this.gestiónDeClientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gestionarClientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gestiónDeVehiculosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.crearVehiculoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serviciosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configuraciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.perfilToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.crearVehiculoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generarNuevoServicioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,8 +111,17 @@
             this.gestiónDeVehiculosToolStripMenuItem.Text = "Gestión de vehiculos";
             this.gestiónDeVehiculosToolStripMenuItem.Click += new System.EventHandler(this.gestiónDeVehiculosToolStripMenuItem_Click);
             // 
+            // crearVehiculoToolStripMenuItem
+            // 
+            this.crearVehiculoToolStripMenuItem.Name = "crearVehiculoToolStripMenuItem";
+            this.crearVehiculoToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.crearVehiculoToolStripMenuItem.Text = "Crear Vehiculo";
+            this.crearVehiculoToolStripMenuItem.Click += new System.EventHandler(this.crearVehiculoToolStripMenuItem_Click);
+            // 
             // serviciosToolStripMenuItem
             // 
+            this.serviciosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generarNuevoServicioToolStripMenuItem});
             this.serviciosToolStripMenuItem.Name = "serviciosToolStripMenuItem";
             this.serviciosToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.serviciosToolStripMenuItem.Text = "Servicios";
@@ -130,12 +140,12 @@
             this.perfilToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.perfilToolStripMenuItem.Text = "Perfil";
             // 
-            // crearVehiculoToolStripMenuItem
+            // generarNuevoServicioToolStripMenuItem
             // 
-            this.crearVehiculoToolStripMenuItem.Name = "crearVehiculoToolStripMenuItem";
-            this.crearVehiculoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.crearVehiculoToolStripMenuItem.Text = "Crear Vehiculo";
-            this.crearVehiculoToolStripMenuItem.Click += new System.EventHandler(this.crearVehiculoToolStripMenuItem_Click);
+            this.generarNuevoServicioToolStripMenuItem.Name = "generarNuevoServicioToolStripMenuItem";
+            this.generarNuevoServicioToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.generarNuevoServicioToolStripMenuItem.Text = "Generar nuevo servicio";
+            this.generarNuevoServicioToolStripMenuItem.Click += new System.EventHandler(this.generarNuevoServicioToolStripMenuItem_Click);
             // 
             // main
             // 
@@ -148,6 +158,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "main";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.main_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -169,6 +180,7 @@
         private System.Windows.Forms.ToolStripMenuItem perfilToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gestionarClientesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem crearVehiculoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generarNuevoServicioToolStripMenuItem;
     }
 }
 

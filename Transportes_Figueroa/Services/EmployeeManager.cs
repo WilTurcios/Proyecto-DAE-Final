@@ -45,7 +45,8 @@ namespace Transportes_Figueroa.Services
             string calle,
             string codigoCasa,
             Guid usuarioID,
-            int rolID
+            int rolID,
+            string duiEmpleado
         )
         {
             Employee employee = new Employee()
@@ -64,11 +65,41 @@ namespace Transportes_Figueroa.Services
                 Calle = calle,
                 CodigoCasa = codigoCasa,
                 IdUsuario = usuarioID,
-                RolId = rolID
+                RolId = rolID,
+                DUI = duiEmpleado
             };
 
             return EmployeesDataManager.Add(employee);
         }
+
+        public int AddEmployeeRol(string nombreRol, decimal sueldoHora)
+        {
+            Rol rol = new Rol()
+            {
+                SueldoHora = sueldoHora,
+                Nombre = nombreRol
+            };
+
+            return EmployeesDataManager.AddRol(rol);
+        }
+
+        public int UpdateEmployeeRol(int rolID, decimal sueldoHora)
+        {
+            Rol rol = new Rol()
+            {
+                SueldoHora = sueldoHora,
+                Id = rolID
+            };
+
+            return EmployeesDataManager.UpdateRol(rol);
+        }
+
+        public int DeleteEmployeeRol(int rolID)
+        {
+
+            return EmployeesDataManager.DeleteRol(rolID);
+        }
+
 
         public Employee GetEmployeeById(Guid empleadoID)
         {

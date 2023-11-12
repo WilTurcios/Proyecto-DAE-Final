@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Transportes_Figueroa.Models
 {
-    internal class TipoServicio
+    internal class UserType
     {
         public int Id { get; set; }
-        public string NombreServicio { get; set; }
+        public string Tipo { get; set; }
     }
 }

@@ -12,5 +12,6 @@ namespace Transportes_Figueroa.models
         public Guid Id { get; set; }
         public string Contrasenia { get; set; }
         public string Correo {  get; set; }
+        public int TipoUsuarioId {  get; set; }
     }
 }

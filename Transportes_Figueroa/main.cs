@@ -13,14 +13,18 @@ namespace Transportes_Figueroa
 {
     public partial class main : Form
     {
-        public main()
+        private string _userType;
+        private Guid _employeeID;
+        public main(string userType, Guid employeeID)
         {
             InitializeComponent();
+            this._userType = userType;
+            this._employeeID = employeeID;
         }
 
         private void crearEmpleadoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CreacionEmpleado EmpleadoForm = new CreacionEmpleado();
+            CrearEmpleado EmpleadoForm = new CrearEmpleado();
             EmpleadoForm.MdiParent = this;
 
             EmpleadoForm.Show();
@@ -46,6 +50,19 @@ namespace Transportes_Figueroa
             VehiclesForm.MdiParent = this;
 
             VehiclesForm.Show();
+        }
+
+        private void main_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void generarNuevoServicioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenerarServicio serviceForm = new GenerarServicio(_userType, _employeeID);
+            serviceForm.MdiParent = this;
+
+            serviceForm.Show();
         }
     }
 }

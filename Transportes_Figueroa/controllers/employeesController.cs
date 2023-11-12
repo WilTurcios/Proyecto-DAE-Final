@@ -73,6 +73,9 @@ namespace Transportes_Figueroa.controllers
                         employee.Imagen = (byte[])employeeFromDB["imagen"];
                         employee.CodigoAFP = (string)employeeFromDB["nombre_rol"];
                         employee.CodigoAFP = (string)employeeFromDB["cod_AFP"];
+                        employee.IdUsuario = (Guid)employeeFromDB["id_usuario"];
+                        employee.RolId = (int)employeeFromDB["id_rol"];
+                        employee.DUI = (string)employeeFromDB["dui_empleado"];
 
                         employees.Add(employee);
                     }
@@ -115,6 +118,7 @@ namespace Transportes_Figueroa.controllers
                     command.Parameters.AddWithValue("@CodigoCasa", employee.CodigoCasa);
                     command.Parameters.AddWithValue("@UsuarioID", employee.IdUsuario);
                     command.Parameters.AddWithValue("@RolID", employee.RolId);
+                    command.Parameters.AddWithValue("@DuiEmpleado", employee.DUI);
 
                     affectedRows = command.ExecuteNonQuery();
 
@@ -168,6 +172,7 @@ namespace Transportes_Figueroa.controllers
                             employee.Calle = (string)infoEmpleado["calle"];
                             employee.Ubicacion = (string)infoEmpleado["ubicacion"];
                             employee.CodigoCasa = (string)infoEmpleado["cod_casa"];
+                            employee.DUI = (string)infoEmpleado["dui_empleado"];
 
                         }
                     }
@@ -217,6 +222,7 @@ namespace Transportes_Figueroa.controllers
                             employee.Calle = (string)infoEmpleado["calle"];
                             employee.Ubicacion = (string)infoEmpleado["ubicacion"];
                             employee.CodigoCasa = (string)infoEmpleado["cod_casa"];
+                            employee.DUI = (string)infoEmpleado["dui_empleado"];
                         }
                     }
                 }
@@ -332,15 +338,81 @@ namespace Transportes_Figueroa.controllers
 
         public int AddRol(Rol rol)
         {
-            string query = "insert into roles (nombre_rol, sueldo_hora) values (@Rol, @SueldoHora); SELECT SCOPE_IDENTITY();";
-
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
+                OpenConnection();
+                string query = "insert into roles (nombre_rol, sueldo_hora) values (@Rol, @SueldoHora);";
 
-                command.Parameters.AddWithValue("@Rol", rol.Nombre);
-                command.Parameters.AddWithValue("@SueldoHora", rol.SueldoHora);
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
 
-                return (int)command.ExecuteScalar();
+                    command.Parameters.AddWithValue("@Rol", rol.Nombre);
+                    command.Parameters.AddWithValue("@SueldoHora", rol.SueldoHora);
+
+                    return command.ExecuteNonQuery();
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al intentar añadir el rol: " + ex.Message);
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+        public int DeleteRol(int rolID)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "delete from roles where id_rol = @RolID;";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    command.Parameters.AddWithValue("@RolID", rolID);
+
+                    return command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al intentar añadir el rol: " + ex.Message);
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+        public int UpdateRol(Rol rol)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "update roles set sueldo_hora = @SueldoHora where id_rol = @RolID;";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    command.Parameters.AddWithValue("@RolID", rol.Id);
+                    command.Parameters.AddWithValue("@SueldoHora", rol.SueldoHora);
+
+                    return command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al intentar añadir el rol: " + ex.Message);
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
             }
         }
     }

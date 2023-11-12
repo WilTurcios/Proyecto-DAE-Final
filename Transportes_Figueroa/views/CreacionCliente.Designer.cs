@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtDUI = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.txtApellidoPaterno = new System.Windows.Forms.TextBox();
             this.txtApellidoMaterno = new System.Windows.Forms.TextBox();
             this.txtNombres = new System.Windows.Forms.TextBox();
@@ -57,6 +59,7 @@
             this.button4 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.IDAccion = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.DUI = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Nombres = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ApellidoPaterno = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ApellidoMaterno = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -75,6 +78,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtDUI);
+            this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.txtApellidoPaterno);
             this.groupBox1.Controls.Add(this.txtApellidoMaterno);
             this.groupBox1.Controls.Add(this.txtNombres);
@@ -87,6 +92,22 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos generales";
+            // 
+            // txtDUI
+            // 
+            this.txtDUI.Location = new System.Drawing.Point(9, 150);
+            this.txtDUI.Name = "txtDUI";
+            this.txtDUI.Size = new System.Drawing.Size(185, 20);
+            this.txtDUI.TabIndex = 8;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 134);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(29, 13);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "DUI:";
             // 
             // txtApellidoPaterno
             // 
@@ -301,6 +322,7 @@
             this.button2.TabIndex = 4;
             this.button2.Text = "Actualizar";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -325,6 +347,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.IDAccion,
+            this.DUI,
             this.Nombres,
             this.ApellidoPaterno,
             this.ApellidoMaterno,
@@ -335,7 +358,7 @@
             this.CodigoCasa,
             this.Telefono,
             this.Correo});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 229);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 238);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(717, 150);
             this.dataGridView1.TabIndex = 7;
@@ -344,6 +367,12 @@
             // 
             this.IDAccion.HeaderText = "#";
             this.IDAccion.Name = "IDAccion";
+            // 
+            // DUI
+            // 
+            this.DUI.DataPropertyName = "dui";
+            this.DUI.HeaderText = "DUI";
+            this.DUI.Name = "DUI";
             // 
             // Nombres
             // 
@@ -462,7 +491,10 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.TextBox txtDUI;
+        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IDAccion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DUI;
         private System.Windows.Forms.DataGridViewTextBoxColumn Nombres;
         private System.Windows.Forms.DataGridViewTextBoxColumn ApellidoPaterno;
         private System.Windows.Forms.DataGridViewTextBoxColumn ApellidoMaterno;

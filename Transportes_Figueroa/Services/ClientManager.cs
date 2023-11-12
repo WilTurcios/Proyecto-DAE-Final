@@ -34,6 +34,7 @@ namespace Transportes_Figueroa.Services
             return ClientsDataManager.GetByName(name);
         }
 
+
         public int AddClient(
             Guid clienteID,
             string nombres,
@@ -45,7 +46,8 @@ namespace Transportes_Figueroa.Services
             string municipio,
             string ubicacion, 
             string calle, 
-            string codigoCasa
+            string codigoCasa,
+            string duiCliente
         )
         {
             Client cliente = new Client() {
@@ -59,7 +61,8 @@ namespace Transportes_Figueroa.Services
                 Municipio = municipio,
                 Ubicacion = ubicacion,
                 Calle = calle,
-                CodigoCasa = codigoCasa
+                CodigoCasa = codigoCasa,
+                DUI = duiCliente
             };
 
             return ClientsDataManager.Add(cliente);

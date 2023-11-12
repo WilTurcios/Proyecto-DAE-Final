@@ -38,7 +38,7 @@ namespace Transportes_Figueroa.controllers
         }
         public List<Client> GetAll()
         {
-            List<Client> clients = new List<Client> ();
+            List<Client> clients = new List<Client>();
             DataTable clientsFromDB = new DataTable();
 
             try
@@ -66,6 +66,7 @@ namespace Transportes_Figueroa.controllers
                         client.Municipio = (string)clientFromDB["municipio"];
                         client.Ubicacion = (string)clientFromDB["ubicacion"];
                         client.CodigoCasa = (string)clientFromDB["cod_casa"];
+                        client.DUI = (string)clientFromDB["dui_cliente"];
 
                         clients.Add(client);
                     }
@@ -105,6 +106,7 @@ namespace Transportes_Figueroa.controllers
                     command.Parameters.AddWithValue("@MunicipioDireccion", client.Municipio);
                     command.Parameters.AddWithValue("@UbicacionDireccion", client.Ubicacion);
                     command.Parameters.AddWithValue("@CodigoCasa", client.CodigoCasa);
+                    command.Parameters.AddWithValue("@DuiCliente", client.DUI);
 
                     affectedRows = command.ExecuteNonQuery();
 
@@ -153,6 +155,7 @@ namespace Transportes_Figueroa.controllers
                             client.Calle = (string)infoCliente["calle"];
                             client.Ubicacion = (string)infoCliente["ubicacion"];
                             client.CodigoCasa = (string)infoCliente["cod_casa"];
+                            client.DUI = (string)infoCliente["dui_cliente"];
 
                         }
                     }
@@ -202,6 +205,7 @@ namespace Transportes_Figueroa.controllers
                             client.Calle = (string)infoCliente["calle"];
                             client.Ubicacion = (string)infoCliente["ubicacion"];
                             client.CodigoCasa = (string)infoCliente["cod_casa"];
+                            client.DUI = (string)infoCliente["dui_cliente"];
 
                         }
                     }

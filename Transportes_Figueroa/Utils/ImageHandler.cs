@@ -18,7 +18,7 @@ namespace Transportes_Figueroa.Utils
             try
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Archivos de Imagen|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+                openFileDialog.Filter = "Archivos de Imagen|*.jpg;*.jpeg;*.png;*.gif;*.bmp;*.webp;*.jfif";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -40,7 +40,7 @@ namespace Transportes_Figueroa.Utils
             }
         }
 
-        public Image ConvertToImage(byte[] datosImagen)
+        public static Image ConvertToImage(byte[] datosImagen)
         {
             try
             {

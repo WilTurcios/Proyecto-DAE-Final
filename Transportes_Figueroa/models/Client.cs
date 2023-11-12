@@ -20,5 +20,6 @@ namespace Transportes_Figueroa.models
         public string Municipio { get; set; }
         public string Ubicacion { get; set; }
         public string CodigoCasa { get; set; }
+        public string DUI { get; set; }
     }
 }

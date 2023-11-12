@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.DataGridModelos = new System.Windows.Forms.TabControl();
+            this.Menu = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.DataGridVehiculos = new System.Windows.Forms.DataGridView();
             this.IDAccionAgregarVehiculo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -41,16 +41,20 @@
             this.ActualizarVehiculo = new System.Windows.Forms.Button();
             this.AgregarVehiculo = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtCosto = new System.Windows.Forms.NumericUpDown();
+            this.txtKilometraje = new System.Windows.Forms.NumericUpDown();
             this.ListaMarcas_vehiculos = new System.Windows.Forms.ComboBox();
             this.ListaModelos = new System.Windows.Forms.ComboBox();
             this.txtAnio = new System.Windows.Forms.NumericUpDown();
             this.txtCapacidadPeso = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.txtCapacidadPersonas = new System.Windows.Forms.NumericUpDown();
             this.ListaTipoVehiculos = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtMatricula = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -75,19 +79,17 @@
             this.ListaMarcas_modelos = new System.Windows.Forms.ComboBox();
             this.txtModelo = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.DataGridModelos1 = new System.Windows.Forms.DataGridView();
-            this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.txtKilometraje = new System.Windows.Forms.NumericUpDown();
-            this.txtCosto = new System.Windows.Forms.NumericUpDown();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.DataGridModelos.SuspendLayout();
+            this.DataGridModelos = new System.Windows.Forms.DataGridView();
+            this.IDAccionAgregarModelo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Menu.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridVehiculos)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCosto)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtKilometraje)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAnio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCapacidadPeso)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCapacidadPersonas)).BeginInit();
@@ -98,21 +100,19 @@
             this.tabPage3.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridModelos1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtKilometraje)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtCosto)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DataGridModelos)).BeginInit();
             this.SuspendLayout();
             // 
-            // DataGridModelos
+            // Menu
             // 
-            this.DataGridModelos.Controls.Add(this.tabPage1);
-            this.DataGridModelos.Controls.Add(this.tabPage2);
-            this.DataGridModelos.Controls.Add(this.tabPage3);
-            this.DataGridModelos.Location = new System.Drawing.Point(13, 3);
-            this.DataGridModelos.Name = "DataGridModelos";
-            this.DataGridModelos.SelectedIndex = 0;
-            this.DataGridModelos.Size = new System.Drawing.Size(925, 471);
-            this.DataGridModelos.TabIndex = 0;
+            this.Menu.Controls.Add(this.tabPage1);
+            this.Menu.Controls.Add(this.tabPage2);
+            this.Menu.Controls.Add(this.tabPage3);
+            this.Menu.Location = new System.Drawing.Point(13, 3);
+            this.Menu.Name = "Menu";
+            this.Menu.SelectedIndex = 0;
+            this.Menu.Size = new System.Drawing.Size(925, 471);
+            this.Menu.TabIndex = 0;
             // 
             // tabPage1
             // 
@@ -127,6 +127,7 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Agregar vehiculo";
             this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // DataGridVehiculos
             // 
@@ -205,6 +206,7 @@
             this.EliminarVehiculo.TabIndex = 2;
             this.EliminarVehiculo.Text = "Eliminar";
             this.EliminarVehiculo.UseVisualStyleBackColor = true;
+            this.EliminarVehiculo.Click += new System.EventHandler(this.EliminarVehiculo_Click);
             // 
             // ActualizarVehiculo
             // 
@@ -214,6 +216,7 @@
             this.ActualizarVehiculo.TabIndex = 1;
             this.ActualizarVehiculo.Text = "Actualizar";
             this.ActualizarVehiculo.UseVisualStyleBackColor = true;
+            this.ActualizarVehiculo.Click += new System.EventHandler(this.ActualizarVehiculo_Click);
             // 
             // AgregarVehiculo
             // 
@@ -253,6 +256,49 @@
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del vehiculo";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(90, 174);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(105, 13);
+            this.label14.TabIndex = 23;
+            this.label14.Text = "Costo por km u hora:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(93, 177);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(0, 13);
+            this.label13.TabIndex = 22;
+            // 
+            // txtCosto
+            // 
+            this.txtCosto.DecimalPlaces = 2;
+            this.txtCosto.Location = new System.Drawing.Point(219, 172);
+            this.txtCosto.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.txtCosto.Name = "txtCosto";
+            this.txtCosto.Size = new System.Drawing.Size(186, 20);
+            this.txtCosto.TabIndex = 21;
+            // 
+            // txtKilometraje
+            // 
+            this.txtKilometraje.DecimalPlaces = 2;
+            this.txtKilometraje.Location = new System.Drawing.Point(9, 70);
+            this.txtKilometraje.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.txtKilometraje.Name = "txtKilometraje";
+            this.txtKilometraje.Size = new System.Drawing.Size(186, 20);
+            this.txtKilometraje.TabIndex = 20;
             // 
             // ListaMarcas_vehiculos
             // 
@@ -306,6 +352,15 @@
             this.txtCapacidadPeso.Size = new System.Drawing.Size(186, 20);
             this.txtCapacidadPeso.TabIndex = 16;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(216, 15);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(40, 13);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "Marca:";
+            // 
             // txtCapacidadPersonas
             // 
             this.txtCapacidadPersonas.Location = new System.Drawing.Point(9, 149);
@@ -350,15 +405,6 @@
             this.label8.Size = new System.Drawing.Size(45, 13);
             this.label8.TabIndex = 8;
             this.label8.Text = "Modelo:";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(216, 15);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 13);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "Marca:";
             // 
             // label6
             // 
@@ -445,6 +491,7 @@
             this.EliminarMarca.TabIndex = 4;
             this.EliminarMarca.Text = "Eliminar";
             this.EliminarMarca.UseVisualStyleBackColor = true;
+            this.EliminarMarca.Click += new System.EventHandler(this.EliminarMarca_Click);
             // 
             // AgregarMarca
             // 
@@ -454,6 +501,7 @@
             this.AgregarMarca.TabIndex = 3;
             this.AgregarMarca.Text = "Agregar";
             this.AgregarMarca.UseVisualStyleBackColor = true;
+            this.AgregarMarca.Click += new System.EventHandler(this.AgregarMarca_Click);
             // 
             // groupBox4
             // 
@@ -503,7 +551,7 @@
             // 
             this.tabPage3.Controls.Add(this.groupBox6);
             this.tabPage3.Controls.Add(this.groupBox7);
-            this.tabPage3.Controls.Add(this.DataGridModelos1);
+            this.tabPage3.Controls.Add(this.DataGridModelos);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(917, 445);
@@ -530,6 +578,7 @@
             this.EliminarModelo.TabIndex = 4;
             this.EliminarModelo.Text = "Eliminar";
             this.EliminarModelo.UseVisualStyleBackColor = true;
+            this.EliminarModelo.Click += new System.EventHandler(this.EliminarModelo_Click);
             // 
             // AgregarModelo
             // 
@@ -539,6 +588,7 @@
             this.AgregarModelo.TabIndex = 3;
             this.AgregarModelo.Text = "Agregar";
             this.AgregarModelo.UseVisualStyleBackColor = true;
+            this.AgregarModelo.Click += new System.EventHandler(this.AgregarModelo_Click);
             // 
             // groupBox7
             // 
@@ -586,76 +636,33 @@
             this.label11.TabIndex = 3;
             this.label11.Text = "Modelo:";
             // 
-            // DataGridModelos1
+            // DataGridModelos
             // 
-            this.DataGridModelos1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridModelos1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewCheckBoxColumn1});
-            this.DataGridModelos1.Location = new System.Drawing.Point(234, 12);
-            this.DataGridModelos1.Name = "DataGridModelos1";
-            this.DataGridModelos1.Size = new System.Drawing.Size(671, 205);
-            this.DataGridModelos1.TabIndex = 3;
+            this.DataGridModelos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataGridModelos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.IDAccionAgregarModelo});
+            this.DataGridModelos.Location = new System.Drawing.Point(234, 12);
+            this.DataGridModelos.Name = "DataGridModelos";
+            this.DataGridModelos.Size = new System.Drawing.Size(671, 205);
+            this.DataGridModelos.TabIndex = 3;
             // 
-            // dataGridViewCheckBoxColumn1
+            // IDAccionAgregarModelo
             // 
-            this.dataGridViewCheckBoxColumn1.HeaderText = "#";
-            this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
-            this.dataGridViewCheckBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewCheckBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // txtKilometraje
-            // 
-            this.txtKilometraje.DecimalPlaces = 2;
-            this.txtKilometraje.Location = new System.Drawing.Point(9, 70);
-            this.txtKilometraje.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.txtKilometraje.Name = "txtKilometraje";
-            this.txtKilometraje.Size = new System.Drawing.Size(186, 20);
-            this.txtKilometraje.TabIndex = 20;
-            // 
-            // txtCosto
-            // 
-            this.txtCosto.DecimalPlaces = 2;
-            this.txtCosto.Location = new System.Drawing.Point(219, 172);
-            this.txtCosto.Maximum = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            this.txtCosto.Name = "txtCosto";
-            this.txtCosto.Size = new System.Drawing.Size(186, 20);
-            this.txtCosto.TabIndex = 21;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(93, 177);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(0, 13);
-            this.label13.TabIndex = 22;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(90, 174);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(105, 13);
-            this.label14.TabIndex = 23;
-            this.label14.Text = "Costo por km u hora:";
+            this.IDAccionAgregarModelo.HeaderText = "#";
+            this.IDAccionAgregarModelo.Name = "IDAccionAgregarModelo";
+            this.IDAccionAgregarModelo.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.IDAccionAgregarModelo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // CrearVehiculo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(950, 486);
-            this.Controls.Add(this.DataGridModelos);
+            this.Controls.Add(this.Menu);
             this.Name = "CrearVehiculo";
             this.Text = "CrearVehiculo";
             this.Load += new System.EventHandler(this.CrearVehiculo_Load);
-            this.DataGridModelos.ResumeLayout(false);
+            this.Menu.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridVehiculos)).EndInit();
             this.groupBox3.ResumeLayout(false);
@@ -663,6 +670,8 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCosto)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtKilometraje)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAnio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCapacidadPeso)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCapacidadPersonas)).EndInit();
@@ -675,16 +684,14 @@
             this.groupBox6.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridModelos1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtKilometraje)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtCosto)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DataGridModelos)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl DataGridModelos;
+        private System.Windows.Forms.TabControl Menu;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView DataGridVehiculos;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -731,11 +738,11 @@
         private System.Windows.Forms.ComboBox ListaMarcas_modelos;
         private System.Windows.Forms.TextBox txtModelo;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.DataGridView DataGridModelos1;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
+        private System.Windows.Forms.DataGridView DataGridModelos;
         private System.Windows.Forms.NumericUpDown txtKilometraje;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown txtCosto;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IDAccionAgregarModelo;
     }
 }

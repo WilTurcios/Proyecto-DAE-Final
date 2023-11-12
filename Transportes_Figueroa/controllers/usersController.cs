@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Transportes_Figueroa.models;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using Transportes_Figueroa.Models;
 
 namespace Transportes_Figueroa.controllers
 {
@@ -57,13 +58,16 @@ namespace Transportes_Figueroa.controllers
                         user.Correo = (string)userFromDB["correo_usuario"];
                         user.Contrasenia = (string)userFromDB["contrasenia"];
 
+                        user.TipoUsuarioId = (int)userFromDB["id_tipo_usuario"];
+
+
                         users.Add(user);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                MessageBox.Show("Error al obtener los usuarios: " + ex.Message);
             }
             finally
             {
@@ -73,17 +77,68 @@ namespace Transportes_Figueroa.controllers
             return users;
         }
 
-        public void Add(User user)
+        public List<UserType> GetAllUserTypes()
         {
-            using (SqlCommand command = new SqlCommand("INSERT INTO usuarios (id_usuario, correo_usuario, contrasenia) VALUES (@UsuarioID, @CorreoUsuario, @ContraseniaUsuario);", this.connection))
+            List<UserType> userTypes = new List<UserType>();
+            try
             {
                 OpenConnection();
 
-                command.Parameters.AddWithValue("@CorreoUsuario", user.Correo);
-                command.Parameters.AddWithValue("@UsuarioID", user.Id);
-                command.Parameters.AddWithValue("@ContraseniaUsuario", user.Contrasenia);
+                string query = "SELECT * FROM tipo_usuarios;";
 
-                command.ExecuteNonQuery();
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        UserType userType = new UserType();
+
+                        var id = reader["id_tipo_usuario"];
+
+                        userType.Id = (int)id;
+                        userType.Tipo = (string)reader["tipo_usuario"];
+
+
+                        userTypes.Add(userType);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al obtener los tipos de usuarios: " + ex.Message);
+                throw; // Lanzar la excepción nuevamente para que sea manejada o registrada en otro lugar.
+            }
+            finally
+            {
+                CloseConnection();
+            }
+
+            return userTypes;
+        }
+
+        public void Add(User user)
+        {
+           try
+            {
+                using (SqlCommand command = new SqlCommand("INSERT INTO usuarios (id_usuario, correo_usuario, contrasenia, id_tipo_usuario) VALUES (@UsuarioID, @CorreoUsuario, @ContraseniaUsuario, @TipoUsuario);", this.connection))
+                {
+                    OpenConnection();
+
+                    command.Parameters.AddWithValue("@CorreoUsuario", user.Correo);
+                    command.Parameters.AddWithValue("@UsuarioID", user.Id);
+                    command.Parameters.AddWithValue("@ContraseniaUsuario", user.Contrasenia);
+                    command.Parameters.AddWithValue("@TipoUsuario", user.TipoUsuarioId);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al insertar el empleado: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
             }
         }
 
@@ -124,6 +179,43 @@ namespace Transportes_Figueroa.controllers
             return user;
         }
 
+        public User GetByEmail(string email)
+        {
+            User user = new User();
+
+            try
+            {
+                OpenConnection();
+
+                string query = $"SELECT * FROM usuarios WHERE correo_usuario = @Correo;";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    command.Parameters.AddWithValue("@Correo", email);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            user.Id = (Guid)reader["id_usuario"];
+                            user.Correo = (string)reader["correo_usuario"];
+                            user.Contrasenia = (string)reader["contrasenia"];
+                            user.TipoUsuarioId = (int)reader["id_tipo_usuario"];
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al recuperar el usuario: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            return user;
+        }
+
         public int Delete(Guid userID)
         {
             int affectedRows = 0;
@@ -140,7 +232,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Excepción: {ex.Message}");
+                MessageBox.Show($"Error al eliminar usuario: {ex.Message}");
             }
             finally
             {
@@ -155,7 +247,7 @@ namespace Transportes_Figueroa.controllers
             try
             {
                 OpenConnection();
-                string query = "UPDATE usuarios SET contrasenia = @Contrasenia WHERE id_usuario = @UserID";
+                string query = "UPDATE usuarios SET contrasenia = @Contrasenia  WHERE id_usuario = @UserID";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@UserID", userID);
@@ -167,7 +259,35 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ha ocurrido una excepción: {ex.Message}");
+                MessageBox.Show($"Ha ocurrido una excepción al cambiar la contraseña: {ex.Message}");
+            }
+            finally
+            {
+                CloseConnection();
+            }
+
+            return affectedRows;
+        }
+
+        public int ChangeRol(Guid userID, int tipoUsuario)
+        {
+            int affectedRows = 0;
+            try
+            {
+                OpenConnection();
+                string query = "UPDATE usuarios SET id_tipo_usuario = @TipoUsuario  WHERE id_usuario = @UserID";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserID", userID);
+                    command.Parameters.AddWithValue("@TipoUsuario", tipoUsuario);
+
+                    affectedRows = command.ExecuteNonQuery();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ha ocurrido una excepción al cambiar el rol del usuario: {ex.Message}");
             }
             finally
             {

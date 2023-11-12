@@ -9,12 +9,13 @@ namespace Transportes_Figueroa.Models
     internal class Service
     {
         public int Id { get; set; }
+        public string Estado { get; set; }
         public DateTime FechaSolicitud { get; set; }
         public DateTime FechaDevolucion { get; set; }
         public double ValorMedido { get; set; }
         public int TipoServicioId { get; set; }
         public int VehiculoId { get; set; }
         public Guid ClienteId { get; set; }
-        public Guid EmpleadoId { get; set; }
+        public Guid? EmpleadoId { get; set; } = null;
     }
 }

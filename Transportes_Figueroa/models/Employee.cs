@@ -24,5 +24,7 @@ namespace Transportes_Figueroa.models
         public string Ubicacion { get; set; }
         public string CodigoCasa { get; set; }
         public int RolId { get; set; }
+        public string DUI { get; set; }
+
     }
 }

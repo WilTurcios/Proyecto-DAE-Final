@@ -46,21 +46,25 @@ namespace Transportes_Figueroa.Controllers
                 string query = $"SELECT * FROM servicios;";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))
-                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    adapter.Fill(servicesFromDB);
 
-                    foreach (DataRow serviceFromDB in servicesFromDB.Rows)
+                    while (reader.Read())
                     {
                         Service service = new Service();
-                        service.Id = (int)serviceFromDB["id_servicio"]; // A esta técnica de parseo se le llama CASTING
-                        service.FechaSolicitud = (DateTime)serviceFromDB["fecha_solicitud"];
-                        service.FechaDevolucion = (DateTime)serviceFromDB["fecha_devolucion"];
-                        service.ClienteId = (Guid)serviceFromDB["id_cliente"];
-                        service.EmpleadoId = (Guid)serviceFromDB["id_empleado"];
-                        service.VehiculoId = (int)serviceFromDB["id_vehiculo"];
-                        service.ValorMedido = (double)serviceFromDB["valor_medido"];
-                        service.TipoServicioId = (int)serviceFromDB["id_tipo_servicio"];
+                        service.Id = (int)reader["id_servicio"];
+                        service.FechaSolicitud = (DateTime)reader["fecha_solicitud"];
+                        service.FechaDevolucion = (DateTime)reader["fecha_devolucion"];
+                        service.ClienteId = (Guid)reader["id_cliente"];
+
+                        if (reader["id_empleado"] != DBNull.Value)
+                        {
+                            service.EmpleadoId = (Guid)reader["id_empleado"];
+                        }
+                        service.VehiculoId = (int)reader["id_vehiculo"];
+                        service.ValorMedido = (double)reader["valor_medido"];
+                        service.TipoServicioId = (int)reader["id_tipo_servicio"];
+                        service.Estado = (string)reader["estado"];
 
                         services.Add(service);
                     }
@@ -69,7 +73,7 @@ namespace Transportes_Figueroa.Controllers
             catch (Exception ex)
             {
                 // Se supone que debe ir a un servicio externo de la empresa o de algun servicio
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Ocurrió un error al recuperar los servicios: " + ex.Message);
             }
             finally
             {
@@ -79,27 +83,115 @@ namespace Transportes_Figueroa.Controllers
             return services;
         }
 
-        public int Add(Client client)
+
+        public List<ServiceType> GetAllServiceTypes()
+        {
+            List<ServiceType> serviceTypes = new List<ServiceType>();
+
+            try
+            {
+                OpenConnection();
+                string query = "SELECT * FROM tipo_servicios;";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ServiceType serviceType = new ServiceType();
+
+                        serviceType.Id = (int)reader["id_tipo_servicio"]; // A esta técnica de parseo se le llama CASTING
+                        serviceType.NombreServicio = (string)reader["tipo_servicio"];
+
+                        serviceTypes.Add(serviceType);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Se supone que debe ir a un servicio externo de la empresa o de algun servicio
+                MessageBox.Show("Ocurrió un error al recuperar los tipos de servicios: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+
+            return serviceTypes;
+        }
+
+        public List<Service> GetAllServicesByClientId(Guid clientID)
+        {
+            List<Service> services = new List<Service>();
+
+            try
+            {
+                OpenConnection();
+                string query = $"SELECT * FROM servicios WHERE id_cliente = @ClienteID;";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@ClienteID", clientID);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            Service service = new Service();
+                            service.Id = (int)reader["id_servicio"];
+                            service.FechaSolicitud = (DateTime)reader["fecha_solicitud"];
+                            service.FechaDevolucion = (DateTime)reader["fecha_devolucion"];
+                            service.ClienteId = (Guid)reader["id_cliente"];
+
+                            if (reader["id_empleado"] != DBNull.Value)
+                            {
+                                service.EmpleadoId = (Guid)reader["id_empleado"];
+                            }
+                            service.VehiculoId = (int)reader["id_vehiculo"];
+                            service.ValorMedido = (double)reader["valor_medido"];
+                            service.TipoServicioId = (int)reader["id_tipo_servicio"];
+                            service.Estado = (string)reader["estado"];
+
+                            services.Add(service);
+                        }
+                    }
+                
+                }
+            }
+            catch (Exception ex)
+            {
+                // Se supone que debe ir a un servicio externo de la empresa o de algun servicio
+                MessageBox.Show("Ocurrió un error al recuperar los servicios: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+
+            return services;
+        }
+
+        public int Add(Service service)
         {
             int affectedRows = 0;
             try
             {
                 OpenConnection();
-                using (SqlCommand command = new SqlCommand("InsertarClienteConDireccion", connection))
+                string parametters = "(fecha_solicitud, fecha_devolucion, id_cliente, id_empleado, id_vehiculo, valor_medido, id_tipo_servicio)";
+                string values = "(@FechaSolicitud, @FechaDevolucion, @ClienteID, @EmpleadoID, @VehiculoID, @ValorMedido, @TipoServicioID)";
+                string query = $"insert into servicios {parametters} VALUES  {values}"; 
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
 
-                    command.Parameters.AddWithValue("@ClienteID", client.Id);
-                    command.Parameters.AddWithValue("@NombresCliente", client.Nombres);
-                    command.Parameters.AddWithValue("@ApelldioMaterno", client.ApellidoMaterno);
-                    command.Parameters.AddWithValue("@ApelldioPaterno", client.ApellidoPaterno);
-                    command.Parameters.AddWithValue("@TelefonoCliente", client.NumeroTelefonico);
-                    command.Parameters.AddWithValue("@CorreoCliente", client.Email);
-                    command.Parameters.AddWithValue("@CalleDireccion", client.Calle);
-                    command.Parameters.AddWithValue("@DepartamentoDireccion", client.Departamento);
-                    command.Parameters.AddWithValue("@MunicipioDireccion", client.Municipio);
-                    command.Parameters.AddWithValue("@UbicacionDireccion", client.Ubicacion);
-                    command.Parameters.AddWithValue("@CodigoCasa", client.CodigoCasa);
+                    command.Parameters.AddWithValue("@FechaSolicitud", service.FechaSolicitud);
+                    command.Parameters.AddWithValue("@FechaDevolucion", service.FechaDevolucion);
+                    command.Parameters.AddWithValue("@ClienteID", service.ClienteId);
+                    command.Parameters.AddWithValue("@VehiculoID", service.VehiculoId);
+                    command.Parameters.AddWithValue("@EmpleadoID",(Object)service.EmpleadoId ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@ValorMedido", service.ValorMedido);
+                    command.Parameters.AddWithValue("@TipoServicioID", service.TipoServicioId);
 
                     affectedRows = command.ExecuteNonQuery();
 
@@ -107,7 +199,7 @@ namespace Transportes_Figueroa.Controllers
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show("Ocurrió un error al insertar el servicio: " + ex.Message);
             }
             finally
             {
@@ -120,7 +212,6 @@ namespace Transportes_Figueroa.Controllers
         public Service GetById(int servicioID)
         {
             Service service = new Service();
-            DataTable servicesFromDB = new DataTable();
 
             try
             {
@@ -132,49 +223,57 @@ namespace Transportes_Figueroa.Controllers
 
                     command.Parameters.AddWithValue("@SevicioID", servicioID);
 
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        adapter.Fill(servicesFromDB);
 
-                        foreach (DataRow serviceFromDB in servicesFromDB.Rows)
+                        while (reader.Read())
                         {
-                            service.Id = (int)serviceFromDB["id_servicio"]; // A esta técnica de parseo se le llama CASTING
-                            service.FechaSolicitud = (DateTime)serviceFromDB["fecha_solicitud"];
-                            service.FechaDevolucion = (DateTime)serviceFromDB["fecha_devolucion"];
-                            service.ClienteId = (Guid)serviceFromDB["id_cliente"];
-                            service.EmpleadoId = (Guid)serviceFromDB["id_empleado"];
-                            service.VehiculoId = (int)serviceFromDB["id_vehiculo"];
-                            service.ValorMedido = (double)serviceFromDB["valor_medido"];
-                            service.TipoServicioId = (int)serviceFromDB["id_tipo_servicio"];
+                            service.Id = (int)reader["id_servicio"]; // A esta técnica de parseo se le llama CASTING
+                            service.FechaSolicitud = (DateTime)reader["fecha_solicitud"];
+                            service.FechaDevolucion = (DateTime)reader["fecha_devolucion"];
+                            service.ClienteId = (Guid)reader["id_cliente"];
+                            if (reader["id_empleado"] != DBNull.Value)
+                            {
+                                service.EmpleadoId = (Guid)reader["id_empleado"];
+                            }
+                            service.VehiculoId = (int)reader["id_vehiculo"];
+                            service.ValorMedido = (double)reader["valor_medido"];
+                            service.TipoServicioId = (int)reader["id_tipo_servicio"];
+                            service.Estado = (string)reader["estado"];
                         }
                     }
                 }
             }
-            catch
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error al recuperar el servicio: " + ex.Message);
+            }
+            finally
             {
                 CloseConnection();
+
             }
 
             return service;
         }
 
-        public int Delete(Guid clientID)
+        public int Delete(int serviceID)
         {
             int affectedRows = 0;
             try
             {
                 OpenConnection();
-                string query = "DELETE FROM clientes WHERE id_cliente = @ClientID;";
+                string query = "DELETE FROM servicios WHERE id_servicio = @ServiceID;";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ClientID", clientID);
+                    command.Parameters.AddWithValue("@ServiceID", serviceID);
                     affectedRows = command.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Excepción: {ex.Message}");
+                MessageBox.Show("Ocurrió un error al elimiar el servicio: " + ex.Message);
             }
             finally
             {
@@ -183,25 +282,25 @@ namespace Transportes_Figueroa.Controllers
             return affectedRows;
         }
 
-        public int Updete(Client client)
+        public int Updete(Service service)
         {
             int affectedRows = 0;
             try
             {
                 OpenConnection();
-                using (SqlCommand command = new SqlCommand("ActualizarClienteConDireccion", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
+                string query = "update services set " +
+                               "fecha_solicitud = @FechaSolicitud, fecha_devolucion = @FechaDevolucion, " +
+                               "id_vehiculo = @VehiculoID, valor_medido = @ValorMedido " +
+                               "where id_servicio = @ServicioID;";
 
-                    command.Parameters.AddWithValue("@ClienteID", client.Id);
-                    command.Parameters.AddWithValue("@TelefonoCliente", client.NumeroTelefonico);
-                    command.Parameters.AddWithValue("@DireccionID", client.DireccionId);
-                    command.Parameters.AddWithValue("@CorreoCliente", client.Email);
-                    command.Parameters.AddWithValue("@CalleDireccion", client.Calle);
-                    command.Parameters.AddWithValue("@DepartamentoDireccion", client.Departamento);
-                    command.Parameters.AddWithValue("@MunicipioDireccion", client.Municipio);
-                    command.Parameters.AddWithValue("@UbicacionDireccion", client.Ubicacion);
-                    command.Parameters.AddWithValue("@CodigoCasa", client.CodigoCasa);
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    command.Parameters.AddWithValue("@ServicioID", service.Id);
+                    command.Parameters.AddWithValue("@FechaSolicitud", service.FechaSolicitud);
+                    command.Parameters.AddWithValue("@FechaDevolucion", service.FechaDevolucion);
+                    command.Parameters.AddWithValue("@VehiculoID", service.VehiculoId);
+                    command.Parameters.AddWithValue("@ValorMedido", service.ValorMedido);
 
                     affectedRows = command.ExecuteNonQuery();
 
@@ -209,7 +308,37 @@ namespace Transportes_Figueroa.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ha ocurrido una excepción: {ex.Message}");
+                MessageBox.Show("Ocurrió un error al actualizar el servicio: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+
+            return affectedRows;
+        }
+
+        public int ChangeState(string newState, int serviceID)
+        {
+            int affectedRows = 0;
+            try
+            {
+                OpenConnection();
+                string query = "update servicios set estado = @Estado " +
+                               "where id_servicio = @ServicioID;";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Estado", newState);
+                    command.Parameters.AddWithValue("@ServicioID", serviceID);
+
+                    affectedRows = command.ExecuteNonQuery();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error al actualizar el estado del servicio: " + ex.Message);
             }
             finally
             {

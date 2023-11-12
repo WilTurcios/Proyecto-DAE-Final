@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\invoicesController.cs" />
     <Compile Include="Controllers\servicesController.cs" />
     <Compile Include="Controllers\vehiclesController.cs" />
     <Compile Include="Controllers\clientsController.cs" />
@@ -57,35 +59,55 @@
     <Compile Include="main.Designer.cs">
       <DependentUpon>main.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\CarBrand.cs" />
     <Compile Include="Models\CarModel.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\Factura.cs" />
+    <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\Rol.cs" />
     <Compile Include="Models\Service.cs" />
-    <Compile Include="Models\TipoServicio.cs" />
+    <Compile Include="Models\ServiceType.cs" />
+    <Compile Include="Models\UserType.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Models\VehicleType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\ClientManager.cs" />
     <Compile Include="Services\EmployeeManager.cs" />
+    <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="Services\UserManager.cs" />
     <Compile Include="Services\VehicleManager.cs" />
     <Compile Include="Utils\ImageHandler.cs" />
+    <Compile Include="Utils\PasswordEncryptor.cs" />
+    <Compile Include="views\Configuracion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\Configuracion.Designer.cs">
+      <DependentUpon>Configuracion.cs</DependentUpon>
+    </Compile>
     <Compile Include="views\CreacionCliente.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="views\CreacionCliente.Designer.cs">
       <DependentUpon>CreacionCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="views\CreacionEmpleado.cs">
+    <Compile Include="views\CrearEmpleado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="views\CreacionEmpleado.Designer.cs">
-      <DependentUpon>CreacionEmpleado.cs</DependentUpon>
+    <Compile Include="views\CrearEmpleado.Designer.cs">
+      <DependentUpon>CrearEmpleado.cs</DependentUpon>
     </Compile>
     <Compile Include="views\CrearVehiculo.cs">
       <SubType>Form</SubType>
@@ -93,32 +115,43 @@
     <Compile Include="views\CrearVehiculo.Designer.cs">
       <DependentUpon>CrearVehiculo.cs</DependentUpon>
     </Compile>
-    <Compile Include="views\GeneracionServicios.cs">
+    <Compile Include="views\GenerarServicio.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="views\GeneracionServicios.Designer.cs">
-      <DependentUpon>GeneracionServicios.cs</DependentUpon>
+    <Compile Include="views\GenerarServicio.Designer.cs">
+      <DependentUpon>GenerarServicio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="main.resx">
       <DependentUpon>main.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="views\CreacionCliente.resx">
       <DependentUpon>CreacionCliente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="views\CreacionEmpleado.resx">
-      <DependentUpon>CreacionEmpleado.cs</DependentUpon>
+    <EmbeddedResource Include="views\CrearEmpleado.resx">
+      <DependentUpon>CrearEmpleado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="views\CrearVehiculo.resx">
       <DependentUpon>CrearVehiculo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\GenerarServicio.resx">
+      <DependentUpon>GenerarServicio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -133,6 +166,79 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\configuracion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete-user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\dow-arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\employee-group.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\left-arrow-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\down-arrow.png" />
+    <Content Include="Resources\right-arrow-icon.png" />
+    <None Include="Resources\right-arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\search-user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\update-user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\user-block.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\users.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\user-block.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\update-user.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\search-user.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\left-arrow-icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\employee-group.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\dow-arrow.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete-user.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\configuracion.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\help - Copia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add-user - Copia.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add-user - Copia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\car - Copia.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
