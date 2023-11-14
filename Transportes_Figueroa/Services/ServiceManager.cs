@@ -44,7 +44,7 @@ namespace Transportes_Figueroa.Services
             int tipoServicioID,
             int vehiculoID, 
             Guid clienteID,
-            Guid? empleadoID = null
+            int? conductorID = null
         )
         {
 
@@ -56,7 +56,7 @@ namespace Transportes_Figueroa.Services
                 TipoServicioId = tipoServicioID,
                 VehiculoId = vehiculoID,
                 ClienteId = clienteID,
-                EmpleadoId = empleadoID
+                ConductorID = conductorID
             };
             return ServicesDataManager.Add(servicio);
         }

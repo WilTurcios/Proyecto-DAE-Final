@@ -36,13 +36,13 @@ namespace Transportes_Figueroa.views
             if (usuario != null)
             {
                 string userType = _userTypes.FirstOrDefault(type => type.Id == usuario.TipoUsuarioId)?.Tipo;
-                Guid employeeID = _employees.FirstOrDefault(employee => employee.IdUsuario == usuario.Id).Id;
+                Employee employee = _employees.FirstOrDefault(emp => emp.IdUsuario == usuario.Id);
 
                 if (passwordEncryptor.DecryptPassword(usuario.Contrasenia) == contrasenia)
                 {
                     if (!string.IsNullOrEmpty(userType))
                     {
-                        main mainForm = new main(userType, employeeID);
+                        MainForm mainForm = new MainForm(userType, employee, usuario);
                         mainForm.Show();
                         this.Hide();
                     }
@@ -53,7 +53,7 @@ namespace Transportes_Figueroa.views
                 }
                 else
                 {
-                    MessageBox.Show("La contraseña es incorrecta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("El correo o contraseña son incorrectos. Asegúrate de escribir los datos solicitados correctamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else

@@ -93,7 +93,12 @@ namespace Transportes_Figueroa.Services
                 CodigoCasa = codigoCasa
             };
 
-            return ClientsDataManager.Add(cliente);
+            return ClientsDataManager.Updete(cliente);
+        }
+
+        public int DeleteClient(Guid clientID)
+        {
+            return ClientsDataManager.Delete(clientID);
         }
     }
 }

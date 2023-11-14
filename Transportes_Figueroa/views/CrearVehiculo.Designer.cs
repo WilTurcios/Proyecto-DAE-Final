@@ -28,24 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Menu = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.DataGridVehiculos = new System.Windows.Forms.DataGridView();
             this.IDAccionAgregarVehiculo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btnSubirImagen = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button4 = new System.Windows.Forms.Button();
             this.EliminarVehiculo = new System.Windows.Forms.Button();
             this.ActualizarVehiculo = new System.Windows.Forms.Button();
             this.AgregarVehiculo = new System.Windows.Forms.Button();
+            this.Salir = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.txtCosto = new System.Windows.Forms.NumericUpDown();
             this.txtKilometraje = new System.Windows.Forms.NumericUpDown();
-            this.ListaMarcas_vehiculos = new System.Windows.Forms.ComboBox();
+            this.ListaMarcas = new System.Windows.Forms.ComboBox();
             this.ListaModelos = new System.Windows.Forms.ComboBox();
             this.txtAnio = new System.Windows.Forms.NumericUpDown();
             this.txtCapacidadPeso = new System.Windows.Forms.NumericUpDown();
@@ -61,28 +59,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.EliminarMarca = new System.Windows.Forms.Button();
-            this.AgregarMarca = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.txtMarca = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.DataGridMarcas = new System.Windows.Forms.DataGridView();
-            this.IDAccionAgregarMarca = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.EliminarModelo = new System.Windows.Forms.Button();
-            this.AgregarModelo = new System.Windows.Forms.Button();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.ListaMarcas_modelos = new System.Windows.Forms.ComboBox();
-            this.txtModelo = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.DataGridModelos = new System.Windows.Forms.DataGridView();
-            this.IDAccionAgregarModelo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Menu.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridVehiculos)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -93,51 +69,23 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtAnio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCapacidadPeso)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCapacidadPersonas)).BeginInit();
-            this.tabPage2.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridMarcas)).BeginInit();
-            this.tabPage3.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridModelos)).BeginInit();
             this.SuspendLayout();
-            // 
-            // Menu
-            // 
-            this.Menu.Controls.Add(this.tabPage1);
-            this.Menu.Controls.Add(this.tabPage2);
-            this.Menu.Controls.Add(this.tabPage3);
-            this.Menu.Location = new System.Drawing.Point(13, 3);
-            this.Menu.Name = "Menu";
-            this.Menu.SelectedIndex = 0;
-            this.Menu.Size = new System.Drawing.Size(925, 471);
-            this.Menu.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.DataGridVehiculos);
-            this.tabPage1.Controls.Add(this.groupBox3);
-            this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(917, 445);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Agregar vehiculo";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // DataGridVehiculos
             // 
+            this.DataGridVehiculos.AllowUserToAddRows = false;
+            this.DataGridVehiculos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.DataGridVehiculos.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(159)))), ((int)(((byte)(190)))));
+            this.DataGridVehiculos.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.DataGridVehiculos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DataGridVehiculos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.IDAccionAgregarVehiculo});
-            this.DataGridVehiculos.Location = new System.Drawing.Point(6, 223);
+            this.DataGridVehiculos.Location = new System.Drawing.Point(83, 316);
+            this.DataGridVehiculos.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.DataGridVehiculos.Name = "DataGridVehiculos";
-            this.DataGridVehiculos.Size = new System.Drawing.Size(786, 150);
-            this.DataGridVehiculos.TabIndex = 23;
+            this.DataGridVehiculos.Size = new System.Drawing.Size(917, 173);
+            this.DataGridVehiculos.TabIndex = 27;
             this.DataGridVehiculos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridVehiculos_CellContentClick);
             // 
             // IDAccionAgregarVehiculo
@@ -147,30 +95,38 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button5);
+            this.groupBox3.Controls.Add(this.btnSubirImagen);
             this.groupBox3.Controls.Add(this.pictureBox1);
-            this.groupBox3.Location = new System.Drawing.Point(6, 6);
+            this.groupBox3.Location = new System.Drawing.Point(83, 66);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(175, 201);
-            this.groupBox3.TabIndex = 22;
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.groupBox3.Size = new System.Drawing.Size(204, 232);
+            this.groupBox3.TabIndex = 26;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Imagen";
             // 
-            // button5
+            // btnSubirImagen
             // 
-            this.button5.Location = new System.Drawing.Point(9, 172);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(160, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Subir Imagen";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click_1);
+            this.btnSubirImagen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(194)))), ((int)(((byte)(227)))));
+            this.btnSubirImagen.FlatAppearance.BorderSize = 0;
+            this.btnSubirImagen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubirImagen.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSubirImagen.Location = new System.Drawing.Point(10, 198);
+            this.btnSubirImagen.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnSubirImagen.Name = "btnSubirImagen";
+            this.btnSubirImagen.Size = new System.Drawing.Size(187, 27);
+            this.btnSubirImagen.TabIndex = 3;
+            this.btnSubirImagen.Text = "Subir Imagen";
+            this.btnSubirImagen.UseVisualStyleBackColor = false;
+            this.btnSubirImagen.Click += new System.EventHandler(this.btnSubirImagen_Click);
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(9, 16);
+            this.pictureBox1.Location = new System.Drawing.Point(10, 18);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(160, 141);
+            this.pictureBox1.Size = new System.Drawing.Size(187, 163);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 18;
             this.pictureBox1.TabStop = false;
@@ -178,55 +134,78 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button4);
             this.groupBox2.Controls.Add(this.EliminarVehiculo);
             this.groupBox2.Controls.Add(this.ActualizarVehiculo);
             this.groupBox2.Controls.Add(this.AgregarVehiculo);
-            this.groupBox2.Location = new System.Drawing.Point(644, 6);
+            this.groupBox2.Location = new System.Drawing.Point(827, 66);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(148, 201);
-            this.groupBox2.TabIndex = 21;
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.groupBox2.Size = new System.Drawing.Size(173, 232);
+            this.groupBox2.TabIndex = 25;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Acciones";
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(39, 162);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Salir";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
             // EliminarVehiculo
             // 
-            this.EliminarVehiculo.Location = new System.Drawing.Point(39, 77);
+            this.EliminarVehiculo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(194)))), ((int)(((byte)(227)))));
+            this.EliminarVehiculo.FlatAppearance.BorderSize = 0;
+            this.EliminarVehiculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EliminarVehiculo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EliminarVehiculo.Location = new System.Drawing.Point(46, 89);
+            this.EliminarVehiculo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.EliminarVehiculo.Name = "EliminarVehiculo";
-            this.EliminarVehiculo.Size = new System.Drawing.Size(75, 23);
-            this.EliminarVehiculo.TabIndex = 2;
+            this.EliminarVehiculo.Size = new System.Drawing.Size(88, 27);
+            this.EliminarVehiculo.TabIndex = 12;
             this.EliminarVehiculo.Text = "Eliminar";
-            this.EliminarVehiculo.UseVisualStyleBackColor = true;
+            this.EliminarVehiculo.UseVisualStyleBackColor = false;
             this.EliminarVehiculo.Click += new System.EventHandler(this.EliminarVehiculo_Click);
             // 
             // ActualizarVehiculo
             // 
-            this.ActualizarVehiculo.Location = new System.Drawing.Point(39, 48);
+            this.ActualizarVehiculo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(194)))), ((int)(((byte)(227)))));
+            this.ActualizarVehiculo.FlatAppearance.BorderSize = 0;
+            this.ActualizarVehiculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ActualizarVehiculo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ActualizarVehiculo.Location = new System.Drawing.Point(46, 55);
+            this.ActualizarVehiculo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ActualizarVehiculo.Name = "ActualizarVehiculo";
-            this.ActualizarVehiculo.Size = new System.Drawing.Size(75, 23);
-            this.ActualizarVehiculo.TabIndex = 1;
+            this.ActualizarVehiculo.Size = new System.Drawing.Size(88, 27);
+            this.ActualizarVehiculo.TabIndex = 11;
             this.ActualizarVehiculo.Text = "Actualizar";
-            this.ActualizarVehiculo.UseVisualStyleBackColor = true;
+            this.ActualizarVehiculo.UseVisualStyleBackColor = false;
             this.ActualizarVehiculo.Click += new System.EventHandler(this.ActualizarVehiculo_Click);
             // 
             // AgregarVehiculo
             // 
-            this.AgregarVehiculo.Location = new System.Drawing.Point(39, 19);
+            this.AgregarVehiculo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(194)))), ((int)(((byte)(227)))));
+            this.AgregarVehiculo.FlatAppearance.BorderSize = 0;
+            this.AgregarVehiculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AgregarVehiculo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AgregarVehiculo.Location = new System.Drawing.Point(46, 22);
+            this.AgregarVehiculo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.AgregarVehiculo.Name = "AgregarVehiculo";
-            this.AgregarVehiculo.Size = new System.Drawing.Size(75, 23);
-            this.AgregarVehiculo.TabIndex = 0;
+            this.AgregarVehiculo.Size = new System.Drawing.Size(88, 27);
+            this.AgregarVehiculo.TabIndex = 10;
             this.AgregarVehiculo.Text = "Agregar";
-            this.AgregarVehiculo.UseVisualStyleBackColor = true;
+            this.AgregarVehiculo.UseVisualStyleBackColor = false;
             this.AgregarVehiculo.Click += new System.EventHandler(this.AgregarVehiculo_Click);
+            // 
+            // Salir
+            // 
+            this.Salir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Salir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(194)))), ((int)(((byte)(227)))));
+            this.Salir.FlatAppearance.BorderSize = 0;
+            this.Salir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Salir.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Salir.Location = new System.Drawing.Point(1007, 14);
+            this.Salir.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.Salir.Name = "Salir";
+            this.Salir.Size = new System.Drawing.Size(88, 27);
+            this.Salir.TabIndex = 14;
+            this.Salir.Text = "Salir";
+            this.Salir.UseVisualStyleBackColor = false;
+            this.Salir.Click += new System.EventHandler(this.Salir_Click);
             // 
             // groupBox1
             // 
@@ -234,7 +213,7 @@
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.txtCosto);
             this.groupBox1.Controls.Add(this.txtKilometraje);
-            this.groupBox1.Controls.Add(this.ListaMarcas_vehiculos);
+            this.groupBox1.Controls.Add(this.ListaMarcas);
             this.groupBox1.Controls.Add(this.ListaModelos);
             this.groupBox1.Controls.Add(this.txtAnio);
             this.groupBox1.Controls.Add(this.txtCapacidadPeso);
@@ -250,76 +229,96 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(196, 6);
+            this.groupBox1.Location = new System.Drawing.Point(304, 66);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(419, 201);
-            this.groupBox1.TabIndex = 20;
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.groupBox1.Size = new System.Drawing.Size(489, 232);
+            this.groupBox1.TabIndex = 24;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del vehiculo";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(90, 174);
+            this.label14.Location = new System.Drawing.Point(105, 201);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(105, 13);
+            this.label14.Size = new System.Drawing.Size(118, 15);
             this.label14.TabIndex = 23;
             this.label14.Text = "Costo por km u hora:";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(93, 177);
+            this.label13.Location = new System.Drawing.Point(108, 204);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(0, 13);
+            this.label13.Size = new System.Drawing.Size(0, 15);
             this.label13.TabIndex = 22;
             // 
             // txtCosto
             // 
+            this.txtCosto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCosto.DecimalPlaces = 2;
-            this.txtCosto.Location = new System.Drawing.Point(219, 172);
+            this.txtCosto.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCosto.Location = new System.Drawing.Point(255, 198);
+            this.txtCosto.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtCosto.Maximum = new decimal(new int[] {
             200,
             0,
             0,
             0});
             this.txtCosto.Name = "txtCosto";
-            this.txtCosto.Size = new System.Drawing.Size(186, 20);
-            this.txtCosto.TabIndex = 21;
+            this.txtCosto.Size = new System.Drawing.Size(217, 25);
+            this.txtCosto.TabIndex = 9;
             // 
             // txtKilometraje
             // 
+            this.txtKilometraje.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtKilometraje.DecimalPlaces = 2;
-            this.txtKilometraje.Location = new System.Drawing.Point(9, 70);
+            this.txtKilometraje.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtKilometraje.Location = new System.Drawing.Point(10, 81);
+            this.txtKilometraje.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtKilometraje.Maximum = new decimal(new int[] {
             1000000,
             0,
             0,
             0});
             this.txtKilometraje.Name = "txtKilometraje";
-            this.txtKilometraje.Size = new System.Drawing.Size(186, 20);
-            this.txtKilometraje.TabIndex = 20;
+            this.txtKilometraje.Size = new System.Drawing.Size(217, 25);
+            this.txtKilometraje.TabIndex = 2;
             // 
-            // ListaMarcas_vehiculos
+            // ListaMarcas
             // 
-            this.ListaMarcas_vehiculos.FormattingEnabled = true;
-            this.ListaMarcas_vehiculos.Location = new System.Drawing.Point(219, 31);
-            this.ListaMarcas_vehiculos.Name = "ListaMarcas_vehiculos";
-            this.ListaMarcas_vehiculos.Size = new System.Drawing.Size(186, 21);
-            this.ListaMarcas_vehiculos.TabIndex = 19;
-            this.ListaMarcas_vehiculos.SelectedIndexChanged += new System.EventHandler(this.ListaMarcas_vehiculos_SelectedIndexChanged);
+            this.ListaMarcas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ListaMarcas.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ListaMarcas.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ListaMarcas.FormattingEnabled = true;
+            this.ListaMarcas.Location = new System.Drawing.Point(255, 36);
+            this.ListaMarcas.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.ListaMarcas.Name = "ListaMarcas";
+            this.ListaMarcas.Size = new System.Drawing.Size(216, 25);
+            this.ListaMarcas.TabIndex = 5;
             // 
             // ListaModelos
             // 
+            this.ListaModelos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ListaModelos.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ListaModelos.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ListaModelos.FormattingEnabled = true;
-            this.ListaModelos.Location = new System.Drawing.Point(219, 69);
+            this.ListaModelos.Location = new System.Drawing.Point(255, 80);
+            this.ListaModelos.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ListaModelos.Name = "ListaModelos";
-            this.ListaModelos.Size = new System.Drawing.Size(186, 21);
-            this.ListaModelos.TabIndex = 18;
+            this.ListaModelos.Size = new System.Drawing.Size(216, 25);
+            this.ListaModelos.TabIndex = 6;
             // 
             // txtAnio
             // 
-            this.txtAnio.Location = new System.Drawing.Point(9, 110);
+            this.txtAnio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtAnio.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAnio.Location = new System.Drawing.Point(10, 127);
+            this.txtAnio.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtAnio.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -331,8 +330,8 @@
             0,
             0});
             this.txtAnio.Name = "txtAnio";
-            this.txtAnio.Size = new System.Drawing.Size(186, 20);
-            this.txtAnio.TabIndex = 17;
+            this.txtAnio.Size = new System.Drawing.Size(217, 25);
+            this.txtAnio.TabIndex = 3;
             this.txtAnio.Value = new decimal(new int[] {
             1900,
             0,
@@ -341,329 +340,164 @@
             // 
             // txtCapacidadPeso
             // 
+            this.txtCapacidadPeso.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCapacidadPeso.DecimalPlaces = 2;
-            this.txtCapacidadPeso.Location = new System.Drawing.Point(219, 149);
+            this.txtCapacidadPeso.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCapacidadPeso.Location = new System.Drawing.Point(255, 172);
+            this.txtCapacidadPeso.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtCapacidadPeso.Maximum = new decimal(new int[] {
             6000000,
             0,
             0,
             0});
             this.txtCapacidadPeso.Name = "txtCapacidadPeso";
-            this.txtCapacidadPeso.Size = new System.Drawing.Size(186, 20);
-            this.txtCapacidadPeso.TabIndex = 16;
+            this.txtCapacidadPeso.Size = new System.Drawing.Size(217, 25);
+            this.txtCapacidadPeso.TabIndex = 8;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(216, 15);
+            this.label7.Location = new System.Drawing.Point(252, 17);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 13);
+            this.label7.Size = new System.Drawing.Size(43, 15);
             this.label7.TabIndex = 7;
             this.label7.Text = "Marca:";
             // 
             // txtCapacidadPersonas
             // 
-            this.txtCapacidadPersonas.Location = new System.Drawing.Point(9, 149);
+            this.txtCapacidadPersonas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCapacidadPersonas.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCapacidadPersonas.Location = new System.Drawing.Point(10, 172);
+            this.txtCapacidadPersonas.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtCapacidadPersonas.Maximum = new decimal(new int[] {
             200,
             0,
             0,
             0});
             this.txtCapacidadPersonas.Name = "txtCapacidadPersonas";
-            this.txtCapacidadPersonas.Size = new System.Drawing.Size(186, 20);
-            this.txtCapacidadPersonas.TabIndex = 15;
+            this.txtCapacidadPersonas.Size = new System.Drawing.Size(217, 25);
+            this.txtCapacidadPersonas.TabIndex = 4;
             // 
             // ListaTipoVehiculos
             // 
+            this.ListaTipoVehiculos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ListaTipoVehiculos.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ListaTipoVehiculos.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ListaTipoVehiculos.FormattingEnabled = true;
-            this.ListaTipoVehiculos.Location = new System.Drawing.Point(219, 109);
+            this.ListaTipoVehiculos.Location = new System.Drawing.Point(255, 126);
+            this.ListaTipoVehiculos.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ListaTipoVehiculos.Name = "ListaTipoVehiculos";
-            this.ListaTipoVehiculos.Size = new System.Drawing.Size(186, 21);
-            this.ListaTipoVehiculos.TabIndex = 1;
+            this.ListaTipoVehiculos.Size = new System.Drawing.Size(216, 25);
+            this.ListaTipoVehiculos.TabIndex = 7;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 94);
+            this.label9.Location = new System.Drawing.Point(7, 108);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 13);
+            this.label9.Size = new System.Drawing.Size(32, 15);
             this.label9.TabIndex = 13;
             this.label9.Text = "Año:";
             // 
             // txtMatricula
             // 
-            this.txtMatricula.Location = new System.Drawing.Point(9, 32);
+            this.txtMatricula.AllowDrop = true;
+            this.txtMatricula.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMatricula.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMatricula.Location = new System.Drawing.Point(10, 37);
+            this.txtMatricula.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtMatricula.Name = "txtMatricula";
-            this.txtMatricula.Size = new System.Drawing.Size(186, 20);
-            this.txtMatricula.TabIndex = 9;
+            this.txtMatricula.Size = new System.Drawing.Size(216, 25);
+            this.txtMatricula.TabIndex = 1;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(216, 53);
+            this.label8.Location = new System.Drawing.Point(252, 61);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(45, 13);
+            this.label8.Size = new System.Drawing.Size(51, 15);
             this.label8.TabIndex = 8;
             this.label8.Text = "Modelo:";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(216, 94);
+            this.label6.Location = new System.Drawing.Point(252, 108);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 13);
+            this.label6.Size = new System.Drawing.Size(98, 15);
             this.label6.TabIndex = 6;
             this.label6.Text = "Tipo de vehículo:";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(216, 133);
+            this.label5.Location = new System.Drawing.Point(252, 153);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(102, 13);
+            this.label5.Size = new System.Drawing.Size(109, 15);
             this.label5.TabIndex = 5;
             this.label5.Text = "Capacidad de peso:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 133);
+            this.label4.Location = new System.Drawing.Point(7, 153);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(122, 13);
+            this.label4.Size = new System.Drawing.Size(131, 15);
             this.label4.TabIndex = 4;
             this.label4.Text = "Capacidad de personas:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(141, 121);
+            this.label3.Location = new System.Drawing.Point(164, 140);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(0, 13);
+            this.label3.Size = new System.Drawing.Size(0, 15);
             this.label3.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 55);
+            this.label2.Location = new System.Drawing.Point(7, 63);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 13);
+            this.label2.Size = new System.Drawing.Size(70, 15);
             this.label2.TabIndex = 2;
             this.label2.Text = "Kilometraje:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Location = new System.Drawing.Point(7, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 13);
+            this.label1.Size = new System.Drawing.Size(60, 15);
             this.label1.TabIndex = 1;
             this.label1.Text = "Matricula:";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.groupBox5);
-            this.tabPage2.Controls.Add(this.groupBox4);
-            this.tabPage2.Controls.Add(this.DataGridMarcas);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(917, 445);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Agregar marca";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.EliminarMarca);
-            this.groupBox5.Controls.Add(this.AgregarMarca);
-            this.groupBox5.Location = new System.Drawing.Point(6, 75);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(209, 82);
-            this.groupBox5.TabIndex = 2;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Acciones";
-            // 
-            // EliminarMarca
-            // 
-            this.EliminarMarca.Location = new System.Drawing.Point(107, 19);
-            this.EliminarMarca.Name = "EliminarMarca";
-            this.EliminarMarca.Size = new System.Drawing.Size(95, 50);
-            this.EliminarMarca.TabIndex = 4;
-            this.EliminarMarca.Text = "Eliminar";
-            this.EliminarMarca.UseVisualStyleBackColor = true;
-            this.EliminarMarca.Click += new System.EventHandler(this.EliminarMarca_Click);
-            // 
-            // AgregarMarca
-            // 
-            this.AgregarMarca.Location = new System.Drawing.Point(6, 19);
-            this.AgregarMarca.Name = "AgregarMarca";
-            this.AgregarMarca.Size = new System.Drawing.Size(95, 50);
-            this.AgregarMarca.TabIndex = 3;
-            this.AgregarMarca.Text = "Agregar";
-            this.AgregarMarca.UseVisualStyleBackColor = true;
-            this.AgregarMarca.Click += new System.EventHandler(this.AgregarMarca_Click);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.txtMarca);
-            this.groupBox4.Controls.Add(this.label10);
-            this.groupBox4.Location = new System.Drawing.Point(6, 6);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(209, 63);
-            this.groupBox4.TabIndex = 1;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Información general";
-            // 
-            // txtMarca
-            // 
-            this.txtMarca.Location = new System.Drawing.Point(9, 32);
-            this.txtMarca.Name = "txtMarca";
-            this.txtMarca.Size = new System.Drawing.Size(188, 20);
-            this.txtMarca.TabIndex = 3;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 16);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(47, 13);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "Nombre:";
-            // 
-            // DataGridMarcas
-            // 
-            this.DataGridMarcas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridMarcas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IDAccionAgregarMarca});
-            this.DataGridMarcas.Location = new System.Drawing.Point(231, 7);
-            this.DataGridMarcas.Name = "DataGridMarcas";
-            this.DataGridMarcas.Size = new System.Drawing.Size(671, 150);
-            this.DataGridMarcas.TabIndex = 0;
-            // 
-            // IDAccionAgregarMarca
-            // 
-            this.IDAccionAgregarMarca.HeaderText = "#";
-            this.IDAccionAgregarMarca.Name = "IDAccionAgregarMarca";
-            this.IDAccionAgregarMarca.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.IDAccionAgregarMarca.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.groupBox6);
-            this.tabPage3.Controls.Add(this.groupBox7);
-            this.tabPage3.Controls.Add(this.DataGridModelos);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(917, 445);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Agregar modelo";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.EliminarModelo);
-            this.groupBox6.Controls.Add(this.AgregarModelo);
-            this.groupBox6.Location = new System.Drawing.Point(9, 135);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(209, 82);
-            this.groupBox6.TabIndex = 5;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Acciones";
-            // 
-            // EliminarModelo
-            // 
-            this.EliminarModelo.Location = new System.Drawing.Point(107, 19);
-            this.EliminarModelo.Name = "EliminarModelo";
-            this.EliminarModelo.Size = new System.Drawing.Size(95, 50);
-            this.EliminarModelo.TabIndex = 4;
-            this.EliminarModelo.Text = "Eliminar";
-            this.EliminarModelo.UseVisualStyleBackColor = true;
-            this.EliminarModelo.Click += new System.EventHandler(this.EliminarModelo_Click);
-            // 
-            // AgregarModelo
-            // 
-            this.AgregarModelo.Location = new System.Drawing.Point(6, 19);
-            this.AgregarModelo.Name = "AgregarModelo";
-            this.AgregarModelo.Size = new System.Drawing.Size(95, 50);
-            this.AgregarModelo.TabIndex = 3;
-            this.AgregarModelo.Text = "Agregar";
-            this.AgregarModelo.UseVisualStyleBackColor = true;
-            this.AgregarModelo.Click += new System.EventHandler(this.AgregarModelo_Click);
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.label12);
-            this.groupBox7.Controls.Add(this.ListaMarcas_modelos);
-            this.groupBox7.Controls.Add(this.txtModelo);
-            this.groupBox7.Controls.Add(this.label11);
-            this.groupBox7.Location = new System.Drawing.Point(9, 11);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(209, 118);
-            this.groupBox7.TabIndex = 4;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Información general";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 62);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(40, 13);
-            this.label12.TabIndex = 5;
-            this.label12.Text = "Marca:";
-            // 
-            // ListaMarcas_modelos
-            // 
-            this.ListaMarcas_modelos.FormattingEnabled = true;
-            this.ListaMarcas_modelos.Location = new System.Drawing.Point(9, 78);
-            this.ListaMarcas_modelos.Name = "ListaMarcas_modelos";
-            this.ListaMarcas_modelos.Size = new System.Drawing.Size(188, 21);
-            this.ListaMarcas_modelos.TabIndex = 4;
-            // 
-            // txtModelo
-            // 
-            this.txtModelo.Location = new System.Drawing.Point(9, 32);
-            this.txtModelo.Name = "txtModelo";
-            this.txtModelo.Size = new System.Drawing.Size(188, 20);
-            this.txtModelo.TabIndex = 3;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 16);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(45, 13);
-            this.label11.TabIndex = 3;
-            this.label11.Text = "Modelo:";
-            // 
-            // DataGridModelos
-            // 
-            this.DataGridModelos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridModelos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IDAccionAgregarModelo});
-            this.DataGridModelos.Location = new System.Drawing.Point(234, 12);
-            this.DataGridModelos.Name = "DataGridModelos";
-            this.DataGridModelos.Size = new System.Drawing.Size(671, 205);
-            this.DataGridModelos.TabIndex = 3;
-            // 
-            // IDAccionAgregarModelo
-            // 
-            this.IDAccionAgregarModelo.HeaderText = "#";
-            this.IDAccionAgregarModelo.Name = "IDAccionAgregarModelo";
-            this.IDAccionAgregarModelo.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.IDAccionAgregarModelo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
             // CrearVehiculo
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(950, 486);
-            this.Controls.Add(this.Menu);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(1108, 561);
+            this.Controls.Add(this.Salir);
+            this.Controls.Add(this.DataGridVehiculos);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "CrearVehiculo";
             this.Text = "CrearVehiculo";
             this.Load += new System.EventHandler(this.CrearVehiculo_Load);
-            this.Menu.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridVehiculos)).EndInit();
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -675,74 +509,42 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtAnio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCapacidadPeso)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCapacidadPersonas)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridMarcas)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridModelos)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl Menu;
-        private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView DataGridVehiculos;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IDAccionAgregarVehiculo;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btnSubirImagen;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button Salir;
         private System.Windows.Forms.Button EliminarVehiculo;
         private System.Windows.Forms.Button ActualizarVehiculo;
         private System.Windows.Forms.Button AgregarVehiculo;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox ListaMarcas_vehiculos;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.NumericUpDown txtCosto;
+        private System.Windows.Forms.NumericUpDown txtKilometraje;
+        private System.Windows.Forms.ComboBox ListaMarcas;
         private System.Windows.Forms.ComboBox ListaModelos;
         private System.Windows.Forms.NumericUpDown txtAnio;
         private System.Windows.Forms.NumericUpDown txtCapacidadPeso;
+        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown txtCapacidadPersonas;
         private System.Windows.Forms.ComboBox ListaTipoVehiculos;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtMatricula;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.DataGridView DataGridMarcas;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IDAccionAgregarVehiculo;
-        private System.Windows.Forms.Button EliminarMarca;
-        private System.Windows.Forms.Button AgregarMarca;
-        private System.Windows.Forms.TextBox txtMarca;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IDAccionAgregarMarca;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Button EliminarModelo;
-        private System.Windows.Forms.Button AgregarModelo;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.ComboBox ListaMarcas_modelos;
-        private System.Windows.Forms.TextBox txtModelo;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.DataGridView DataGridModelos;
-        private System.Windows.Forms.NumericUpDown txtKilometraje;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.NumericUpDown txtCosto;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IDAccionAgregarModelo;
     }
 }

@@ -25,6 +25,16 @@ namespace Transportes_Figueroa.Services
             return this.EmployeesDataManager.GetAll();
         }
 
+        public List<Driver> GetAllDrivers()
+        {
+            return this.EmployeesDataManager.GetAllDrivers();
+        }
+
+        public int ChangeDriverAvailability(int driverID, string availability)
+        {
+            return EmployeesDataManager.ChangeDriverAvailability(driverID, availability);
+        }
+
         public List<Rol> GetRols()
         {
             return EmployeesDataManager.GetRoles();

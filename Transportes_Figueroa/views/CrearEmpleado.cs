@@ -14,6 +14,7 @@ using Transportes_Figueroa.Models;
 using Transportes_Figueroa.Services;
 using Transportes_Figueroa.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace Transportes_Figueroa.views
 {
@@ -361,10 +362,34 @@ namespace Transportes_Figueroa.views
             PanelRol.Visible = false;
         }
 
-        private void ShowEmployees(List<Employee> employees)
+        private void ShowEmployees(List<Employee> employees, string rol = null)
         {
             ListaEmpleados.Items.Clear();
-            foreach (Employee employee in employees)
+            
+
+            List<Employee> filteredEmployees = employees; 
+
+            if (rol != null)
+            {
+                int rolID = _employeeRols.FirstOrDefault(r => r.Nombre == rol).Id;
+                filteredEmployees = employees.Where(emp => emp.RolId == rolID).ToList();
+            }
+            
+            if (filteredEmployees.Count == 0)
+            {
+                filteredEmployees = employees;
+
+                MessageBox.Show(
+                    "No se encontraron registros.",
+                    "No encontrado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                FiltroPorRol.SelectedIndex = -1;
+            }
+
+            foreach (Employee employee in filteredEmployees)
             {
                 ListViewItem empleado = new ListViewItem(employee.Nombres);
                 empleado.SubItems.Add(employee.Id.ToString("D"));
@@ -372,32 +397,6 @@ namespace Transportes_Figueroa.views
 
                 ListaEmpleados.Items.Add(empleado);
             }
-        }
-
-        private void ShowEmployeeRols(List<Rol> employeeRols)
-        {
-            DataTable infoRoles = new DataTable();
-
-            infoRoles.Columns.Clear();
-            infoRoles.Rows.Clear();
-
-            infoRoles.Columns.Add("id_rol");
-            infoRoles.Columns.Add("rol");
-            infoRoles.Columns.Add("sueldo_hora");
-
-            foreach (Rol rol in employeeRols)
-            {
-                DataRow fila = infoRoles.NewRow();
-
-                fila["id_rol"] = rol.Id;
-                fila["rol"] = rol.Nombre;
-                fila["sueldo_hora"] = rol.SueldoHora;
-
-                infoRoles.Rows.Add(fila);
-            }
-
-            DataGridRolesEmpleados.DataSource = infoRoles;
-            DataGridRolesEmpleados.Refresh();
         }
 
         private void CreacionEmpleado_Load(object sender, EventArgs e)
@@ -430,7 +429,6 @@ namespace Transportes_Figueroa.views
             }
 
             ShowEmployees(_employees);
-            ShowEmployeeRols(_employeeRols);
 
 
             foreach (string departamento in municipiosPorDepartamento.Keys)
@@ -438,9 +436,74 @@ namespace Transportes_Figueroa.views
                 ListaDepartamentos.Items.Add(departamento);
             }
 
-        }     
+        }
 
-        private void EliminarEmpleado_Click_1(object sender, EventArgs e)
+        private void btnMostrarDatosGenerales_Click(object sender, EventArgs e)
+        {
+            PanelDatosGenerales.Visible = !PanelDatosGenerales.Visible;
+
+            if (_button1Image1IsVisible)
+            {
+                btnMostrarDatosGenerales.Image = Transportes_Figueroa.Properties.Resources.down_arrow;
+                _button1Image1IsVisible = !_button1Image1IsVisible;
+            }
+            else
+            {
+                btnMostrarDatosGenerales.Image = Transportes_Figueroa.Properties.Resources.right_arrow;
+                _button1Image1IsVisible = !_button1Image1IsVisible;
+            }
+        }
+
+        private void btnMostrarDatosUsuario_Click(object sender, EventArgs e)
+        {
+            PanelDatosUsuario.Visible = !PanelDatosUsuario.Visible;
+
+            if (_button1Image1IsVisible)
+            {
+                btnMostrarDatosUsuario.Image = Transportes_Figueroa.Properties.Resources.down_arrow;
+                _button1Image1IsVisible = !_button1Image1IsVisible;
+            }
+            else
+            {
+                btnMostrarDatosUsuario.Image = Transportes_Figueroa.Properties.Resources.right_arrow;
+                _button1Image1IsVisible = !_button1Image1IsVisible;
+            }
+        }
+
+        private void btnMostrarRolEmpleado_Click(object sender, EventArgs e)
+        {
+            PanelRol.Visible = !PanelRol.Visible;
+
+            if (_button1Image1IsVisible)
+            {
+                btnMostrarRolEmpleado.Image = Transportes_Figueroa.Properties.Resources.down_arrow;
+                _button1Image1IsVisible = !_button1Image1IsVisible;
+            }
+            else
+            {
+                btnMostrarRolEmpleado.Image = Transportes_Figueroa.Properties.Resources.right_arrow;
+                _button1Image1IsVisible = !_button1Image1IsVisible;
+            }
+        }
+
+        private void btnMostrarDireccion_Click(object sender, EventArgs e)
+        {
+            PanelDireccion.Visible = !PanelDireccion.Visible;
+
+            if (_button1Image1IsVisible)
+            {
+                btnMostrarDireccion.Image = Transportes_Figueroa.Properties.Resources.down_arrow;
+                _button1Image1IsVisible = !_button1Image1IsVisible;
+            }
+            else
+            {
+                btnMostrarDireccion.Image = Transportes_Figueroa.Properties.Resources.right_arrow;
+                _button1Image1IsVisible = !_button1Image1IsVisible;
+            }
+        }
+  
+
+        private void EliminarEmpleado_Click(object sender, EventArgs e)
         {
             if (_selectedEmployee != null)
             {
@@ -467,89 +530,6 @@ namespace Transportes_Figueroa.views
             }
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void AgregarRolEmpleado_Click(object sender, EventArgs e)
-        {
-            string nombreRol = txtNombreRol.Text;
-            decimal sueldoHora = txtRolSueldo.Value;
-
-            int affectedRows = EmployeeDBManager.AddEmployeeRol(nombreRol, sueldoHora);
-
-
-            _employeeRols = EmployeeDBManager.GetRols();
-
-            ShowEmployeeRols(_employeeRols);
-
-        }
-
-        private void button6_Click_1(object sender, EventArgs e)
-        {
-            PanelDatosGenerales.Visible = !PanelDatosGenerales.Visible;
-
-            if (_button1Image1IsVisible)
-            {
-                button6.Image = Transportes_Figueroa.Properties.Resources.down_arrow;
-                _button1Image1IsVisible = !_button1Image1IsVisible;
-            }
-            else
-            {
-                button6.Image = Transportes_Figueroa.Properties.Resources.right_arrow;
-                _button1Image1IsVisible = !_button1Image1IsVisible;
-            }
-        }
-
-        private void button5_Click_1(object sender, EventArgs e)
-        {
-            PanelDatosUsuario.Visible = !PanelDatosUsuario.Visible;
-
-            if (_button2Image1IsVisible)
-            {
-                button5.Image = Transportes_Figueroa.Properties.Resources.down_arrow;
-                _button2Image1IsVisible = !_button2Image1IsVisible;
-            }
-            else
-            {
-                button5.Image = Transportes_Figueroa.Properties.Resources.right_arrow;
-                _button2Image1IsVisible = !_button2Image1IsVisible;
-            }
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            PanelRol.Visible = !PanelRol.Visible;
-
-            if (_button3Image1IsVisible)
-            {
-                button7.Image = Transportes_Figueroa.Properties.Resources.down_arrow;
-                _button3Image1IsVisible = !_button3Image1IsVisible;
-            }
-            else
-            {
-                button7.Image = Transportes_Figueroa.Properties.Resources.right_arrow;
-                _button3Image1IsVisible = !_button3Image1IsVisible;
-            }
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            PanelDireccion.Visible = !PanelDireccion.Visible;
-
-            if (_button4Image1IsVisible)
-            {
-                button8.Image = Transportes_Figueroa.Properties.Resources.down_arrow;
-                _button4Image1IsVisible = !_button4Image1IsVisible;
-            }
-            else
-            {
-                button8.Image = Transportes_Figueroa.Properties.Resources.right_arrow;
-                _button4Image1IsVisible = !_button4Image1IsVisible;
-            }
-        }
-
         private void QuitarSeleccion_Click(object sender, EventArgs e)
         {
             foreach (ListViewItem item in ListaEmpleados.SelectedItems)
@@ -558,27 +538,15 @@ namespace Transportes_Figueroa.views
             }
         }
 
-        private void AgregarFotoEmpleado_Click_1(object sender, EventArgs e)
-        {
-            var result = ImageHandler.GetImageData();
-
-            _imagen = result.datosBinarios;
-
-            FotoEmpleado.Image = Image.FromFile(result.rutaImagen);
-        }
-
         private void ActualizarEmpleado_Click(object sender, EventArgs e)
         {
-
-
-            MessageBox.Show(_selectedEmployee.ToString());
 
             Employee empleado = _employees.FirstOrDefault(employee => employee.Id == _selectedEmployee);
             Guid usuarioID = _users.FirstOrDefault(user => user.Id == empleado.IdUsuario).Id;
             string telefono = txtTelefono.Text;
             string contrasenia = passwordEncryptor.EncryptPassword(txtContrasenia.Text);
-            int tipoUsuario = _userTypes[ListaRolesUsuario.SelectedIndex].Id;
-            int rolID = _employeeRols[ListaRolesEmpleado.SelectedIndex].Id;
+            int tipoUsuario = _userTypes.FirstOrDefault(type => type.Tipo == ListaRolesUsuario.SelectedItem.ToString()).Id;
+            int rolID = _employeeRols.FirstOrDefault(rol => rol.Nombre == ListaRolesEmpleado.SelectedItem.ToString()).Id;
             string departamento = ListaDepartamentos.SelectedItem.ToString();
             string municipio = ListaMunicipios.SelectedItem.ToString();
             string ubicacion = txtUbicacion.Text;
@@ -587,20 +555,40 @@ namespace Transportes_Figueroa.views
             string codigoSeguro = txtCodSeguro.Text;
 
             UserDBManager.ChangeUserPassword(usuarioID, contrasenia);
-            UserDBManager.ChangeUserRol(usuarioID, tipoUsuario);
 
-            EmployeeDBManager.UpdateEmployee(
-                _selectedEmployee,
-                codigoSeguro,
-                _imagen,
-                telefono,
-                departamento,
-                municipio,
-                calle,
-                codCasa,
-                ubicacion,
-                rolID
-            );
+            int affectedRows = EmployeeDBManager.UpdateEmployee(
+                                    _selectedEmployee,
+                                    codigoSeguro,
+                                    _imagen,
+                                    telefono,
+                                    departamento,
+                                    municipio,
+                                    calle,
+                                    codCasa,
+                                    ubicacion,
+                                    rolID
+                                );
+
+            if(affectedRows > 0)
+            {
+                MessageBox.Show(
+                    "El empleado ha sido actualizado exitosamente", 
+                    "Éxito", 
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Ha ocurrido un error al actualizar el empleado",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                return;
+            }
 
             _employees = EmployeeDBManager.GetAllEmployees();
             _users = UserDBManager.GetAllUsers();
@@ -622,6 +610,7 @@ namespace Transportes_Figueroa.views
                 {
                     empleado = _employees.FirstOrDefault(employee => employee.Id == empleadoID);
                     usuario = _users.FirstOrDefault(user => user.Id == empleado.IdUsuario);
+                    _imagen = empleado.Imagen;
                 }
 
                 if (usuario != null)
@@ -705,22 +694,7 @@ namespace Transportes_Figueroa.views
             }
         }
 
-        private void ListaDepartamentos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ListaMunicipios.Items.Clear();
-
-            if (ListaDepartamentos.SelectedItem == null) return;
-
-            string departamento = ListaDepartamentos.SelectedItem.ToString();
-
-
-
-            foreach (string municipio in municipiosPorDepartamento[departamento])
-            {
-                ListaMunicipios.Items.Add(municipio);
-            }
-        }
-
+        
         private void AgregarEmpleado_Click(object sender, EventArgs e)
         {
             Guid userID = Guid.NewGuid();
@@ -778,65 +752,62 @@ namespace Transportes_Figueroa.views
             ShowEmployees(_employees);
         }
 
-        private void EliminarRolEmpleado_Click(object sender, EventArgs e)
-        {
-            // Crear una lista de IDs de registros a eliminar
-            List<int> idsToDelete = new List<int>();
-
-            foreach (DataGridViewRow row in DataGridRolesEmpleados.Rows)
-            {
-                DataGridViewCheckBoxCell checkBox = row.Cells["IDAccionRolEmpleado"] as DataGridViewCheckBoxCell;
-
-                if (Convert.ToBoolean(checkBox.Value))
-                {
-                    int rolID = Convert.ToInt32(row.Cells[1].Value);
-                    idsToDelete.Add(rolID);
-                }
-            }
-
-            if (idsToDelete.Count == 0)
-            {
-                MessageBox.Show("Por favor, seleccione al menos un registro para eliminar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            foreach (int rolID in idsToDelete)
-            {
-                int affectedRows = EmployeeDBManager.DeleteEmployeeRol(rolID);
-
-                if (affectedRows ==  0)
-                {
-                    MessageBox.Show("No se pudo realizar la eliminación del rol con ID " + rolID + ", por favor intente de nuevo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                
-            }
-
-            // Actualiza la fuente de datos o realiza cualquier otra acción necesaria después de la eliminación
-            _employeeRols = EmployeeDBManager.GetRols();
-            ShowEmployeeRols(_employeeRols);
-
-            MessageBox.Show("Registros eliminados exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void DataGridRolesEmpleados_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == 0 && e.RowIndex >= 0) // Verifica si se hizo clic en una casilla de verificación (columna 0) en una fila válida.
-            {
-                DataGridViewCheckBoxCell checkboxCell = DataGridRolesEmpleados["IDAccionRolEmpleado", e.RowIndex] as DataGridViewCheckBoxCell;
-
-                if (Convert.ToBoolean(checkboxCell.Value))
-                {
-                }
-                else
-                {
-                }
-            }
-        }
-
         private void ListaEmpleados_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void AgregarFotoEmpleado_Click_1(object sender, EventArgs e)
+        {
+            var result = ImageHandler.GetImageData();
+
+            _imagen = result.datosBinarios;
+
+            FotoEmpleado.Image = Image.FromFile(result.rutaImagen);
+        }
+
+        private void ListaDepartamentos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListaMunicipios.Items.Clear();
+
+            if (ListaDepartamentos.SelectedItem == null) return;
+
+            string departamento = ListaDepartamentos.SelectedItem.ToString();
+
+
+
+            foreach (string municipio in municipiosPorDepartamento[departamento])
+            {
+                ListaMunicipios.Items.Add(municipio);
+            }
+        }
+
+        private void FiltroPorRol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(FiltroPorRol.SelectedIndex == -1)
+            {
+                MessageBox.Show(
+                    "Selecciona un rol para filtrar a los empleados.",
+                    "Elige un rol",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                return;
+            }
+
+            string selectedRol = FiltroPorRol.SelectedItem.ToString();
+            ShowEmployees(_employees, selectedRol);
+        }
+
+        private void MostrarTodosLosEmpleados_Click(object sender, EventArgs e)
+        {
+            ShowEmployees(_employees);
         }
     }
 }

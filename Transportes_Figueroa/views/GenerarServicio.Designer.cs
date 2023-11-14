@@ -42,7 +42,7 @@
             this.DUI = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label5 = new System.Windows.Forms.Label();
-            this.txtDUICliente = new System.Windows.Forms.TextBox();
+            this.txtFiltroCliente = new System.Windows.Forms.TextBox();
             this.ListaTipoServicios = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.ListaMarcas = new System.Windows.Forms.ComboBox();
@@ -76,6 +76,8 @@
             this.SeleccionarVehiculo = new System.Windows.Forms.Button();
             this.QuitarSeleccionVehiculo = new System.Windows.Forms.Button();
             this.QuitarSeleccionCliente = new System.Windows.Forms.Button();
+            this.btnQuitarFiltros = new System.Windows.Forms.Button();
+            this.btnFiltrarCliente = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.txtValorMedido)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridServiciosCliente)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -94,6 +96,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(657, 50);
             this.label2.Name = "label2";
@@ -188,15 +191,16 @@
             this.label5.TabIndex = 6;
             this.label5.Text = "Filtrar por:";
             // 
-            // txtDUICliente
+            // txtFiltroCliente
             // 
-            this.txtDUICliente.Location = new System.Drawing.Point(9, 74);
-            this.txtDUICliente.Name = "txtDUICliente";
-            this.txtDUICliente.Size = new System.Drawing.Size(271, 20);
-            this.txtDUICliente.TabIndex = 7;
+            this.txtFiltroCliente.Location = new System.Drawing.Point(9, 74);
+            this.txtFiltroCliente.Name = "txtFiltroCliente";
+            this.txtFiltroCliente.Size = new System.Drawing.Size(179, 20);
+            this.txtFiltroCliente.TabIndex = 7;
             // 
             // ListaTipoServicios
             // 
+            this.ListaTipoServicios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ListaTipoServicios.FormattingEnabled = true;
             this.ListaTipoServicios.Location = new System.Drawing.Point(757, 47);
             this.ListaTipoServicios.Name = "ListaTipoServicios";
@@ -255,7 +259,8 @@
             // 
             // AgregarServicio
             // 
-            this.AgregarServicio.Location = new System.Drawing.Point(651, 457);
+            this.AgregarServicio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AgregarServicio.Location = new System.Drawing.Point(651, 497);
             this.AgregarServicio.Name = "AgregarServicio";
             this.AgregarServicio.Size = new System.Drawing.Size(75, 31);
             this.AgregarServicio.TabIndex = 14;
@@ -265,7 +270,8 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(813, 457);
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Location = new System.Drawing.Point(813, 497);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(130, 31);
             this.button2.TabIndex = 15;
@@ -275,6 +281,7 @@
             // 
             // Salir
             // 
+            this.Salir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Salir.Location = new System.Drawing.Point(868, 12);
             this.Salir.Name = "Salir";
             this.Salir.Size = new System.Drawing.Size(75, 24);
@@ -285,7 +292,8 @@
             // 
             // Cancelar
             // 
-            this.Cancelar.Location = new System.Drawing.Point(732, 457);
+            this.Cancelar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Cancelar.Location = new System.Drawing.Point(732, 497);
             this.Cancelar.Name = "Cancelar";
             this.Cancelar.Size = new System.Drawing.Size(75, 31);
             this.Cancelar.TabIndex = 17;
@@ -392,13 +400,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.txtFechaSolicitud);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtValorMedido);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.txtFechaDevolucion);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Location = new System.Drawing.Point(651, 305);
+            this.groupBox1.Location = new System.Drawing.Point(651, 345);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(292, 146);
             this.groupBox1.TabIndex = 24;
@@ -407,13 +416,15 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.btnFiltrarCliente);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.ListaFiltrosCliente);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.txtDUICliente);
+            this.groupBox2.Controls.Add(this.txtFiltroCliente);
             this.groupBox2.Location = new System.Drawing.Point(651, 199);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(292, 100);
+            this.groupBox2.Size = new System.Drawing.Size(292, 106);
             this.groupBox2.TabIndex = 25;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Burcar cliente";
@@ -440,6 +451,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.ListaMarcas);
             this.groupBox3.Controls.Add(this.ListaModelos);
@@ -453,6 +465,7 @@
             // 
             // label12
             // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(657, 84);
             this.label12.Name = "label12";
@@ -462,6 +475,7 @@
             // 
             // ListaConductores
             // 
+            this.ListaConductores.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ListaConductores.FormattingEnabled = true;
             this.ListaConductores.Location = new System.Drawing.Point(757, 81);
             this.ListaConductores.Name = "ListaConductores";
@@ -508,11 +522,34 @@
             this.QuitarSeleccionCliente.UseVisualStyleBackColor = true;
             this.QuitarSeleccionCliente.Click += new System.EventHandler(this.QuitarSeleccionCliente_Click);
             // 
+            // btnQuitarFiltros
+            // 
+            this.btnQuitarFiltros.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnQuitarFiltros.Location = new System.Drawing.Point(826, 311);
+            this.btnQuitarFiltros.Name = "btnQuitarFiltros";
+            this.btnQuitarFiltros.Size = new System.Drawing.Size(117, 23);
+            this.btnQuitarFiltros.TabIndex = 34;
+            this.btnQuitarFiltros.Text = "Quitar Filtros";
+            this.btnQuitarFiltros.UseVisualStyleBackColor = true;
+            this.btnQuitarFiltros.Click += new System.EventHandler(this.btnQuitarFiltros_Click);
+            // 
+            // btnFiltrarCliente
+            // 
+            this.btnFiltrarCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFiltrarCliente.Location = new System.Drawing.Point(200, 72);
+            this.btnFiltrarCliente.Name = "btnFiltrarCliente";
+            this.btnFiltrarCliente.Size = new System.Drawing.Size(86, 23);
+            this.btnFiltrarCliente.TabIndex = 35;
+            this.btnFiltrarCliente.Text = "Buscar";
+            this.btnFiltrarCliente.UseVisualStyleBackColor = true;
+            this.btnFiltrarCliente.Click += new System.EventHandler(this.btnFiltrarCliente_Click);
+            // 
             // GenerarServicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(957, 537);
+            this.Controls.Add(this.btnQuitarFiltros);
             this.Controls.Add(this.QuitarSeleccionCliente);
             this.Controls.Add(this.QuitarSeleccionVehiculo);
             this.Controls.Add(this.SeleccionarVehiculo);
@@ -560,7 +597,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ListView ListaClientes;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtDUICliente;
+        private System.Windows.Forms.TextBox txtFiltroCliente;
         private System.Windows.Forms.ComboBox ListaTipoServicios;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox ListaMarcas;
@@ -601,5 +638,7 @@
         private System.Windows.Forms.Button SeleccionarVehiculo;
         private System.Windows.Forms.Button QuitarSeleccionVehiculo;
         private System.Windows.Forms.Button QuitarSeleccionCliente;
+        private System.Windows.Forms.Button btnQuitarFiltros;
+        private System.Windows.Forms.Button btnFiltrarCliente;
     }
 }

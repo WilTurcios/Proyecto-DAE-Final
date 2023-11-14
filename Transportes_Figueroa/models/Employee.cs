@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Transportes_Figueroa.models
 {
-    internal class Employee
+    public class Employee
     {
         public Guid Id { get; set; }
         public Guid IdUsuario { get; set; }

@@ -16,7 +16,6 @@ C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\bin
 C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.csproj.AssemblyReference.cache
 C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.csproj.SuggestedBindingRedirects.cache
 C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.g.resources
-C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.main.resources
 C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.MainForm.resources
 C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.Properties.Resources.resources
 C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.views.CreacionCliente.resources
@@ -28,3 +27,9 @@ C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj
 C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.csproj.CoreCompileInputs.cache
 C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.exe
 C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.pdb
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.views.Perfil.resources
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.views.CambiarContrasenia.resources
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.views.AdministrarRolesEmpleados.resources
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.views.AdministrarMarcas.resources
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.views.AdministrarModelos.resources
+C:\Users\MINEDUCYT\Desktop\Guias DAE\Proyecto-DAE-Final\Transportes_Figueroa\obj\Debug\Transportes_Figueroa.views.AdministrarEstadoVehiculos.resources

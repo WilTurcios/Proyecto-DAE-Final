@@ -402,7 +402,13 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al eliminar vehiculo: "+ ex.Message);
+                MessageBox.Show(
+                    "Error al eliminar vehiculo:\n" +
+                    "El vehiculo tiene servicios relacionados a él por lo que es imposible realizar la acción.",
+                    "Error al eliminar el vehiculo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
                 return 0;
             }
             finally

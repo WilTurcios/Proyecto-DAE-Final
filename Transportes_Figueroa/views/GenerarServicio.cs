@@ -18,14 +18,14 @@ namespace Transportes_Figueroa.views
     public partial class GenerarServicio : Form
     {
         private string _userType;
-        private Guid _employeeID;
+        private Employee _employee;
         private ClientManager ClientDB = new ClientManager();
         private EmployeeManager EmployeeDB = new EmployeeManager();
         private VehicleManager VehicleDB = new VehicleManager();
         private ServiceManager ServiceDB = new ServiceManager();
         private List<Client> _clients = new List<Client>();
         private List<Employee> _employees = new List<Employee>();
-        private List<Employee> _drivers = new List<Employee>();
+        private List<Driver> _drivers = new List<Driver>();
         private List<ServiceType> _serviceTypes = new List<ServiceType>();
         private List<Vehicle> _vehicles = new List<Vehicle>();
         private List<CarBrand> _brands = new List<CarBrand>();
@@ -35,11 +35,17 @@ namespace Transportes_Figueroa.views
         private Client _selectedClient = new Client();
         private Vehicle _selectedVehicle = new Vehicle();
         private List<Service> _clientServices = new List<Service>();
+        private Dictionary<string, int> _driversNamesAndIDs = new Dictionary<string, int>();
 
-        public GenerarServicio(string userType, Guid employeeID)
+        public GenerarServicio(string userType, Employee employee)
         {
+            if (string.IsNullOrEmpty(userType))
+            {
+                throw new ArgumentException($"'{nameof(userType)}' no puede ser nulo ni estar vacío.", nameof(userType));
+            }
+
             InitializeComponent();
-            this._employeeID = employeeID;
+            this._employee = employee ?? throw new ArgumentNullException(nameof(employee));
             this._userType = userType;
         }
 
@@ -57,7 +63,9 @@ namespace Transportes_Figueroa.views
             _models = VehicleDB.GetAllVehicleModels();
             _services = ServiceDB.GetAllServices();
 
-            _drivers = _employees.Where(employee => employee.RolId == 2).ToList();
+            _drivers = EmployeeDB.GetAllDrivers();
+
+            
 
             ListaVehiculos.View = View.Details;
             ListaClientes.View = View.Details;
@@ -67,10 +75,23 @@ namespace Transportes_Figueroa.views
                 ListaTipoServicios.Items.Add(tipoServicio.NombreServicio);
             }
 
-            foreach (Employee driver in _drivers)
+
+
+            foreach (Driver driver in _drivers)
             {
-                string nombreCompleto = driver.Nombres + " " + driver.ApellidoPaterno + " " + driver.ApellidoMaterno;
-                ListaConductores.Items.Add(nombreCompleto);
+                Employee employee = _employees.FirstOrDefault(emp => emp.Id == driver.EmpleadoID);
+
+                if (employee != null)
+                {
+                    string nombreCompleto = $"{employee.Nombres} {employee.ApellidoPaterno} {employee.ApellidoMaterno}";
+
+                    if (!_driversNamesAndIDs.ContainsKey(nombreCompleto))
+                    {
+                        _driversNamesAndIDs[nombreCompleto] = driver.Id;
+                    }
+
+                    ListaConductores.Items.Add(nombreCompleto);
+                }
             }
 
             foreach (CarBrand marca in _brands)
@@ -78,99 +99,110 @@ namespace Transportes_Figueroa.views
                 ListaMarcas.Items.Add(marca.Marca);
             }
 
-            ShowClients(_clients);
+            ShowClients(_clients, "Todos");
             ShowVehicles(_vehicles, "Todos");
         }
 
-        private void ShowClients(List<Client> clients)
+        private void ShowClients(List<Client> clients, string filtro, string valor = null)
         {
             ListaClientes.Items.Clear();
-            foreach (Client client in clients)
+            List<Client> filteredClients = clients; // Establecer la lista filtrada como la lista completa por defecto
+
+            if (filtro == "DUI")
+            {
+                filteredClients = clients.Where(c => c.DUI == valor).ToList();
+            }
+            else if (filtro == "Nombre")
+            {
+                filteredClients = clients.Where(c => (c.Nombres + " " + c.ApellidoPaterno + " " + c.ApellidoMaterno).Contains(valor)).ToList();
+            }
+
+            if(filteredClients.Count == 0)
+            {
+                filteredClients = clients;
+
+                MessageBox.Show(
+                    "No se encontraron registros.",
+                    "No encontrado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+
+            foreach (Client client in filteredClients)
             {
                 string nombreCompleto = client.Nombres + " " + client.ApellidoPaterno + " " + client.ApellidoMaterno;
                 ListViewItem cliente = new ListViewItem(nombreCompleto);
                 cliente.SubItems.Add(client.DUI);
                 cliente.SubItems.Add(client.Id.ToString("D"));
 
-
                 ListaClientes.Items.Add(cliente);
             }
         }
 
-        private void ShowVehicles(List<Vehicle> vehicles, string filtro)
+        private void ShowVehicles(List<Vehicle> vehicles, string filtro, string valor = null)
         {
-            List<Vehicle> filteredVehicles = new List<Vehicle>();
+            List<Vehicle> filteredVehicles = vehicles;
 
-            switch (filtro)
+            if(filtro.ToLower() == "marca")
             {
-                case "Todos":
-                    filteredVehicles = vehicles;
-                    break;
-                case "Marca":
-                    if (ListaMarcas.SelectedIndex != -1 && ListaModelos.SelectedIndex == -1)
-                    {
-                        string selectedMarca = ListaMarcas.SelectedItem.ToString();
-                        CarBrand selectedBrand = _brands.FirstOrDefault(b => b.Marca == selectedMarca);
-                        if (selectedBrand != null)
-                        {
-                            List<int> ListOfModelIds = _models
-                                .Where(m => m.MarcaId == selectedBrand.Id)
-                                .Select(m => m.Id)
-                                .ToList();
+                CarBrand selectedBrand = _brands.FirstOrDefault(b => b.Marca == valor);
+                if (selectedBrand != null)
+                {
+                    List<int> ListOfModelIds = _models
+                        .Where(m => m.MarcaId == selectedBrand.Id)
+                        .Select(m => m.Id)
+                        .ToList();
 
-                            if (ListOfModelIds.Count > 0)
-                            {
-                                filteredVehicles = vehicles
-                                    .Where(v => ListOfModelIds.Contains(v.ModeloId))
-                                    .ToList();
-                            }
-                            else
-                            {
-                                MessageBox.Show(
-                                    "No se encontraron registros.",
-                                    "No encontrado",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information
-                                );
-                                filteredVehicles = vehicles;
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show(
-                                "No se encontraron registros.",
-                                "No encontrado",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information
-                            );
-                            filteredVehicles = vehicles;
-                        }
-                    }
-                    break;
-                case "Modelo":
-                    if (ListaMarcas.SelectedIndex != -1 && ListaModelos.SelectedIndex != -1)
+                    if (ListOfModelIds.Count > 0)
                     {
-                        string selectedModelo = ListaModelos.SelectedItem.ToString();
-                        CarModel selectedModel = _models.FirstOrDefault(m => m.Modelo == selectedModelo);
-                        if (selectedModel != null)
-                        {
-                            filteredVehicles = vehicles
-                                .Where(v => v.ModeloId == selectedModel.Id)
-                                .ToList();
-                        }
+                        filteredVehicles = vehicles
+                            .Where(v => ListOfModelIds.Contains(v.ModeloId))
+                            .ToList();
                     }
-
-                    if (filteredVehicles.Count == 0)
+                    else
                     {
                         MessageBox.Show(
-                            "No se encontraron coincidencias.",
+                            "No se encontraron registros.",
                             "No encontrado",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
                         );
                         filteredVehicles = vehicles;
                     }
-                    break;
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "No se encontraron registros.",
+                        "No encontrado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                    filteredVehicles = vehicles;
+                }
+            }
+
+            if(filtro.ToLower() == "modelo")
+            {
+                CarModel selectedModel = _models.FirstOrDefault(m => m.Modelo == valor);
+                if (selectedModel != null)
+                {
+                    filteredVehicles = vehicles
+                        .Where(v => v.ModeloId == selectedModel.Id)
+                        .ToList();
+                }
+
+                if (filteredVehicles.Count == 0)
+                {
+                    MessageBox.Show(
+                        "No se encontraron coincidencias.",
+                        "No encontrado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                    filteredVehicles = vehicles;
+                }
             }
 
             ListaVehiculos.Items.Clear(); // Clear existing items before adding new ones
@@ -228,7 +260,7 @@ namespace Transportes_Figueroa.views
                     {
                         int servicioID = Convert.ToInt32(servicio.Cells["IDServicio"].Value);
 
-                        int affectedRows = ServiceDB.GenerateInvoice(servicioID, _employeeID);
+                        int affectedRows = ServiceDB.GenerateInvoice(servicioID, _employee.Id);
 
                         if(affectedRows > 0)
                         {
@@ -299,14 +331,14 @@ namespace Transportes_Figueroa.views
             double valorMedido = (double)txtValorMedido.Value;
 
             int selectedDriverIndex = ListaConductores.SelectedIndex;
-            Guid? driverID = null;
+            string selectedDriverName = selectedDriverIndex != -1? ListaConductores.SelectedItem.ToString() : null;
+            int? driverID = null;
 
-            if (selectedDriverIndex != -1)
+            if (_driversNamesAndIDs.ContainsKey(selectedDriverName))
             {
-                string selectedDriverName = ListaConductores.SelectedItem.ToString();
-
-                driverID =  _drivers.FirstOrDefault(driver => selectedDriverName.Contains(driver.Nombres + " " + driver.ApellidoPaterno)).Id;
+                driverID = _driversNamesAndIDs[selectedDriverName];
             }
+            
 
             int tipoServicioID = _serviceTypes.FirstOrDefault(type => type.NombreServicio == ListaTipoServicios.SelectedItem.ToString()).Id;
 
@@ -345,12 +377,41 @@ namespace Transportes_Figueroa.views
 
         private void ListaModelos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ShowVehicles(_vehicles, "Modelo");
+            string selectedModel = ListaModelos.SelectedItem.ToString().Trim();
+            int selectedModelIndex = ListaModelos.SelectedIndex;
+
+            if (string.IsNullOrEmpty(selectedModel) || selectedModelIndex == -1)
+            {
+                MessageBox.Show(
+                    "Por favor, selecciona una marca para aplicar el respectivo filtro",
+                    "Selecciona un item",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                return;
+            }
+
+            ShowVehicles(_vehicles, "Modelo", selectedModel);
         }
 
         private void ListaMarcas_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int marcaID = _brands.FirstOrDefault(brand => brand.Marca == ListaMarcas.SelectedItem.ToString()).Id;
+            string selectedBrand = ListaMarcas.SelectedItem.ToString().Trim();
+            int selectedBrandIndex = ListaMarcas.SelectedIndex;
+
+            if (string.IsNullOrEmpty(selectedBrand) || selectedBrandIndex == -1)
+            {
+                MessageBox.Show(
+                    "Por favor, selecciona una marca para aplicar el respectivo filtro",
+                    "Selecciona un item",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                return;
+            }
+            int marcaID = _brands.FirstOrDefault(brand => brand.Marca == selectedBrand).Id;
             
             foreach(CarModel model in _models)
             {
@@ -360,7 +421,7 @@ namespace Transportes_Figueroa.views
                 }
             }
 
-            ShowVehicles(_vehicles, "Marca");
+            ShowVehicles(_vehicles, "marca", selectedBrand);
         }
 
         private void ListaTipoServicios_SelectedIndexChanged(object sender, EventArgs e)
@@ -501,6 +562,45 @@ namespace Transportes_Figueroa.views
             DataGridServiciosCliente.DataSource = emptyServicesTable;
 
             DataGridServiciosCliente.Refresh();
+        }
+
+        private void btnFiltrarCliente_Click(object sender, EventArgs e)
+        {
+            if(ListaFiltrosCliente.SelectedIndex == -1)
+            {
+                MessageBox.Show(
+                    "Debes seleccionar un item de la lista de filtros antes de clicar este botón",
+                    "Selecciona un filtro",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                return;
+            }
+            string filtro = ListaFiltrosCliente.SelectedItem.ToString();
+
+
+            string valor = txtFiltroCliente.Text.Trim();
+
+            if (string.IsNullOrEmpty(valor))
+            {
+                MessageBox.Show(
+                    "Asegurate de escribir el valor correcto.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                return;
+            }
+
+            ShowClients(_clients, filtro, valor);
+        }
+
+        private void btnQuitarFiltros_Click(object sender, EventArgs e)
+        {
+            ShowVehicles(_vehicles, "Todos");
+            ShowClients(_clients, "Todos");
         }
     }
 }

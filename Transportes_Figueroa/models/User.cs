@@ -7,7 +7,7 @@ using Transportes_Figueroa.Services;
 
 namespace Transportes_Figueroa.models
 {
-    internal class User
+    public class User
     {
         public Guid Id { get; set; }
         public string Contrasenia { get; set; }

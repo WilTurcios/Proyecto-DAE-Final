@@ -53,12 +53,6 @@
     <Compile Include="Controllers\clientsController.cs" />
     <Compile Include="Controllers\employeesController.cs" />
     <Compile Include="Controllers\usersController.cs" />
-    <Compile Include="main.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="main.Designer.cs">
-      <DependentUpon>main.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +62,7 @@
     <Compile Include="Models\CarBrand.cs" />
     <Compile Include="Models\CarModel.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\Rol.cs" />
@@ -91,11 +86,42 @@
     <Compile Include="Services\VehicleManager.cs" />
     <Compile Include="Utils\ImageHandler.cs" />
     <Compile Include="Utils\PasswordEncryptor.cs" />
-    <Compile Include="views\Configuracion.cs">
+    <Compile Include="Utils\Validator.cs" />
+    <Compile Include="views\AdministrarEstadoVehiculos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="views\Configuracion.Designer.cs">
-      <DependentUpon>Configuracion.cs</DependentUpon>
+    <Compile Include="views\AdministrarEstadoVehiculos.Designer.cs">
+      <DependentUpon>AdministrarEstadoVehiculos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\AdministrarMarcas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\AdministrarMarcas.Designer.cs">
+      <DependentUpon>AdministrarMarcas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\AdministrarModelos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\AdministrarModelos.Designer.cs">
+      <DependentUpon>AdministrarModelos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\AdministrarRolesEmpleados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\AdministrarRolesEmpleados.Designer.cs">
+      <DependentUpon>AdministrarRolesEmpleados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\CambiarContrasenia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\CambiarContrasenia.Designer.cs">
+      <DependentUpon>CambiarContrasenia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\Perfil.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\Perfil.Designer.cs">
+      <DependentUpon>Perfil.cs</DependentUpon>
     </Compile>
     <Compile Include="views\CreacionCliente.cs">
       <SubType>Form</SubType>
@@ -127,9 +153,6 @@
     <Compile Include="views\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="main.resx">
-      <DependentUpon>main.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -137,6 +160,24 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\AdministrarEstadoVehiculos.resx">
+      <DependentUpon>AdministrarEstadoVehiculos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\AdministrarMarcas.resx">
+      <DependentUpon>AdministrarMarcas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\AdministrarModelos.resx">
+      <DependentUpon>AdministrarModelos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\AdministrarRolesEmpleados.resx">
+      <DependentUpon>AdministrarRolesEmpleados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\CambiarContrasenia.resx">
+      <DependentUpon>CambiarContrasenia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\Perfil.resx">
+      <DependentUpon>Perfil.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="views\CreacionCliente.resx">
       <DependentUpon>CreacionCliente.cs</DependentUpon>

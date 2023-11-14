@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Transportes_Figueroa.models;
-using Microsoft.SqlServer.Server;
+using System.Data.SqlClient;
 using System.Windows.Forms;
+using Transportes_Figueroa.models;
 using Transportes_Figueroa.Models;
-using System.Security.Permissions;
-using System.Drawing;
-using System.Security.Policy;
 
 namespace Transportes_Figueroa.controllers
 {
@@ -91,6 +84,69 @@ namespace Transportes_Figueroa.controllers
             }
 
             return employees;
+        }
+
+        public List<Driver> GetAllDrivers()
+        {
+            List<Driver> drivers = new List<Driver>();
+
+            try
+            {
+                OpenConnection();
+                string query = "SELECT * FROM conductores";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        Driver driver = new Driver();
+                        driver.Id = (int)reader["id_conductor"]; // A esta técnica de parseo se le llama CASTING
+                        driver.EmpleadoID = (Guid)reader["id_empleado"];
+                        driver.Disponibilidad = (string)reader["disponibilidad"];
+
+                        drivers.Add(driver);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al obtener los conductores: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+
+            return drivers;
+        }
+
+        public int ChangeDriverAvailability(int driverID, string availability)
+        {
+            try
+            {
+                OpenConnection();
+
+                string query = "update conductores set disponibilidad = @Disponibilidad where id_conductor = @ConductorID;";
+                using(SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@ConductorID", driverID);
+                    cmd.Parameters.AddWithValue("@Disponibilidad", availability);
+
+                    return cmd.ExecuteNonQuery();
+
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al cambiar la disponibilidad del conductor: " + ex.Message);
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
+            }
         }
 
         public int Add(Employee employee)
@@ -275,8 +331,8 @@ namespace Transportes_Figueroa.controllers
                     command.Parameters.AddWithValue("@CodigoSeguro", employee.CodigoSeguro);
                     command.Parameters.AddWithValue("@Imagen", employee.Imagen);
                     command.Parameters.AddWithValue("@Departamento", employee.Departamento);
-                    command.Parameters.AddWithValue("@Municipion", employee.Municipio);
-                    command.Parameters.AddWithValue("@Ubicacionn", employee.Ubicacion);
+                    command.Parameters.AddWithValue("@Municipio", employee.Municipio);
+                    command.Parameters.AddWithValue("@Ubicacion", employee.Ubicacion);
                     command.Parameters.AddWithValue("@Calle", employee.Calle);
                     command.Parameters.AddWithValue("@CodigoCasa", employee.CodigoCasa);
                     command.Parameters.AddWithValue("@RolID", employee.RolId);
@@ -287,7 +343,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ha ocurrido una excepción: {ex.Message}");
+                MessageBox.Show($"Ha ocurrido un error al actualizar el empleado: {ex.Message}");
             }
             finally
             {

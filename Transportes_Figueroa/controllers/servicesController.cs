@@ -57,9 +57,9 @@ namespace Transportes_Figueroa.Controllers
                         service.FechaDevolucion = (DateTime)reader["fecha_devolucion"];
                         service.ClienteId = (Guid)reader["id_cliente"];
 
-                        if (reader["id_empleado"] != DBNull.Value)
+                        if (reader["id_conductor"] != DBNull.Value)
                         {
-                            service.EmpleadoId = (Guid)reader["id_empleado"];
+                            service.ConductorID = (int)reader["id_conductor"];
                         }
                         service.VehiculoId = (int)reader["id_vehiculo"];
                         service.ValorMedido = (double)reader["valor_medido"];
@@ -145,9 +145,9 @@ namespace Transportes_Figueroa.Controllers
                             service.FechaDevolucion = (DateTime)reader["fecha_devolucion"];
                             service.ClienteId = (Guid)reader["id_cliente"];
 
-                            if (reader["id_empleado"] != DBNull.Value)
+                            if (reader["id_conductor"] != DBNull.Value)
                             {
-                                service.EmpleadoId = (Guid)reader["id_empleado"];
+                                service.ConductorID = (int)reader["id_conductor"];
                             }
                             service.VehiculoId = (int)reader["id_vehiculo"];
                             service.ValorMedido = (double)reader["valor_medido"];
@@ -179,8 +179,8 @@ namespace Transportes_Figueroa.Controllers
             try
             {
                 OpenConnection();
-                string parametters = "(fecha_solicitud, fecha_devolucion, id_cliente, id_empleado, id_vehiculo, valor_medido, id_tipo_servicio)";
-                string values = "(@FechaSolicitud, @FechaDevolucion, @ClienteID, @EmpleadoID, @VehiculoID, @ValorMedido, @TipoServicioID)";
+                string parametters = "(fecha_solicitud, fecha_devolucion, id_cliente, id_conductor, id_vehiculo, valor_medido, id_tipo_servicio)";
+                string values = "(@FechaSolicitud, @FechaDevolucion, @ClienteID, @ConductorID, @VehiculoID, @ValorMedido, @TipoServicioID)";
                 string query = $"insert into servicios {parametters} VALUES  {values}"; 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -189,7 +189,7 @@ namespace Transportes_Figueroa.Controllers
                     command.Parameters.AddWithValue("@FechaDevolucion", service.FechaDevolucion);
                     command.Parameters.AddWithValue("@ClienteID", service.ClienteId);
                     command.Parameters.AddWithValue("@VehiculoID", service.VehiculoId);
-                    command.Parameters.AddWithValue("@EmpleadoID",(Object)service.EmpleadoId ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@ConductorID",(Object)service.ConductorID ?? DBNull.Value);
                     command.Parameters.AddWithValue("@ValorMedido", service.ValorMedido);
                     command.Parameters.AddWithValue("@TipoServicioID", service.TipoServicioId);
 
@@ -232,9 +232,9 @@ namespace Transportes_Figueroa.Controllers
                             service.FechaSolicitud = (DateTime)reader["fecha_solicitud"];
                             service.FechaDevolucion = (DateTime)reader["fecha_devolucion"];
                             service.ClienteId = (Guid)reader["id_cliente"];
-                            if (reader["id_empleado"] != DBNull.Value)
+                            if (reader["id_conductor"] != DBNull.Value)
                             {
-                                service.EmpleadoId = (Guid)reader["id_empleado"];
+                                service.ConductorID = (int)reader["id_empleado"];
                             }
                             service.VehiculoId = (int)reader["id_vehiculo"];
                             service.ValorMedido = (double)reader["valor_medido"];

@@ -16,6 +16,6 @@ namespace Transportes_Figueroa.Models
         public int TipoServicioId { get; set; }
         public int VehiculoId { get; set; }
         public Guid ClienteId { get; set; }
-        public Guid? EmpleadoId { get; set; } = null;
+        public int? ConductorID { get; set; } = null;
     }
 }
