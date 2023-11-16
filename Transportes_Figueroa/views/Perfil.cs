@@ -420,14 +420,71 @@ namespace Transportes_Figueroa.views
 
         private void Actualizar_Click(object sender, EventArgs e)
         {
+            byte[] imagen;
+
+            string telefono = txtTelefono.Text;
+
+            if (Validator.IsValidPhoneNumber(telefono))
+            {
+                MessageBox.Show(
+                    "El teléfono tiene que tener un formato válido.",
+                    "Advertencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            if (ListaRolesEmpleado.SelectedIndex == -1)
+            {
+                MessageBox.Show(
+                    "Debe seleccionar un rol para el empleado",
+                    "Advertencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+            int rolID = _employeeRols.FirstOrDefault(rol => rol.Nombre == ListaRolesEmpleado.SelectedItem.ToString()).Id;
             string departamento = ListaDepartamentos.SelectedItem.ToString();
+
+            if (ListaDepartamentos.SelectedIndex == -1)
+            {
+                MessageBox.Show(
+                    "Debe seleccionar un departamento para el empleado",
+                    "Advertencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            if (ListaMunicipios.SelectedIndex == -1)
+            {
+                MessageBox.Show(
+                    "Debe seleccionar un municipio para el empleado",
+                    "Advertencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
             string municipio = ListaMunicipios.SelectedItem.ToString();
+
             string ubicacion = txtUbicacion.Text;
             string calle = txtCalle.Text;
             string codigoCasa = txtCodCasa.Text;
-            string telefono = txtTelefono.Text;
-            string contrasenia = txtContrasenia.Text;
-            byte[] imagen;
+
+            if (string.IsNullOrEmpty(ubicacion) && string.IsNullOrEmpty(calle) && string.IsNullOrEmpty(codigoCasa))
+            {
+                MessageBox.Show(
+                    "Asegurese de que todos los datos de la dirección estén rellenados.",
+                    "Advertencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
 
             if (_imagen != null && _imagen.Length > 0)
             {
@@ -485,6 +542,11 @@ namespace Transportes_Figueroa.views
             changePasswordForm.Show();
 
             txtContrasenia.Text = changePasswordForm._newPassword;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

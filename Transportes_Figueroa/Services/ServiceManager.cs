@@ -72,6 +72,30 @@ namespace Transportes_Figueroa.Services
             return ServicesDataManager.ChangeState(nuevoEstado, servicioID);
         }
 
+        public int UpdateService(
+            DateTime fechaSolicitud,
+            DateTime fechaDevolucion,
+            double valorMedido, 
+            int tipoServicioID, 
+            int vehiculoID, 
+            int servicioID,
+            int? conductorID = null
+        )
+        {
+            Service service = new Service()
+            {
+                FechaDevolucion = fechaDevolucion,
+                FechaSolicitud = fechaSolicitud,
+                ValorMedido = valorMedido,
+                VehiculoId = vehiculoID,
+                Id = servicioID,
+                TipoServicioId = tipoServicioID,
+                ConductorID = conductorID
+            };
+
+            return ServicesDataManager.Updete(service);
+        }
+
         public List<Invoice> GetAllInvoices()
         {
             return InvoicesDataManager.GetAll();
@@ -80,6 +104,11 @@ namespace Transportes_Figueroa.Services
         public List<Invoice> GetAllInvoicesByClientId(Guid clientID)
         {
             return InvoicesDataManager.GetInvoicesByClientId(clientID);
+        }
+
+        public int DeleteInvoice(int invoiceID)
+        {
+            return InvoicesDataManager.Delete(invoiceID);
         }
 
         public int GenerateInvoice(int servicioID, Guid empleadoID)

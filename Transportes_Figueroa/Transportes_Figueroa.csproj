@@ -33,6 +33,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1586.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1586.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1586.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1586.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1586.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -84,6 +102,7 @@
     <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="Services\UserManager.cs" />
     <Compile Include="Services\VehicleManager.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Utils\ImageHandler.cs" />
     <Compile Include="Utils\PasswordEncryptor.cs" />
     <Compile Include="Utils\Validator.cs" />
@@ -92,6 +111,12 @@
     </Compile>
     <Compile Include="views\AdministrarEstadoVehiculos.Designer.cs">
       <DependentUpon>AdministrarEstadoVehiculos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\AdministrarFacturas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\AdministrarFacturas.Designer.cs">
+      <DependentUpon>AdministrarFacturas.cs</DependentUpon>
     </Compile>
     <Compile Include="views\AdministrarMarcas.cs">
       <SubType>Form</SubType>
@@ -123,23 +148,23 @@
     <Compile Include="views\Perfil.Designer.cs">
       <DependentUpon>Perfil.cs</DependentUpon>
     </Compile>
-    <Compile Include="views\CreacionCliente.cs">
+    <Compile Include="views\AdministrarClientes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="views\CreacionCliente.Designer.cs">
-      <DependentUpon>CreacionCliente.cs</DependentUpon>
+    <Compile Include="views\AdministrarClientes.Designer.cs">
+      <DependentUpon>AdministrarClientes.cs</DependentUpon>
     </Compile>
-    <Compile Include="views\CrearEmpleado.cs">
+    <Compile Include="views\AdministrarEmpleados.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="views\CrearEmpleado.Designer.cs">
-      <DependentUpon>CrearEmpleado.cs</DependentUpon>
+    <Compile Include="views\AdministrarEmpleados.Designer.cs">
+      <DependentUpon>AdministrarEmpleados.cs</DependentUpon>
     </Compile>
-    <Compile Include="views\CrearVehiculo.cs">
+    <Compile Include="views\AdministrarVehiculos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="views\CrearVehiculo.Designer.cs">
-      <DependentUpon>CrearVehiculo.cs</DependentUpon>
+    <Compile Include="views\AdministrarVehiculos.Designer.cs">
+      <DependentUpon>AdministrarVehiculos.cs</DependentUpon>
     </Compile>
     <Compile Include="views\GenerarServicio.cs">
       <SubType>Form</SubType>
@@ -164,6 +189,9 @@
     <EmbeddedResource Include="views\AdministrarEstadoVehiculos.resx">
       <DependentUpon>AdministrarEstadoVehiculos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="views\AdministrarFacturas.resx">
+      <DependentUpon>AdministrarFacturas.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="views\AdministrarMarcas.resx">
       <DependentUpon>AdministrarMarcas.cs</DependentUpon>
     </EmbeddedResource>
@@ -179,14 +207,14 @@
     <EmbeddedResource Include="views\Perfil.resx">
       <DependentUpon>Perfil.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="views\CreacionCliente.resx">
-      <DependentUpon>CreacionCliente.cs</DependentUpon>
+    <EmbeddedResource Include="views\AdministrarClientes.resx">
+      <DependentUpon>AdministrarClientes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="views\CrearEmpleado.resx">
-      <DependentUpon>CrearEmpleado.cs</DependentUpon>
+    <EmbeddedResource Include="views\AdministrarEmpleados.resx">
+      <DependentUpon>AdministrarEmpleados.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="views\CrearVehiculo.resx">
-      <DependentUpon>CrearVehiculo.cs</DependentUpon>
+    <EmbeddedResource Include="views\AdministrarVehiculos.resx">
+      <DependentUpon>AdministrarVehiculos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="views\GenerarServicio.resx">
       <DependentUpon>GenerarServicio.cs</DependentUpon>
@@ -194,6 +222,7 @@
     <EmbeddedResource Include="views\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -226,6 +255,19 @@
     <Resource Include="Resources\left-arrow-icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\down-arrow.png" />
     <Content Include="Resources\right-arrow-icon.png" />
     <None Include="Resources\right-arrow.png" />

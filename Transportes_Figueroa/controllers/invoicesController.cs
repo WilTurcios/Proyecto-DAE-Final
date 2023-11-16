@@ -102,6 +102,33 @@ namespace Transportes_Figueroa.Controllers
             return affectedRows;
         }
 
+
+        public int Delete(int invoiceID)
+        {
+            int affectedRows = 0;
+            try
+            {
+                OpenConnection();
+                string query = "delete from facturas where id_factura = @InvoiceID;";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@InvoiceID", invoiceID);
+
+                    affectedRows = command.ExecuteNonQuery();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error al eliminar la factura: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+
+            return affectedRows;
+        }
         public List<Invoice> GetInvoicesByClientId(Guid clienteID)
         {
             List<Invoice> invoices = new List<Invoice>();

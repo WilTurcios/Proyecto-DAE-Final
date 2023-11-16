@@ -46,11 +46,10 @@
             this.btnServicios = new System.Windows.Forms.Button();
             this.btnGestionServicios = new System.Windows.Forms.Button();
             this.PanelGestionServicios = new System.Windows.Forms.Panel();
-            this.button11 = new System.Windows.Forms.Button();
+            this.btnGestionarFacturas = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
             this.btnConfiguracion = new System.Windows.Forms.Button();
             this.PanelConfiguracion = new System.Windows.Forms.Panel();
-            this.button14 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.FooterPanel = new System.Windows.Forms.Panel();
             this.ChildFormContainer = new System.Windows.Forms.Panel();
@@ -359,28 +358,29 @@
             this.PanelGestionServicios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelGestionServicios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(126)))), ((int)(((byte)(141)))), ((int)(((byte)(172)))));
-            this.PanelGestionServicios.Controls.Add(this.button11);
+            this.PanelGestionServicios.Controls.Add(this.btnGestionarFacturas);
             this.PanelGestionServicios.Controls.Add(this.button12);
             this.PanelGestionServicios.Location = new System.Drawing.Point(3, 641);
             this.PanelGestionServicios.Name = "PanelGestionServicios";
             this.PanelGestionServicios.Size = new System.Drawing.Size(241, 100);
             this.PanelGestionServicios.TabIndex = 9;
             // 
-            // button11
+            // btnGestionarFacturas
             // 
-            this.button11.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button11.FlatAppearance.BorderSize = 0;
-            this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button11.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.button11.Location = new System.Drawing.Point(0, 32);
-            this.button11.Name = "button11";
-            this.button11.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
-            this.button11.Size = new System.Drawing.Size(241, 32);
-            this.button11.TabIndex = 8;
-            this.button11.Text = "button11";
-            this.button11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button11.UseVisualStyleBackColor = true;
+            this.btnGestionarFacturas.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnGestionarFacturas.FlatAppearance.BorderSize = 0;
+            this.btnGestionarFacturas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGestionarFacturas.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGestionarFacturas.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.btnGestionarFacturas.Location = new System.Drawing.Point(0, 32);
+            this.btnGestionarFacturas.Name = "btnGestionarFacturas";
+            this.btnGestionarFacturas.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
+            this.btnGestionarFacturas.Size = new System.Drawing.Size(241, 32);
+            this.btnGestionarFacturas.TabIndex = 8;
+            this.btnGestionarFacturas.Text = "Gestionar Facturas";
+            this.btnGestionarFacturas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGestionarFacturas.UseVisualStyleBackColor = true;
+            this.btnGestionarFacturas.Click += new System.EventHandler(this.btnGestionarFacturas_Click);
             // 
             // button12
             // 
@@ -426,28 +426,11 @@
             this.PanelConfiguracion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelConfiguracion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(126)))), ((int)(((byte)(141)))), ((int)(((byte)(172)))));
-            this.PanelConfiguracion.Controls.Add(this.button14);
             this.PanelConfiguracion.Controls.Add(this.button15);
             this.PanelConfiguracion.Location = new System.Drawing.Point(3, 782);
             this.PanelConfiguracion.Name = "PanelConfiguracion";
             this.PanelConfiguracion.Size = new System.Drawing.Size(241, 100);
             this.PanelConfiguracion.TabIndex = 11;
-            // 
-            // button14
-            // 
-            this.button14.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button14.FlatAppearance.BorderSize = 0;
-            this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button14.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button14.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.button14.Location = new System.Drawing.Point(0, 32);
-            this.button14.Name = "button14";
-            this.button14.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
-            this.button14.Size = new System.Drawing.Size(241, 32);
-            this.button14.TabIndex = 8;
-            this.button14.Text = "button14";
-            this.button14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button14.UseVisualStyleBackColor = true;
             // 
             // button15
             // 
@@ -494,6 +477,7 @@
             this.Controls.Add(this.ChildFormContainer);
             this.Controls.Add(this.FooterPanel);
             this.Controls.Add(this.MenuPanel);
+            this.IsMdiContainer = true;
             this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "MainForm";
             this.Text = "MainForm";
@@ -529,11 +513,10 @@
         private System.Windows.Forms.Button btnServicios;
         private System.Windows.Forms.Button btnGestionServicios;
         private System.Windows.Forms.Panel PanelGestionServicios;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button btnGestionarFacturas;
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.Button btnConfiguracion;
         private System.Windows.Forms.Panel PanelConfiguracion;
-        private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button btnAdministrarModelos;
         private System.Windows.Forms.Button btnAdministrarEstadoVehiculo;

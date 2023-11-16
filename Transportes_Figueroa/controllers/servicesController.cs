@@ -290,7 +290,8 @@ namespace Transportes_Figueroa.Controllers
                 OpenConnection();
                 string query = "update services set " +
                                "fecha_solicitud = @FechaSolicitud, fecha_devolucion = @FechaDevolucion, " +
-                               "id_vehiculo = @VehiculoID, valor_medido = @ValorMedido " +
+                               "id_vehiculo = @VehiculoID, valor_medido = @ValorMedido, " +
+                               "id_tipo_servicio = @TipoServicioID, id_conductor = @ConductorID "+
                                "where id_servicio = @ServicioID;";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -301,6 +302,8 @@ namespace Transportes_Figueroa.Controllers
                     command.Parameters.AddWithValue("@FechaDevolucion", service.FechaDevolucion);
                     command.Parameters.AddWithValue("@VehiculoID", service.VehiculoId);
                     command.Parameters.AddWithValue("@ValorMedido", service.ValorMedido);
+                    command.Parameters.AddWithValue("@TipoServicioID", service.TipoServicioId);
+                    command.Parameters.AddWithValue("@ConductorID", (Object)service.ConductorID ?? DBNull.Value);
 
                     affectedRows = command.ExecuteNonQuery();
 

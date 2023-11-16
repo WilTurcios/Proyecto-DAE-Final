@@ -65,7 +65,7 @@ namespace Transportes_Figueroa.views
 
             _drivers = EmployeeDB.GetAllDrivers();
 
-            
+            ResetVehiclesAndDriversAvailability(_vehicles, _drivers);
 
             ListaVehiculos.View = View.Details;
             ListaClientes.View = View.Details;
@@ -77,7 +77,7 @@ namespace Transportes_Figueroa.views
 
 
 
-            foreach (Driver driver in _drivers)
+            foreach (Driver driver in _drivers.Where(c => c.Disponibilidad == "Disponible"))
             {
                 Employee employee = _employees.FirstOrDefault(emp => emp.Id == driver.EmpleadoID);
 
@@ -99,9 +99,50 @@ namespace Transportes_Figueroa.views
                 ListaMarcas.Items.Add(marca.Marca);
             }
 
+            List<Vehicle> vehiclesToShow = _vehicles.Where(v => v.Disponibilidad == "Disponible").ToList();
             ShowClients(_clients, "Todos");
-            ShowVehicles(_vehicles, "Todos");
+            ShowVehicles(vehiclesToShow, "Todos");
+
         }
+
+        private void ResetVehiclesAndDriversAvailability(List<Vehicle> vehicles, List<Driver> drivers)
+        {
+            if (_services.Count == 0 || vehicles.Count == 0 || drivers.Count == 0)
+                return;
+
+            bool changeDrivers = !drivers.Any(d => d.Disponibilidad != "Disponible");
+            bool changeVehicles = !vehicles.Any(v => v.Disponibilidad != "Disponible");
+
+            foreach (Service service in _services)
+            {
+                if (service.FechaDevolucion <= DateTime.Now)
+                {
+                    if (changeDrivers)
+                    {
+                        string serviceType = _serviceTypes.First(type => type.Id == service.TipoServicioId).NombreServicio;
+
+                        if (serviceType == "Transporte de cargas")
+                            ChangeDriverAvailability((int)service.ConductorID);
+                    }
+
+                    if (changeVehicles)
+                        ChangeVehicleAvailability(service.VehiculoId);
+                }
+            }
+        }
+
+        private void ChangeDriverAvailability(int driverId)
+        {
+            Driver assignDriver = _drivers.First(d => d.Id == driverId);
+            EmployeeDB.ChangeDriverAvailability(assignDriver.Id, "Disponible");
+        }
+
+        private void ChangeVehicleAvailability(int vehicleId)
+        {
+            Vehicle assignVehicle = _vehicles.First(v => v.Id == vehicleId);
+            VehicleDB.ChangeVehicleAvailability(assignVehicle.Id, "Disponible");
+        }
+
 
         private void ShowClients(List<Client> clients, string filtro, string valor = null)
         {
@@ -117,7 +158,7 @@ namespace Transportes_Figueroa.views
                 filteredClients = clients.Where(c => (c.Nombres + " " + c.ApellidoPaterno + " " + c.ApellidoMaterno).Contains(valor)).ToList();
             }
 
-            if(filteredClients.Count == 0)
+            if (filteredClients.Count == 0)
             {
                 filteredClients = clients;
 
@@ -144,7 +185,7 @@ namespace Transportes_Figueroa.views
         {
             List<Vehicle> filteredVehicles = vehicles;
 
-            if(filtro.ToLower() == "marca")
+            if (filtro.ToLower() == "marca")
             {
                 CarBrand selectedBrand = _brands.FirstOrDefault(b => b.Marca == valor);
                 if (selectedBrand != null)
@@ -183,7 +224,7 @@ namespace Transportes_Figueroa.views
                 }
             }
 
-            if(filtro.ToLower() == "modelo")
+            if (filtro.ToLower() == "modelo")
             {
                 CarModel selectedModel = _models.FirstOrDefault(m => m.Modelo == valor);
                 if (selectedModel != null)
@@ -231,7 +272,7 @@ namespace Transportes_Figueroa.views
             clientServices.Columns.Add("fecha_devolucion");
             clientServices.Columns.Add("monto");
 
-            foreach(Service service in services.Where(serv => serv.ClienteId == clientID).ToList())
+            foreach (Service service in services.Where(serv => serv.ClienteId == clientID).ToList())
             {
                 DataRow fila = clientServices.NewRow();
                 decimal monto = (Convert.ToDecimal(service.ValorMedido) * _vehicles.FirstOrDefault(v => v.Id == service.VehiculoId).Costo);
@@ -250,9 +291,9 @@ namespace Transportes_Figueroa.views
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            if(DataGridServiciosCliente.Rows.Count > 0)
+            if (DataGridServiciosCliente.Rows.Count > 0)
             {
-                foreach(DataGridViewRow servicio in DataGridServiciosCliente.Rows)
+                foreach (DataGridViewRow servicio in DataGridServiciosCliente.Rows)
                 {
                     bool isChecked = Convert.ToBoolean(servicio.Cells["IDAccionServicio"].Value);
 
@@ -262,11 +303,11 @@ namespace Transportes_Figueroa.views
 
                         int affectedRows = ServiceDB.GenerateInvoice(servicioID, _employee.Id);
 
-                        if(affectedRows > 0)
+                        if (affectedRows > 0)
                         {
                             MessageBox.Show(
                                 "La factura ha sido creada correctamente.",
-                                "Éxito", 
+                                "Éxito",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information
                             );
@@ -310,6 +351,15 @@ namespace Transportes_Figueroa.views
                         }
                         else
                         {
+                            DialogResult confirmation = MessageBox.Show(
+                                "¿Está seguro que deseea cancelar este servicio?",
+                                "Confirmación",
+                                MessageBoxButtons.OKCancel,
+                                MessageBoxIcon.Information
+                            );
+
+                            if (confirmation == DialogResult.Cancel) return;
+                            
                             ServiceDB.ChangeServiceState("Cancelado", serviceToCancel.Id);
 
                             MessageBox.Show(
@@ -322,29 +372,97 @@ namespace Transportes_Figueroa.views
                     }
                 }
             }
+
+            ResetVehiclesAndDriversAvailability(_vehicles, _drivers);
+            this.Refresh();
         }
 
         private void AgregarServicio_Click(object sender, EventArgs e)
         {
+            ResetVehiclesAndDriversAvailability(_vehicles, _drivers);
+
+            // Validación de la fecha de devolución
+            if (txtFechaDevolucion.Value < txtFechaSolicitud.Value)
+            {
+                MessageBox.Show("La fecha de devolución debe ser posterior a la fecha de solicitud.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (txtFechaSolicitud.Value < DateTime.Now)
+            {
+                MessageBox.Show("La fecha de solicitud no puede ser una fecha que ya ha pasado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             DateTime fechaSolicitud = txtFechaSolicitud.Value;
             DateTime fechaDevolucion = txtFechaDevolucion.Value;
+
+
+            // Validación del valor medido
+            if (txtValorMedido.Value <= 0)
+            {
+                MessageBox.Show("El valor medido debe ser mayor que cero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             double valorMedido = (double)txtValorMedido.Value;
 
-            int selectedDriverIndex = ListaConductores.SelectedIndex;
-            string selectedDriverName = selectedDriverIndex != -1? ListaConductores.SelectedItem.ToString() : null;
-            int? driverID = null;
+            // Validación del conductor seleccionado
+            string selectedDriverName = ListaConductores.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedDriverName))
+            {
+                MessageBox.Show("Debe seleccionar un conductor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
+            int? driverID = null;
             if (_driversNamesAndIDs.ContainsKey(selectedDriverName))
             {
                 driverID = _driversNamesAndIDs[selectedDriverName];
             }
-            
 
-            int tipoServicioID = _serviceTypes.FirstOrDefault(type => type.NombreServicio == ListaTipoServicios.SelectedItem.ToString()).Id;
+            // Validación del tipo de servicio seleccionado
+            string selectedServiceType = ListaTipoServicios.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedServiceType) || _serviceTypes.All(type => type.NombreServicio != selectedServiceType))
+            {
+                MessageBox.Show("Debe seleccionar un tipo de servicio válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int tipoServicioID = _serviceTypes.First(type => type.NombreServicio == selectedServiceType).Id;
+
 
             int affectedRows = ServiceDB.AddService(fechaSolicitud, fechaDevolucion, valorMedido, tipoServicioID, _selectedVehicle.Id, _selectedClient.Id, driverID);
 
-            if(affectedRows == 0)
+            if (driverID != null) EmployeeDB.ChangeDriverAvailability((int)driverID, "No disponible");
+
+            _drivers = EmployeeDB.GetAllDrivers();
+
+            if(_selectedVehicle != null) VehicleDB.ChangeVehicleAvailability(_selectedVehicle.Id, "No disponible");
+
+            _vehicles = VehicleDB.GetAllVehicles();
+
+            foreach (Driver driver in _drivers.Where(c => c.Disponibilidad == "Disponible"))
+            {
+                Employee employee = _employees.FirstOrDefault(emp => emp.Id == driver.EmpleadoID);
+
+                if (employee != null)
+                {
+                    string nombreCompleto = $"{employee.Nombres} {employee.ApellidoPaterno} {employee.ApellidoMaterno}";
+
+                    if (!_driversNamesAndIDs.ContainsKey(nombreCompleto))
+                    {
+                        _driversNamesAndIDs[nombreCompleto] = driver.Id;
+                    }
+
+                    ListaConductores.Items.Add(nombreCompleto);
+                }
+            }
+
+            List<Vehicle> vehiclesToShow = _vehicles.Where(v => v.Disponibilidad == "Disponible").ToList();
+            ShowVehicles(vehiclesToShow, "Todos");
+
+            if (affectedRows == 0)
             {
                 MessageBox.Show(
                     "Ha ocurrido un error al añadir registro, intentelo de nuevo.",
@@ -368,6 +486,7 @@ namespace Transportes_Figueroa.views
                     MessageBoxIcon.Information
              );
 
+            this.Refresh();
         }
 
         private void Salir_Click(object sender, EventArgs e)
@@ -412,10 +531,10 @@ namespace Transportes_Figueroa.views
                 return;
             }
             int marcaID = _brands.FirstOrDefault(brand => brand.Marca == selectedBrand).Id;
-            
-            foreach(CarModel model in _models)
+
+            foreach (CarModel model in _models)
             {
-                if(model.MarcaId == marcaID)
+                if (model.MarcaId == marcaID)
                 {
                     ListaModelos.Items.Add(model.Modelo);
                 }
@@ -428,7 +547,7 @@ namespace Transportes_Figueroa.views
         {
             string tipoServicio = ListaTipoServicios.SelectedItem.ToString();
 
-            if(tipoServicio == "Transporte de cargas")
+            if (tipoServicio == "Transporte de cargas")
             {
                 ListaConductores.Enabled = true;
             }
@@ -441,7 +560,7 @@ namespace Transportes_Figueroa.views
 
         private void ListaVehiculos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void SeleccionarVehiculo_Click(object sender, EventArgs e)
@@ -466,9 +585,9 @@ namespace Transportes_Figueroa.views
             if (!isItemSelected)
             {
                 MessageBox.Show(
-                    "Por favor seleccione un cliente de la lista antes de clicar.", 
-                    "Error", 
-                    MessageBoxButtons.OK, 
+                    "Por favor seleccione un cliente de la lista antes de clicar.",
+                    "Error",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
                 return;
@@ -534,12 +653,12 @@ namespace Transportes_Figueroa.views
             {
                 return;
             }
-            
+
         }
 
         private void QuitarSeleccionVehiculo_Click(object sender, EventArgs e)
         {
-            foreach(ListViewItem item in ListaVehiculos.SelectedItems)
+            foreach (ListViewItem item in ListaVehiculos.SelectedItems)
             {
                 item.Selected = false;
             }
@@ -553,7 +672,7 @@ namespace Transportes_Figueroa.views
             }
 
             DataTable emptyServicesTable = new DataTable();
-            
+
             emptyServicesTable.Columns.Add("id_servicio");
             emptyServicesTable.Columns.Add("tipo_servicio");
             emptyServicesTable.Columns.Add("fecha_solicitud");
@@ -566,7 +685,7 @@ namespace Transportes_Figueroa.views
 
         private void btnFiltrarCliente_Click(object sender, EventArgs e)
         {
-            if(ListaFiltrosCliente.SelectedIndex == -1)
+            if (ListaFiltrosCliente.SelectedIndex == -1)
             {
                 MessageBox.Show(
                     "Debes seleccionar un item de la lista de filtros antes de clicar este botón",
@@ -601,6 +720,132 @@ namespace Transportes_Figueroa.views
         {
             ShowVehicles(_vehicles, "Todos");
             ShowClients(_clients, "Todos");
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            if (txtFechaDevolucion.Value < txtFechaSolicitud.Value)
+            {
+                MessageBox.Show("La fecha de devolución debe ser posterior a la fecha de solicitud.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (txtFechaSolicitud.Value < DateTime.Now)
+            {
+                MessageBox.Show("La fecha de solicitud no puede ser una fecha que ya ha pasado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DateTime fechaSolicitud = txtFechaSolicitud.Value;
+            DateTime fechaDevolucion = txtFechaDevolucion.Value;
+
+
+            // Validación del valor medido
+            if (txtValorMedido.Value <= 0)
+            {
+                MessageBox.Show("El valor medido debe ser mayor que cero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            double valorMedido = (double)txtValorMedido.Value;
+
+            // Validación del conductor seleccionado
+            string selectedDriverName = ListaConductores.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedDriverName))
+            {
+                MessageBox.Show("Debe seleccionar un conductor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int? driverID = null;
+            if (ListaConductores.SelectedIndex != -1)
+            {
+                if (_driversNamesAndIDs.ContainsKey(selectedDriverName))
+                {
+                    driverID = _driversNamesAndIDs[selectedDriverName];
+                }
+
+
+                // Validación del tipo de servicio seleccionado
+                string selectedServiceType = ListaTipoServicios.SelectedItem?.ToString();
+                if (string.IsNullOrEmpty(selectedServiceType) || _serviceTypes.All(type => type.NombreServicio != selectedServiceType))
+                {
+                    MessageBox.Show("Debe seleccionar un tipo de servicio válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                int selectedRows = 0;
+                int servicioID = 0;
+                int tipoServicioID = _serviceTypes.First(type => type.NombreServicio == selectedServiceType).Id;
+
+                foreach (DataGridViewRow row in DataGridServiciosCliente.Rows)
+                {
+                    DataGridViewCheckBoxCell cell = row.Cells["IDAccionServicio"] as DataGridViewCheckBoxCell;
+
+                    if (cell != null)
+                    {
+                        bool isChecked = (bool)cell.EditedFormattedValue;
+
+                        if (isChecked)
+                        {
+                            selectedRows += 1;
+
+                            if (selectedRows > 1)
+                            {
+                                MessageBox.Show("No puedes actualizar dos registros a la vez.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return; // Salir del evento si se seleccionan más de una fila
+                            }
+
+                            if (row.Cells["IDServicio"].Value != null && int.TryParse(row.Cells["IDServicio"].Value.ToString(), out servicioID))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                MessageBox.Show("El ID del vehículo no es válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return; // Salir del evento si el ID no es válido
+                            }
+                        }
+                    }
+                }
+
+
+                int affectedRows = ServiceDB.UpdateService(fechaSolicitud, fechaDevolucion, valorMedido, tipoServicioID, _selectedVehicle.Id, servicioID, driverID);
+
+                if (affectedRows == 0)
+                {
+                    MessageBox.Show(
+                        "Ha ocurrido un error al actualizar el servicio, intentelo de nuevo.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+
+                    return;
+                }
+
+
+                _services = ServiceDB.GetAllServices();
+                _clientServices = ServiceDB.GetAllServicesByClientId(_selectedClient.Id);
+                ShowClientServices(_services, _selectedClient.Id);
+
+                MessageBox.Show(
+                        "El servicio ha sido actualizado correctamente.",
+                        "Éxito",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                 );
+            }
+
+            ResetVehiclesAndDriversAvailability(_vehicles, _drivers);
+            this.Refresh();
+        }
+
+        private void btnRecargar_Click(object sender, EventArgs e)
+        {
+            ResetVehiclesAndDriversAvailability(_vehicles, _drivers);
+            this.Refresh();
+
         }
     }
 }

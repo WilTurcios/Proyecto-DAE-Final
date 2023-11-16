@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Transportes_Figueroa.models;
+using Transportes_Figueroa.Models;
+using Transportes_Figueroa.Services;
 using Transportes_Figueroa.views;
 
 namespace Transportes_Figueroa
@@ -15,8 +17,11 @@ namespace Transportes_Figueroa
     public partial class MainForm : Form
     {
         private string _userType;
+        private string _rolDeEmpleado;
         private Employee _employee;
+        private List<Rol> _employeeRols = new List<Rol>();
         private User _user;
+        private EmployeeManager EmployeeDB = new EmployeeManager();
         private Form _activeForm = null;
         public MainForm(string userType, Employee employee, User user)
         {
@@ -29,7 +34,6 @@ namespace Transportes_Figueroa
         private void button6_Click(object sender, EventArgs e)
         {
             AdministrarRolesEmpleados administrarRolesEmpleadosForm = new AdministrarRolesEmpleados();
-
             OpenChildForm(administrarRolesEmpleadosForm);
         }
 
@@ -40,7 +44,43 @@ namespace Transportes_Figueroa
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            SqlServerTypes.Utilities.LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory);
+
+            _employeeRols = EmployeeDB.GetRols();
+            _rolDeEmpleado = _employeeRols.First(rol => rol.Id == _employee.RolId).Nombre.ToLower();
             CustomizePanelsDesign();
+
+            if(!_rolDeEmpleado.Contains("recursos humanos") && _userType.ToLower() != "administrador")
+            {
+                btnGestionEmpleados.Visible = false;
+                btnGestionEmpleados.Enabled = false;
+                PanelGestionEmpleados.Visible = false;
+                PanelGestionEmpleados.Enabled = false;
+            }
+
+            if (!_rolDeEmpleado.Contains("atencion al cliente") && _userType != "Administrador")
+            {
+                btnGestionClientes.Visible = false;
+                btnGestionClientes.Enabled = false;
+                PanelGestionClientes.Visible = false;
+                PanelGestionClientes.Enabled = false;
+            }
+
+            if (!_rolDeEmpleado.Contains("atencion al cliente") && _userType != "Administrador")
+            {
+                btnGestionServicios.Visible = false;
+                btnGestionServicios.Enabled = false;
+                PanelGestionServicios.Visible = false;
+                PanelGestionServicios.Enabled = false;
+            }
+
+            if (!_rolDeEmpleado.Contains("supervisor motoristas") && !_rolDeEmpleado.Contains("administración") && _userType != "Administrador")
+            {
+                btnGestionVehiculos.Visible = false;
+                btnGestionVehiculos.Enabled = false;
+                PanelGestionVehiculos.Visible = false;
+                PanelGestionVehiculos.Enabled = false;
+            }
         }
 
         private void CustomizePanelsDesign()
@@ -121,7 +161,7 @@ namespace Transportes_Figueroa
 
         private void button4_Click(object sender, EventArgs e)
         {
-            CreacionCliente clientsForm = new CreacionCliente();
+            AdministrarClientes clientsForm = new AdministrarClientes();
 
             OpenChildForm(clientsForm);
         }
@@ -142,14 +182,14 @@ namespace Transportes_Figueroa
 
         private void btnAdministrarEmpleados_Click(object sender, EventArgs e)
         {
-            CrearEmpleado employeesForm = new CrearEmpleado();
+            AdministrarEmpleados employeesForm = new AdministrarEmpleados();
 
             OpenChildForm(employeesForm);
         }
 
         private void btnServicios_Click(object sender, EventArgs e)
         {
-            CrearVehiculo vehiclesForm = new CrearVehiculo();
+            AdministrarVehiculos vehiclesForm = new AdministrarVehiculos();
 
             OpenChildForm(vehiclesForm);
         }
@@ -173,6 +213,13 @@ namespace Transportes_Figueroa
             AdministrarEstadoVehiculos administrarEstadoVehiculos = new AdministrarEstadoVehiculos();
 
             OpenChildForm(administrarEstadoVehiculos);
+        }
+
+        private void btnGestionarFacturas_Click(object sender, EventArgs e)
+        {
+            AdministrarFacturas FormFacturas = new AdministrarFacturas();
+
+            OpenChildForm(FormFacturas);
         }
     }
 }
