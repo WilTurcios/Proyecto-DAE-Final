@@ -221,5 +221,10 @@ namespace Transportes_Figueroa
 
             OpenChildForm(FormFacturas);
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.MenuPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.LogoPanel = new System.Windows.Forms.Panel();
             this.btnGestionEmpleados = new System.Windows.Forms.Button();
             this.PanelGestionEmpleados = new System.Windows.Forms.Panel();
             this.btnAdministrarRoles = new System.Windows.Forms.Button();
@@ -53,12 +52,15 @@
             this.button15 = new System.Windows.Forms.Button();
             this.FooterPanel = new System.Windows.Forms.Panel();
             this.ChildFormContainer = new System.Windows.Forms.Panel();
+            this.LogoPanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.MenuPanel.SuspendLayout();
             this.PanelGestionEmpleados.SuspendLayout();
             this.PanelGestionClientes.SuspendLayout();
             this.PanelGestionVehiculos.SuspendLayout();
             this.PanelGestionServicios.SuspendLayout();
             this.PanelConfiguracion.SuspendLayout();
+            this.LogoPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuPanel
@@ -81,16 +83,6 @@
             this.MenuPanel.Name = "MenuPanel";
             this.MenuPanel.Size = new System.Drawing.Size(250, 561);
             this.MenuPanel.TabIndex = 0;
-            // 
-            // LogoPanel
-            // 
-            this.LogoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LogoPanel.BackColor = System.Drawing.Color.Transparent;
-            this.LogoPanel.Location = new System.Drawing.Point(3, 3);
-            this.LogoPanel.Name = "LogoPanel";
-            this.LogoPanel.Size = new System.Drawing.Size(241, 151);
-            this.LogoPanel.TabIndex = 3;
             // 
             // btnGestionEmpleados
             // 
@@ -469,6 +461,30 @@
             this.ChildFormContainer.TabIndex = 2;
             this.ChildFormContainer.Paint += new System.Windows.Forms.PaintEventHandler(this.ContentPanel_Paint);
             // 
+            // LogoPanel
+            // 
+            this.LogoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LogoPanel.BackColor = System.Drawing.Color.Transparent;
+            this.LogoPanel.BackgroundImage = global::Transportes_Figueroa.Properties.Resources.image;
+            this.LogoPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.LogoPanel.Controls.Add(this.label1);
+            this.LogoPanel.Location = new System.Drawing.Point(3, 3);
+            this.LogoPanel.Name = "LogoPanel";
+            this.LogoPanel.Size = new System.Drawing.Size(241, 151);
+            this.LogoPanel.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Maroon;
+            this.label1.Location = new System.Drawing.Point(18, 102);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(202, 25);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Transportes Figueroa";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -489,6 +505,8 @@
             this.PanelGestionVehiculos.ResumeLayout(false);
             this.PanelGestionServicios.ResumeLayout(false);
             this.PanelConfiguracion.ResumeLayout(false);
+            this.LogoPanel.ResumeLayout(false);
+            this.LogoPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -520,5 +538,6 @@
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button btnAdministrarModelos;
         private System.Windows.Forms.Button btnAdministrarEstadoVehiculo;
+        private System.Windows.Forms.Label label1;
     }
 }

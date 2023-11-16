@@ -12,6 +12,13 @@ using Transportes_Figueroa.controllers;
 using Transportes_Figueroa.models;
 using Transportes_Figueroa.Models;
 using Transportes_Figueroa.Services;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using System.IO;
+using System.Net.Mail;
+using System.Net;
+using System.Diagnostics;
 
 namespace Transportes_Figueroa.views
 {
@@ -110,36 +117,36 @@ namespace Transportes_Figueroa.views
             if (_services.Count == 0 || vehicles.Count == 0 || drivers.Count == 0)
                 return;
 
-            bool changeDrivers = !drivers.Any(d => d.Disponibilidad != "Disponible");
-            bool changeVehicles = !vehicles.Any(v => v.Disponibilidad != "Disponible");
+            bool changeDrivers = drivers.Any(d => d.Disponibilidad != "Disponible");
+            bool changeVehicles = vehicles.Any(v => v.Disponibilidad != "Disponible");
 
             foreach (Service service in _services)
             {
-                if (service.FechaDevolucion <= DateTime.Now)
+                if (service.FechaDevolucion.Hour <= DateTime.Now.Hour && service.FechaDevolucion.Date <= DateTime.Now.Date)
                 {
                     if (changeDrivers)
                     {
                         string serviceType = _serviceTypes.First(type => type.Id == service.TipoServicioId).NombreServicio;
 
-                        if (serviceType == "Transporte de cargas")
-                            ChangeDriverAvailability((int)service.ConductorID);
+                        if (serviceType.ToLower() == "transporte de cargas")
+                            ChangeDriverAvailability(drivers, (int)service.ConductorID);
                     }
 
                     if (changeVehicles)
-                        ChangeVehicleAvailability(service.VehiculoId);
+                        ChangeVehicleAvailability(vehicles, service.VehiculoId);
                 }
             }
         }
 
-        private void ChangeDriverAvailability(int driverId)
+        private void ChangeDriverAvailability(List<Driver> drivers, int driverId)
         {
-            Driver assignDriver = _drivers.First(d => d.Id == driverId);
+            Driver assignDriver = drivers.First(d => d.Id == driverId);
             EmployeeDB.ChangeDriverAvailability(assignDriver.Id, "Disponible");
         }
 
-        private void ChangeVehicleAvailability(int vehicleId)
+        private void ChangeVehicleAvailability(List<Vehicle> vehicles, int vehicleId)
         {
-            Vehicle assignVehicle = _vehicles.First(v => v.Id == vehicleId);
+            Vehicle assignVehicle = vehicles.First(v => v.Id == vehicleId);
             VehicleDB.ChangeVehicleAvailability(assignVehicle.Id, "Disponible");
         }
 
@@ -303,14 +310,18 @@ namespace Transportes_Figueroa.views
 
                         int affectedRows = ServiceDB.GenerateInvoice(servicioID, _employee.Id);
 
+                        Invoice insertedInvoice = ServiceDB.GetInviceByServiceID(servicioID);
+                        Service service = _services.First(s => s.Id == insertedInvoice.ServicioId);
+                        Client client = _clients.First(c => c.Id == service.ClienteId);
+                        Vehicle vehicle = _vehicles.First(v => v.Id == service.VehiculoId);
+                        string serviceType = _serviceTypes.First(type => type.Id == service.TipoServicioId).NombreServicio;
+                        string clientName = $"{client.Nombres} {client.ApellidoPaterno} {client.ApellidoMaterno}";
+
                         if (affectedRows > 0)
                         {
-                            MessageBox.Show(
-                                "La factura ha sido creada correctamente.",
-                                "Éxito",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information
-                            );
+                            PrevisualizacionFactura prevFactura = new PrevisualizacionFactura(insertedInvoice, service, vehicle, serviceType, clientName, client.Email);
+
+                            prevFactura.Show();
                         }
                         else
                         {
@@ -408,14 +419,11 @@ namespace Transportes_Figueroa.views
             double valorMedido = (double)txtValorMedido.Value;
 
             // Validación del conductor seleccionado
-            string selectedDriverName = ListaConductores.SelectedItem?.ToString();
-            if (string.IsNullOrEmpty(selectedDriverName))
-            {
-                MessageBox.Show("Debe seleccionar un conductor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            string selectedDriverName = ListaConductores.SelectedItem?.ToString() ?? "no existe";
 
             int? driverID = null;
+
+
             if (_driversNamesAndIDs.ContainsKey(selectedDriverName))
             {
                 driverID = _driversNamesAndIDs[selectedDriverName];
@@ -436,11 +444,12 @@ namespace Transportes_Figueroa.views
 
             if (driverID != null) EmployeeDB.ChangeDriverAvailability((int)driverID, "No disponible");
 
-            _drivers = EmployeeDB.GetAllDrivers();
+            
 
             if(_selectedVehicle != null) VehicleDB.ChangeVehicleAvailability(_selectedVehicle.Id, "No disponible");
 
             _vehicles = VehicleDB.GetAllVehicles();
+            _drivers = EmployeeDB.GetAllDrivers();
 
             foreach (Driver driver in _drivers.Where(c => c.Disponibilidad == "Disponible"))
             {
@@ -486,7 +495,7 @@ namespace Transportes_Figueroa.views
                     MessageBoxIcon.Information
              );
 
-            this.Refresh();
+            
         }
 
         private void Salir_Click(object sender, EventArgs e)
@@ -844,6 +853,32 @@ namespace Transportes_Figueroa.views
         private void btnRecargar_Click(object sender, EventArgs e)
         {
             ResetVehiclesAndDriversAvailability(_vehicles, _drivers);
+
+            foreach (Driver driver in _drivers.Where(c => c.Disponibilidad == "Disponible"))
+            {
+                Employee employee = _employees.FirstOrDefault(emp => emp.Id == driver.EmpleadoID);
+
+                if (employee != null)
+                {
+                    string nombreCompleto = $"{employee.Nombres} {employee.ApellidoPaterno} {employee.ApellidoMaterno}";
+
+                    if (!_driversNamesAndIDs.ContainsKey(nombreCompleto))
+                    {
+                        _driversNamesAndIDs[nombreCompleto] = driver.Id;
+                    }
+
+                    ListaConductores.Items.Add(nombreCompleto);
+                }
+            }
+
+            foreach (CarBrand marca in _brands)
+            {
+                ListaMarcas.Items.Add(marca.Marca);
+            }
+
+            List<Vehicle> vehiclesToShow = _vehicles.Where(v => v.Disponibilidad == "Disponible").ToList();
+            ShowVehicles(vehiclesToShow, "Todos");
+
             this.Refresh();
 
         }

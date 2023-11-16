@@ -76,7 +76,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                MessageBox.Show("Ocurrio un error al recuperar los empleados: " + ex.Message);
             }
             finally
             {
@@ -234,58 +234,14 @@ namespace Transportes_Figueroa.controllers
                     }
                 }
             }
-            catch
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ocurrio un error al obtener el empleado por ID: " + ex.Message);
+            }
+            finally
             {
                 CloseConnection();
-            }
 
-            return employee;
-        }
-
-        public Employee GetByName(string name)
-        {
-            Employee employee = new Employee();
-            DataTable employeeFromDB = new DataTable();
-
-            try
-            {
-                OpenConnection();
-
-                string query = $"SELECT * FROM empleados E INNER JOIN roles R ON E.id_rol = R.id_rol WHERE E.nombres LIKE @Name OR E.apellido_paterno LIKE @Name OR E.apellido_materno LIKE @Name ;";
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-
-                    command.Parameters.AddWithValue("@Name", "'%" + name + "%'");
-
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                    {
-                        adapter.Fill(employeeFromDB);
-
-                        foreach (DataRow infoEmpleado in employeeFromDB.Rows)
-                        {
-                            employee.Id = (Guid)infoEmpleado["id_empleado"];
-                            employee.IdUsuario = (Guid)infoEmpleado["id_usuario"];
-                            employee.RolId = (int)infoEmpleado["id_rol"];
-                            employee.CodigoAFP = (string)infoEmpleado["cod_AFP"];
-                            employee.CodigoSeguro = (string)infoEmpleado["cod_seguro"];
-                            employee.Imagen = (byte[])infoEmpleado["imagen"];
-                            employee.Nombres = (string)infoEmpleado["nombres"];
-                            employee.ApellidoPaterno = (string)infoEmpleado["apellido_paterno"];
-                            employee.ApellidoMaterno = (string)infoEmpleado["apellido_materno"];
-                            employee.NumeroTelefonico = (string)infoEmpleado["telefono_cliente"];
-                            employee.Departamento = (string)infoEmpleado["departamento"];
-                            employee.Municipio = (string)infoEmpleado["municipio"];
-                            employee.Calle = (string)infoEmpleado["calle"];
-                            employee.Ubicacion = (string)infoEmpleado["ubicacion"];
-                            employee.CodigoCasa = (string)infoEmpleado["cod_casa"];
-                            employee.DUI = (string)infoEmpleado["dui_empleado"];
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                CloseConnection();
             }
 
             return employee;
@@ -307,7 +263,11 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Excepción: {ex.Message}");
+                MessageBox.Show(
+                    $"Ocurrió un error al eliminar el empleado: \n\n" +
+                    $"El empleado tiene servicios relacionados a el, por lo que no puede ser eliminado\n" +
+                    $"Para poder eliminarlo se deben eliminar los servicios relacionados a él."
+                );
             }
             finally
             {
@@ -436,7 +396,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ha ocurrido un error al intentar añadir el rol: " + ex.Message);
+                MessageBox.Show("Ha ocurrido un error al intentar eliminar el rol: " + ex.Message);
                 return 0;
             }
             finally
@@ -463,7 +423,7 @@ namespace Transportes_Figueroa.controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ha ocurrido un error al intentar añadir el rol: " + ex.Message);
+                MessageBox.Show("Ha ocurrido un error al intentar actualizar el rol: " + ex.Message);
                 return 0;
             }
             finally

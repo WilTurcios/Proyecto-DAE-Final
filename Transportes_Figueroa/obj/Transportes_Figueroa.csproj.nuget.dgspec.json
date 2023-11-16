@@ -1,0 +1,60 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\MINEDUCYT\\Desktop\\Guias DAE\\Proyecto-DAE-Final\\Transportes_Figueroa\\Transportes_Figueroa.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\MINEDUCYT\\Desktop\\Guias DAE\\Proyecto-DAE-Final\\Transportes_Figueroa\\Transportes_Figueroa.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\MINEDUCYT\\Desktop\\Guias DAE\\Proyecto-DAE-Final\\Transportes_Figueroa\\Transportes_Figueroa.csproj",
+        "projectName": "Transportes_Figueroa",
+        "projectPath": "C:\\Users\\MINEDUCYT\\Desktop\\Guias DAE\\Proyecto-DAE-Final\\Transportes_Figueroa\\Transportes_Figueroa.csproj",
+        "packagesPath": "C:\\Users\\MINEDUCYT\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MINEDUCYT\\Desktop\\Guias DAE\\Proyecto-DAE-Final\\Transportes_Figueroa\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "C:\\Users\\MINEDUCYT\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "itext7": {
+              "target": "Package",
+              "version": "[7.1.15, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-arm64": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

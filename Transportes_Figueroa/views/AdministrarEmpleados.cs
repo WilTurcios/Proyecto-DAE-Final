@@ -335,7 +335,6 @@ namespace Transportes_Figueroa.views
         };
         private UserManager UserDBManager = new UserManager();
         private EmployeeManager EmployeeDBManager = new EmployeeManager();
-        private DataTable InfoEmpleados = new DataTable();
         private PasswordEncryptor passwordEncryptor = new PasswordEncryptor("M1$Gz@jRq9T#pK&3wFvS!xU4nW8zZ*Cb");
         private List<Employee> _employees = new List<Employee>(); 
         private List<Rol> _employeeRols = new List<Rol>();
@@ -346,7 +345,7 @@ namespace Transportes_Figueroa.views
         private bool _button3Image1IsVisible = true;
         private bool _button4Image1IsVisible = true;
         private byte[] _imagen;
-        private Guid _selectedEmployee;
+        private Employee _selectedEmployee = new Employee();
 
         public AdministrarEmpleados()
         {
@@ -505,9 +504,9 @@ namespace Transportes_Figueroa.views
 
         private void EliminarEmpleado_Click(object sender, EventArgs e)
         {
-            if (_selectedEmployee != null)
+            if (_selectedEmployee.Id != null)
             {
-                int affectedRows = EmployeeDBManager.DeleteEmployee(_selectedEmployee);
+                int affectedRows = EmployeeDBManager.DeleteEmployee(_selectedEmployee.Id);
 
                 if (affectedRows == 0)
                 {
@@ -515,17 +514,22 @@ namespace Transportes_Figueroa.views
                     _employees = EmployeeDBManager.GetAllEmployees();
 
                     ShowEmployees(_employees);
+
                     return;
                 }
                 else
                 {
                     MessageBox.Show("La eliminación del empleado ha sido exitosa", "Eliminación Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ResetControls();
+                    _selectedEmployee = new Employee();
                     return;
                 }
+
+
             }
             else
             {
-                MessageBox.Show("Ha ocurrido un error al eliminar el empleado. \n\nAsegurese de seleccinar un empleado a eliminar", "Error al eliminar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ha ocurrido un error al eliminar el empleado. \n Asegurese de seleccionar el empleado a eliminar. \n\nAsegurese de seleccinar un empleado a eliminar", "Error al eliminar", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
@@ -536,174 +540,207 @@ namespace Transportes_Figueroa.views
             {
                 item.Selected = false;
             }
+
+            _selectedEmployee = new Employee();
         }
 
         private void ActualizarEmpleado_Click(object sender, EventArgs e)
         {
+            try
+            {
+                Employee empleado = _employees.FirstOrDefault(employee => employee.Id == _selectedEmployee.Id);
 
-            Employee empleado = _employees.FirstOrDefault(employee => employee.Id == _selectedEmployee);
-            Guid usuarioID = _users.FirstOrDefault(user => user.Id == empleado.IdUsuario).Id;
 
-            if (txtContrasenia.Text.Trim().Length < 3)
+
+                if (empleado == null || empleado.IdUsuario == null)
+                {
+                    MessageBox.Show(
+                        "Seleccione un empleado y asegurese de rellenar los datos solicitados.",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+
+                Guid usuarioID = _users.FirstOrDefault(user => user.Id == empleado.IdUsuario).Id;
+
+
+                if (txtContrasenia.Text.Trim().Length < 3)
+                {
+                    MessageBox.Show(
+
+                        "La contraseña tiene que contener como mínimo 3 caracteres.",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+                string contrasenia = passwordEncryptor.EncryptPassword(txtContrasenia.Text);
+
+                string correo = txtCorreo.Text.ToLower();
+
+                if (!Validator.IsValidEmail(correo))
+                {
+                    MessageBox.Show(
+                        "El formato del correo es incorrecto. \n\n Asegurese de que sea un correo electrónico válido",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+                string nombres = txtNombres.Text.Trim();
+
+                if (nombres.Length < 4)
+                {
+                    MessageBox.Show(
+                        "El nombre no puede ir vacío y tiene que tener como mínimo 4 caracteres.",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+                string apellidoPaterno = txtApellidoPaterno.Text.Trim();
+                string apellidoMaterno = txtApellidoMaterno.Text.Trim();
+
+                if (apellidoMaterno.Length < 4 && apellidoPaterno.Length < 4)
+                {
+                    MessageBox.Show(
+                        "Los apellidos no pueden ir vacíos y tienen que tener como mínimo 4 caracteres.",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+                string telefono = txtTelefono.Text;
+
+                if (!Validator.IsValidPhoneNumber(telefono))
+                {
+                    MessageBox.Show(
+                        "El teléfono tiene que tener un formato válido.",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+
+                if (ListaRolesEmpleado.SelectedIndex == -1)
+                {
+                    MessageBox.Show(
+                        "Debe seleccionar un rol para el empleado",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+                int rolID = _employeeRols.FirstOrDefault(rol => rol.Nombre == ListaRolesEmpleado.SelectedItem.ToString()).Id;
+                string departamento = ListaDepartamentos.SelectedItem.ToString();
+
+                if (ListaDepartamentos.SelectedIndex == -1)
+                {
+                    MessageBox.Show(
+                        "Debe seleccionar un departamento para el empleado",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+
+                if (ListaMunicipios.SelectedIndex == -1)
+                {
+                    MessageBox.Show(
+                        "Debe seleccionar un municipio para el empleado",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+                string municipio = ListaMunicipios.SelectedItem.ToString();
+
+                string ubicacion = txtUbicacion.Text;
+                string calle = txtCalle.Text;
+                string codigoCasa = txtCodCasa.Text;
+                string codigoAFP = txtCodAFP.Text;
+                string codigoSeguro = txtCodSeguro.Text;
+
+                if (string.IsNullOrEmpty(ubicacion) && string.IsNullOrEmpty(calle) && string.IsNullOrEmpty(codigoCasa))
+                {
+                    MessageBox.Show(
+                        "Asegurese de que todos los datos de la dirección estén rellenados.",
+                        "Advertencia",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+                UserDBManager.ChangeUserPassword(usuarioID, contrasenia);
+
+                int affectedRows = EmployeeDBManager.UpdateEmployee(
+                                        _selectedEmployee.Id,
+                                        codigoSeguro,
+                                        _imagen,
+                                        telefono,
+                                        departamento,
+                                        municipio,
+                                        calle,
+                                        codigoCasa,
+                                        ubicacion,
+                                        rolID
+                                    );
+
+                if (affectedRows > 0)
+                {
+                    MessageBox.Show(
+                        "El empleado ha sido actualizado exitosamente",
+                        "Éxito",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Ha ocurrido un error al actualizar el empleado",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+
+                    return;
+                }
+
+                _employees = EmployeeDBManager.GetAllEmployees();
+                _users = UserDBManager.GetAllUsers();
+
+                ShowEmployees(_employees);
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(
+                        "Asegurese de seleccionar un empleado antes de actualizar.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
 
-                    "La contraseña tiene que contener como mínimo 3 caracteres.",
-                    "Advertencia",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-            string contrasenia = passwordEncryptor.EncryptPassword(txtContrasenia.Text);
-
-            string correo = txtCorreo.Text;
-
-            if (!Validator.IsValidEmail(correo))
-            {
-                MessageBox.Show(
-                    "El formato del correo es incorrecto. \n\n Asegurese de que sea un correo electrónico válido",
-                    "Advertencia",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-            string nombres = txtNombres.Text.Trim();
-
-            if (nombres.Length < 4)
-            {
-                MessageBox.Show(
-                    "El nombre no puede ir vacío y tiene que tener como mínimo 4 caracteres.",
-                    "Advertencia",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-            string apellidoPaterno = txtApellidoPaterno.Text.Trim();
-            string apellidoMaterno = txtApellidoMaterno.Text.Trim();
-
-            if (apellidoMaterno.Length < 4 && apellidoPaterno.Length < 4)
-            {
-                MessageBox.Show(
-                    "Los apellidos no pueden ir vacíos y tienen que tener como mínimo 4 caracteres.",
-                    "Advertencia",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-            string telefono = txtTelefono.Text;
-
-            if (Validator.IsValidPhoneNumber(telefono))
-            {
-                MessageBox.Show(
-                    "El teléfono tiene que tener un formato válido.",
-                    "Advertencia",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
+                _selectedEmployee = new Employee();
             }
 
-            if (ListaRolesEmpleado.SelectedIndex == -1)
-            {
-                MessageBox.Show(
-                    "Debe seleccionar un rol para el empleado",
-                    "Advertencia",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-            int rolID = _employeeRols.FirstOrDefault(rol => rol.Nombre == ListaRolesEmpleado.SelectedItem.ToString()).Id;
-            string departamento = ListaDepartamentos.SelectedItem.ToString();
-
-            if (ListaDepartamentos.SelectedIndex == -1)
-            {
-                MessageBox.Show(
-                    "Debe seleccionar un departamento para el empleado",
-                    "Advertencia",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-
-            if (ListaMunicipios.SelectedIndex == -1)
-            {
-                MessageBox.Show(
-                    "Debe seleccionar un municipio para el empleado",
-                    "Advertencia",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-            string municipio = ListaMunicipios.SelectedItem.ToString();
-
-            string ubicacion = txtUbicacion.Text;
-            string calle = txtCalle.Text;
-            string codigoCasa = txtCodCasa.Text;
-            string codigoAFP = txtCodAFP.Text;
-            string codigoSeguro = txtCodSeguro.Text;
-
-            if (string.IsNullOrEmpty(ubicacion) && string.IsNullOrEmpty(calle) && string.IsNullOrEmpty(codigoCasa))
-            {
-                MessageBox.Show(
-                    "Asegurese de que todos los datos de la dirección estén rellenados.",
-                    "Advertencia",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-            UserDBManager.ChangeUserPassword(usuarioID, contrasenia);
-
-            int affectedRows = EmployeeDBManager.UpdateEmployee(
-                                    _selectedEmployee,
-                                    codigoSeguro,
-                                    _imagen,
-                                    telefono,
-                                    departamento,
-                                    municipio,
-                                    calle,
-                                    codigoCasa,
-                                    ubicacion,
-                                    rolID
-                                );
-
-            if(affectedRows > 0)
-            {
-                MessageBox.Show(
-                    "El empleado ha sido actualizado exitosamente", 
-                    "Éxito", 
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-            }
-            else
-            {
-                MessageBox.Show(
-                    "Ha ocurrido un error al actualizar el empleado",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-
-                return;
-            }
-
-            _employees = EmployeeDBManager.GetAllEmployees();
-            _users = UserDBManager.GetAllUsers();
-
-            ShowEmployees(_employees);
+            
         }
 
         private void ListaEmpleados_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             bool isSelected = e.IsSelected;
+
             if (isSelected)
             {
                 Employee empleado = new Employee();
@@ -727,7 +764,7 @@ namespace Transportes_Figueroa.views
 
                 if (empleado != null)
                 {
-                    _selectedEmployee = empleado.Id;
+                    _selectedEmployee = empleado;
                     txtNombres.Text = empleado.Nombres;
                     txtApellidoMaterno.Text = empleado.ApellidoMaterno;
                     txtApellidoPaterno.Text = empleado.ApellidoPaterno;
@@ -763,43 +800,46 @@ namespace Transportes_Figueroa.views
             }
             else
             {
-                txtNombres.Text = string.Empty;
-                txtApellidoMaterno.Text = string.Empty;
-                txtApellidoPaterno.Text = string.Empty;
-                txtTelefono.Text = string.Empty;
-                txtDUI.Text = string.Empty;
-                txtCodAFP.Text = string.Empty;
-                txtCodSeguro.Text = string.Empty;
-
-                txtCorreo.Text = string.Empty;
-                txtContrasenia.Text = string.Empty;
-                ListaRolesUsuario.SelectedIndex = -1;
-
-                ListaRolesEmpleado.SelectedIndex = -1;
-
-                ListaDepartamentos.SelectedIndex = -1;
-                ListaMunicipios.SelectedIndex = -1;
-                txtUbicacion.Text = string.Empty;
-                txtCalle.Text = string.Empty;
-                txtCodCasa.Text = string.Empty;
-
-
-                txtNombres.Enabled = !isSelected;
-                txtApellidoMaterno.Enabled = !isSelected;
-                txtApellidoPaterno.Enabled = !isSelected;
-                txtDUI.Enabled = !isSelected;
-                txtCodAFP.Enabled = !isSelected;
-                txtCodSeguro.Enabled = !isSelected;
-
-                txtCorreo.Enabled = !isSelected;
-
-                AgregarEmpleado.Enabled = !isSelected;
-
-                FotoEmpleado.Image = null;
+                ResetControls();
             }
         }
 
-        
+        private void ResetControls()
+        {
+            txtNombres.Text = string.Empty;
+            txtApellidoMaterno.Text = string.Empty;
+            txtApellidoPaterno.Text = string.Empty;
+            txtTelefono.Text = string.Empty;
+            txtDUI.Text = string.Empty;
+            txtCodAFP.Text = string.Empty;
+            txtCodSeguro.Text = string.Empty;
+
+            txtCorreo.Text = string.Empty;
+            txtContrasenia.Text = string.Empty;
+            ListaRolesUsuario.SelectedIndex = -1;
+
+            ListaRolesEmpleado.SelectedIndex = -1;
+
+            ListaDepartamentos.SelectedIndex = -1;
+            ListaMunicipios.SelectedIndex = -1;
+            txtUbicacion.Text = string.Empty;
+            txtCalle.Text = string.Empty;
+            txtCodCasa.Text = string.Empty;
+            FotoEmpleado.Image = null;
+
+            txtNombres.Enabled = true;
+            txtApellidoMaterno.Enabled = true;
+            txtApellidoPaterno.Enabled = true;
+            txtDUI.Enabled = true;
+            txtCodAFP.Enabled = true;
+            txtCodSeguro.Enabled = true;
+
+            txtCorreo.Enabled = true;
+
+            AgregarEmpleado.Enabled = true;
+        }
+
+
         private void AgregarEmpleado_Click(object sender, EventArgs e)
         {
             Guid userID = Guid.NewGuid();
@@ -818,7 +858,7 @@ namespace Transportes_Figueroa.views
             }
             string contrasenia = passwordEncryptor.EncryptPassword(txtContrasenia.Text);
 
-            string correo = txtCorreo.Text;
+            string correo = txtCorreo.Text.ToLower();
 
             if (!Validator.IsValidEmail(correo))
             {
@@ -857,7 +897,7 @@ namespace Transportes_Figueroa.views
             }
             string telefono = txtTelefono.Text;
 
-            if (Validator.IsValidPhoneNumber(telefono))
+            if (!Validator.IsValidPhoneNumber(telefono))
             {
                 MessageBox.Show(
                     "El teléfono tiene que tener un formato válido.",
@@ -922,7 +962,7 @@ namespace Transportes_Figueroa.views
             }
             string duiEmpleado = txtDUI.Text;
 
-            if (Validator.IsValidDUI(duiEmpleado))
+            if (!Validator.IsValidDUI(duiEmpleado))
             {
                 MessageBox.Show(
                     "Asegurese de que el DUI del empleado tenga un formato válido.",

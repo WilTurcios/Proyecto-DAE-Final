@@ -300,6 +300,7 @@
             this.ListaMarcas.Name = "ListaMarcas";
             this.ListaMarcas.Size = new System.Drawing.Size(216, 25);
             this.ListaMarcas.TabIndex = 5;
+            this.ListaMarcas.SelectedIndexChanged += new System.EventHandler(this.ListaMarcas_SelectedIndexChanged);
             // 
             // ListaModelos
             // 
@@ -481,7 +482,7 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Matricula:";
             // 
-            // CrearVehiculo
+            // AdministrarVehiculos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -495,7 +496,7 @@
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Name = "CrearVehiculo";
+            this.Name = "AdministrarVehiculos";
             this.Text = "CrearVehiculo";
             this.Load += new System.EventHandler(this.CrearVehiculo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridVehiculos)).EndInit();

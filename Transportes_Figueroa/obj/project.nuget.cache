@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "Amb366y6yiQSWPCw0l1LLvnlD1OEZb0D5bazyY9Ws6hFMMAKcyli/Ese6LqPooarr2acGQItpQ5Z92TfvhSw1A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\MINEDUCYT\\Desktop\\Guias DAE\\Proyecto-DAE-Final\\Transportes_Figueroa\\Transportes_Figueroa.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\MINEDUCYT\\.nuget\\packages\\common.logging\\3.4.1\\common.logging.3.4.1.nupkg.sha512",
+    "C:\\Users\\MINEDUCYT\\.nuget\\packages\\common.logging.core\\3.4.1\\common.logging.core.3.4.1.nupkg.sha512",
+    "C:\\Users\\MINEDUCYT\\.nuget\\packages\\itext7\\7.1.15\\itext7.7.1.15.nupkg.sha512",
+    "C:\\Users\\MINEDUCYT\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
+    "C:\\Users\\MINEDUCYT\\.nuget\\packages\\portable.bouncycastle\\1.8.9\\portable.bouncycastle.1.8.9.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -390,7 +390,7 @@ namespace Transportes_Figueroa.views
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string correo = txtCorreo.Text.Trim();
+            string correo = txtCorreo.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(correo) || !Validator.IsValidEmail(correo))
             {
                 MessageBox.Show("Ingrese un correo electrónico válido.");
@@ -469,6 +469,7 @@ namespace Transportes_Figueroa.views
                 duiCliente
             );
 
+            ResetControls();
             _clients = ClientDBManager.GetAllClients();
             ShowClients(_clients);
 
@@ -524,6 +525,8 @@ namespace Transportes_Figueroa.views
                 }
             }
 
+            ResetControls();
+
             if (!alMenosUnaCeldaSeleccionada)
             {
                 MessageBox.Show("Seleccione al menos una celda antes de eliminar un cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -534,8 +537,7 @@ namespace Transportes_Figueroa.views
         {
             int selectedRows = 0;
             string telefono = txtTelefono.Text.Trim();
-            string correo = txtCorreo.Text.Trim();
-            MessageBox.Show(correo);
+            string correo = txtCorreo.Text.Trim().ToLower();
             string departamento = ListaDepartamentos.SelectedItem?.ToString();
             string municipio = ListaMunicipios.SelectedItem?.ToString();
             string ubicacion = txtUbicacion.Text.Trim();
@@ -635,12 +637,39 @@ namespace Transportes_Figueroa.views
 
             MessageBox.Show($"Se ha actualizado {affectedRows} registros.", "Actualización exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+            ResetControls();
             
             _clients = ClientDBManager.GetAllClients();
 
             ShowClients(_clients);
         }
 
+        private void ResetControls()
+        {
+            txtNombres.Text = string.Empty;
+            txtApellidoMaterno.Text = string.Empty;
+            txtApellidoPaterno.Text = string.Empty;
+            txtDUI.Text = string.Empty;
+            txtUbicacion.Text = string.Empty;
+            txtCalle.Text = string.Empty;
+            txtTelefono.Text = string.Empty;
+            txtCorreo.Text = string.Empty;
+            txtCodCasa.Text = string.Empty;
+            ListaDepartamentos.SelectedIndex = -1;
+            ListaMunicipios.SelectedIndex = -1;
+
+            txtNombres.Enabled = true;
+            txtApellidoMaterno.Enabled = true;
+            txtApellidoPaterno.Enabled = true;
+            txtDUI.Enabled = true;
+            txtUbicacion.Enabled = true;
+            txtCalle.Enabled = true;
+            txtTelefono.Enabled = true;
+            txtCorreo.Enabled = true;
+            txtCodCasa.Enabled = true;
+            ListaDepartamentos.Enabled = true;
+            ListaMunicipios.Enabled = true;
+        }
         private void DataGridClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == DataGridClientes.Columns["IDAccion"].Index && e.RowIndex >= 0)
@@ -692,19 +721,8 @@ namespace Transportes_Figueroa.views
                     else
                     {
                         // Si la casilla no está marcada, se ponen los valores predeterminados en los controles.
-                        txtNombres.Text = string.Empty;
-                        txtApellidoMaterno.Text = string.Empty;
-                        txtApellidoPaterno.Text = string.Empty;
-                        txtDUI.Text = string.Empty;
-                        txtUbicacion.Text = string.Empty;
-                        txtCalle.Text = string.Empty;
-                        txtTelefono.Text = string.Empty;
-                        txtCorreo.Text = string.Empty;
-                        txtCodCasa.Text = string.Empty;
-                        ListaDepartamentos.SelectedIndex = -1 ;
-                        ListaMunicipios.SelectedIndex = -1;
+                        ResetControls();
 
-                        // Borra o reinicia otros controles según las necesidades.
                     }
                 }
             }

@@ -36,6 +36,10 @@ namespace Transportes_Figueroa.Services
             return ServicesDataManager.GetAllServiceTypes();
         }
 
+        public Invoice GetInviceByServiceID(int serviceID)
+        {
+            return InvoicesDataManager.GetInvoiceByServiceID(serviceID);
+        }
 
         public int AddService(
             DateTime fechaSolicitud,

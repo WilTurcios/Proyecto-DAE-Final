@@ -83,7 +83,7 @@
             this.ListaEstados.Items.AddRange(new object[] {
             "En reparación",
             "Disponible",
-            "Ocupado"});
+            "No disponible"});
             this.ListaEstados.Location = new System.Drawing.Point(10, 135);
             this.ListaEstados.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ListaEstados.Name = "ListaEstados";

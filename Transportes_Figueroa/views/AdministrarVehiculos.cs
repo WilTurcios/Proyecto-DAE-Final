@@ -237,26 +237,6 @@ namespace Transportes_Figueroa.views
 
         }
 
-        private void ListaMarcas_vehiculos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Llenar la lista de modelos segun la marca elegida
-            if (ListaMarcas.SelectedIndex == -1) return;
-
-            string currentBrand = ListaMarcas.SelectedItem.ToString();
-            int currentBrandID = _brands.FirstOrDefault(brand => brand.Marca == currentBrand)?.Id ?? 0;
-
-            ListaModelos.Items.Clear();
-
-            if (currentBrandID != 0)
-            {
-                var modelosDeMarca = _models.Where(model => model.MarcaId == currentBrandID).Select(model => model.Modelo);
-                ListaModelos.Items.AddRange(modelosDeMarca.ToArray());
-            }
-        }
-
-        
-
-
         private void ActualizarVehiculo_Click(object sender, EventArgs e)
         {
             int selectedRows = 0;
@@ -264,6 +244,19 @@ namespace Transportes_Figueroa.views
             double kilometraje = 0;
             decimal costo = 0;
             double capacidadPeso = (double)txtCapacidadPeso.Value;
+
+            if(ListaTipoVehiculos.SelectedIndex == -1)
+            {
+                MessageBox.Show(
+                    "Asegurese de seleccionar un tipo de vehiculo.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                return;
+            }
+
             int tipoVehiculoID = _vehicleTypes.FirstOrDefault(type => type.Nombre == ListaTipoVehiculos.SelectedItem.ToString()).Id;
 
             if(!double.TryParse(txtKilometraje.Value.ToString(), out kilometraje))
@@ -496,6 +489,22 @@ namespace Transportes_Figueroa.views
                         // Borra o reinicia otros controles según las necesidades.
                     }
                 }
+            }
+        }
+
+        private void ListaMarcas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ListaMarcas.SelectedIndex == -1) return;
+
+            string currentBrand = ListaMarcas.SelectedItem.ToString();
+            int currentBrandID = _brands.FirstOrDefault(brand => brand.Marca == currentBrand)?.Id ?? 0;
+
+            ListaModelos.Items.Clear();
+
+            if (currentBrandID != 0)
+            {
+                var modelosDeMarca = _models.Where(model => model.MarcaId == currentBrandID).Select(model => model.Modelo);
+                ListaModelos.Items.AddRange(modelosDeMarca.ToArray());
             }
         }
     }

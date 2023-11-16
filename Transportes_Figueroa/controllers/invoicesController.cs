@@ -160,7 +160,7 @@ namespace Transportes_Figueroa.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ocurrió un error al recuperar las facturas: " + ex.Message);
+                MessageBox.Show("Ocurrió un error al recuperar las facturas del cliente: " + ex.Message);
             }
             finally
             {
@@ -168,6 +168,46 @@ namespace Transportes_Figueroa.Controllers
             }
 
             return invoices;
+        }
+
+        public Invoice GetInvoiceByServiceID(int serviceID)
+        {
+            try
+            {
+                OpenConnection();
+                Invoice invoice = new Invoice();
+                string query = "select * from facturas where id_servicio = @ServiceID;";
+                using(SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@ServiceID", serviceID);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            reader.Read();
+
+                            invoice.Id = (int)reader["id_factura"];
+                            invoice.FechaFactura = (DateTime)reader["fecha_factura"];
+                            invoice.ServicioId = (int)reader["id_servicio"];
+                            invoice.EmpleadoId = (Guid)reader["id_empleado"];
+                            invoice.MontoTotal = (decimal)reader["monto_total"];
+                            invoice.NumeroFactura = (string)reader["num_factura"];
+                        }
+                    }
+                }
+
+                return invoice;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error al recuperar la factura: " + ex.Message);
+                return new Invoice();
+            }
+            finally
+            {
+                CloseConnection();
+            }
         }
     }
 }

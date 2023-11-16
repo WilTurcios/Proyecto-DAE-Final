@@ -414,7 +414,7 @@
             this.PanelRol.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.PanelRol.Name = "PanelRol";
             this.PanelRol.RowCount = 1;
-            this.PanelRol.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 71F));
+            this.PanelRol.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
             this.PanelRol.Size = new System.Drawing.Size(522, 32);
             this.PanelRol.TabIndex = 51;
             // 
@@ -438,7 +438,7 @@
             this.label9.Location = new System.Drawing.Point(5, 1);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(251, 71);
+            this.label9.Size = new System.Drawing.Size(251, 77);
             this.label9.TabIndex = 8;
             this.label9.Text = "Rol del empleado:";
             // 

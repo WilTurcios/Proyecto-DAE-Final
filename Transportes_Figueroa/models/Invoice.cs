@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Transportes_Figueroa.Models
 {
-    internal class Invoice
+    public class Invoice
     {
         public int Id { get; set; }
         public string NumeroFactura { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Transportes_Figueroa.models
 {
-    internal class Vehicle
+    public class Vehicle
     {
         public int Id { get; set; }
         public double Kilometraje { get; set; }

@@ -124,10 +124,6 @@ namespace Transportes_Figueroa.Services
             }
             return empleado;
         }
-        public Employee GetEmployeeByName(string nombre)
-        {
-            return EmployeesDataManager.GetByName(nombre);
-        }
 
         public int DeleteEmployee(Guid empleadoID)
         {

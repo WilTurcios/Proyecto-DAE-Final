@@ -35,6 +35,10 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.LogoPanel = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.panel2.SuspendLayout();
+            this.LogoPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtCorreo
@@ -92,6 +96,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(194)))), ((int)(((byte)(227)))));
+            this.panel2.Controls.Add(this.LogoPanel);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -119,6 +124,30 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "Contraseña:";
             // 
+            // LogoPanel
+            // 
+            this.LogoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LogoPanel.BackColor = System.Drawing.Color.Transparent;
+            this.LogoPanel.BackgroundImage = global::Transportes_Figueroa.Properties.Resources.image;
+            this.LogoPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.LogoPanel.Controls.Add(this.label3);
+            this.LogoPanel.Location = new System.Drawing.Point(3, 89);
+            this.LogoPanel.Name = "LogoPanel";
+            this.LogoPanel.Size = new System.Drawing.Size(416, 315);
+            this.LogoPanel.TabIndex = 4;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.Maroon;
+            this.label3.Location = new System.Drawing.Point(21, 200);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(367, 47);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Transportes Figueroa";
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
@@ -139,6 +168,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.LoginForm_Load);
+            this.panel2.ResumeLayout(false);
+            this.LogoPanel.ResumeLayout(false);
+            this.LogoPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -152,5 +184,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel LogoPanel;
+        private System.Windows.Forms.Label label3;
     }
 }

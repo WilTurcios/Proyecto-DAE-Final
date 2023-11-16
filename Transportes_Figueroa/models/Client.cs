@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Transportes_Figueroa.models
 {
-    internal class Client
+    public class Client
     {
         public Guid Id { get; set; }
         public string Nombres { get; set; }

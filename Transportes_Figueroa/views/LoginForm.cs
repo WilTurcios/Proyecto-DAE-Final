@@ -28,7 +28,7 @@ namespace Transportes_Figueroa.views
 
         private void Ingresar_Click(object sender, EventArgs e)
         {
-            string correo = txtCorreo.Text;
+            string correo = txtCorreo.Text.ToLower();
             string contrasenia = txtContrasenia.Text;
 
             User usuario = UsersDBManager.GerUserByEmail(correo);
